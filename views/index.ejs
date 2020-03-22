@@ -6,6 +6,282 @@
     <body>
     <%- include('_layouts/header') -%>
         <!-- ========== MAIN CONTENT ========== -->
+        <main id="content">
+            <!-- ========== HERO ========== -->
+            <div class="hero-block hero-v6 bg-img-hero-bottom gradient-overlay-half-bg-charcoal-gray text-center z-index-2" style="background-image: url(assets/img/1920x750/img3.jpg);">
+                <div class="container space-2 space-top-xl-6">
+                    <div class="justify-content-md-center py-xl-10">
+                        <!-- Info -->
+                        <div class="pb-lg-11 mb-7">
+                            <h1 class="font-size-60 font-size-xs-30 text-white font-weight-bold">Find your next rental</h1>
+                            <p class="font-size-20 font-weight-normal text-white">Book experiences you’ll want to tell the world about</p>
+                        </div>
+                        <!-- End Info -->
+                    </div>
+                    <div class="mb-lg-n16">
+                        <div class="card border-0 tab-shadow">
+                            <div class="card-body">
+                                <form class="js-validate">
+                                  <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3">
+                                    <div class="col-sm-12 col-lg-3dot6 col-xl-3dot7 mb-4 mb-lg-0 ">
+                                        <span class="d-block text-gray-1 font-weight-normal text-left mb-0">Destination or Hotel Name</span>
+                                        <!-- Select -->
+                                        <select class="js-select selectpicker dropdown-select tab-dropdown col-12 pl-0 flaticon-pin-1 d-flex align-items-center text-primary font-weight-semi-bold" title="Where are you going?"
+                                            data-style=""
+                                            data-live-search="true"
+                                            data-searchbox-classes="input-group-sm"
+                                        id="search-property">
+                                            <option class="border-bottom border-color-1" value="project1" data-content='
+                                                <span class="d-flex align-items-center">
+                                                    <span class="font-size-16">London, United Kingdom</span>
+                                                </span>'>
+                                                London, United Kingdom
+                                            </option>
+                                            <option class="border-bottom border-color-1" value="project2" data-content='
+                                                <span class="d-flex align-items-center">
+                                                    <span class="font-size-16">New York, United States</span>
+                                                </span>'>
+                                                New York, United States
+                                            </option>
+                                            <option  class="border-bottom border-color-1" value="project3" data-content='
+                                                <span class="d-flex align-items-center">
+                                                    <span class="font-size-16">New South Wales, Australia</span>
+                                                </span>'>
+                                                New South Wales, Australia
+                                            </option>
+                                            <option class="border-bottom border-color-1" value="project4" data-content='
+                                                <span class="d-flex align-items-center">
+                                                    <span class="font-size-16">Istanbul, Turkey</span>
+                                                </span>'>
+                                                Istanbul, Turkey
+                                            </option>
+                                            <option class="" value="project4" data-content='
+                                                <span class="d-flex align-items-center">
+                                                    <span class="font-size-16">Reykjavík, Iceland</span>
+                                                </span>'>
+                                                Reykjavík, Iceland
+                                            </option>
+                                        </select>
+                                        <!-- End Select -->
+                                    </div>
+
+                                    <div class="col-sm-12 col-lg-3dot7 col-xl-3dot6 mb-4 mb-lg-0 ">
+                                        <!-- Input -->
+                                        <span class="d-block text-gray-1 text-left font-weight-normal mb-0">Check In - Out</span>
+                                        <div class="border-bottom border-width-2 border-color-1">
+                                            <div id="datepickerWrapperFromOne" class="u-datepicker input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="d-flex align-items-center mr-2">
+                                                      <i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
+                                                    </span>
+                                                </div>
+                                                 <input class="js-range-datepicker font-size-lg-16 shadow-none font-weight-bold form-control hero-form bg-transparent  border-0" type="date"
+                                                     data-rp-wrapper="#datepickerWrapperFromOne"
+                                                     data-rp-type="range"
+                                                     data-rp-date-format="M d / Y"
+                                                     data-rp-default-date='["Jul 7 / 2020", "Aug 25 / 2020"]'>
+                                            </div>
+                                             <!-- End Datepicker -->
+                                        </div>
+                                        <!-- End Input -->
+                                    </div>
+
+                                    <div class="col-sm-12 col-lg-2dot8 mb-4 mb-lg-0 dropdown-custom">
+                                        <!-- Input -->
+                                        <span class="d-block text-gray-1 text-left font-weight-normal mb-0">Guests</span>
+                                        <a id="basicDropdownClickInvoker" class="dropdown-nav-link dropdown-toggle d-flex pt-3 pb-2" href="javascript:;" role="button"
+                                            aria-controls="basicDropdownClick"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            data-unfold-event="click"
+                                            data-unfold-target="#basicDropdownClick"
+                                            data-unfold-type="css-animation"
+                                            data-unfold-duration="300"
+                                            data-unfold-delay="300"
+                                            data-unfold-hide-on-scroll="true"
+                                            data-unfold-animation-in="slideInUp"
+                                            data-unfold-animation-out="fadeOut">
+                                            <i class="flaticon-plus d-flex align-items-center mr-3 font-size-18 text-primary font-weight-semi-bold"></i>
+                                            <span class="text-black font-size-16 font-weight-semi-bold">1 Adult - 0 Child</span>
+                                        </a>
+                                        <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col-11 m-0" aria-labelledby="basicDropdownClickInvoker">
+                                            <div class="w-100 py-2 px-3 mb-3">
+                                                <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Adults</span>
+                                                    <div class="d-flex">
+                                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                            <small class="fas fa-minus btn-icon__inner"></small>
+                                                        </a>
+                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                            <small class="fas fa-plus btn-icon__inner"></small>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 py-2 px-3">
+                                                <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Child</span>
+                                                    <div class="d-flex">
+                                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                            <small class="fas fa-minus btn-icon__inner"></small>
+                                                        </a>
+                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                            <small class="fas fa-plus btn-icon__inner"></small>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 text-right py-1 pr-5">
+                                                <a class="text-primary font-weight-semi-bold font-size-16" href="#">Done</a>
+                                            </div>
+                                        </div>
+                                        <!-- End Input -->
+                                    </div>
+
+                                    <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
+                                        <button type="submit" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"><i class="flaticon-magnifying-glass font-size-20 mr-2"></i>Search</button>
+                                    </div>
+                                  </div>
+                                  <!-- End Checkbox -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ========== END HERO ========== -->
+
+            <!-- Banner v6 -->
+            <div class="banner-block banner-v6">
+                <div class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll" data-options='{direction: "normal"}'>
+                    <!-- Apply your Parallax background image here -->
+                    <div class="divimage dzsparallaxer--target" style="height: 130%; background-image: url(assets/img/1920x500/img7.jpg);"></div>
+                    <div class="container text-center space-2 space-md-3">
+                        <div class="pb-3 mb-1 space-top-lg-1 mt-2">
+                            <h5 class="text-white font-size-40 font-weight-bold mb-1">Airbnb plus places to stay</h5>
+                            <p class="text-white font-weight-normal mb-3 mb-lg-6">A selection of places to stay verified for quality and design</p>
+                            <a class="btn btn-outline-white border-width-2 rounded-xs min-width-200 font-weight-normal transition-3d-hover" href="../blog/blog-single.html">Explore Stays</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Banner v6 -->
+
+            <!-- Testimonials v2 -->
+            <div class="testimonial-block testimonial-v2 border-bottom border-color-8">
+                <div class="container">
+                    <div class="pt-7 pb-8">
+                        <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5">
+                            <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Customer Reviews</h2>
+                        </div>
+                        <!-- Slick Carousel -->
+                        <div class="js-slick-carousel u-slick u-slick--gutters-3" data-infinite="    true" data-autoplay="true" data-speed="3000" data-fade="true"
+                        data-pagi-classes="text-center u-slick__pagination mb-0 mt-4"
+                            data-responsive='[{
+                            "breakpoint": 992,
+                               "settings": {
+                                 "slidesToShow": 1
+                               }
+                            }]'>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img1.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Jessica Brown</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img2.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Augusta Silva</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img3.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Ali Tufan</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img1.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Jessica Brown</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img3.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Ali Tufan</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+
+                            <div class="js-slide">
+                                <!-- Testimonials -->
+                                <div class="d-flex justify-content-center mb-6">
+                                    <div class="position-relative">
+                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img2.jpg" alt="Image-Descrition">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
+                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Augusta Silva</h6>
+                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
+                                </div>
+                                <!-- End Testimonials -->
+                            </div>
+                        </div>
+                        <!-- End Slick Carousel -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Testimonials v2 -->
+        </main>
         <!-- ========== END MAIN CONTENT ========== -->
     <%- include('_layouts/footer') -%>
         <!-- Go to Top -->

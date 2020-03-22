@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('_layouts/head') -%>
+</head>
+<body>
+<%- include('_layouts/header') -%>
+<!-- ========== MAIN CONTENT ========== -->
+<!-- Login -->
+<main id="content">
+    <div class="container">
+        <div class="row">
+
+                <div class="container max-width-810 mx-auto">
+                    <form method="POST" action="/signin">
+                    <div id="login" style="opacity: 1;" data-target-group="idForm" class="animated fadeIn">
+                        <!-- Header -->
+                        <div class="card-header text-center">
+                            <h3 class="h5 mb-0 font-weight-semi-bold">Login</h3>
+                        </div>
+                        <!-- End Header -->
+                        <div class="card-body pt-6 pb-4">
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                    <label class="sr-only" for="signinSrEmail">Email</label>
+                                    <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                               placeholder="Email Or Username" aria-label="Email Or Username"
+                                               aria-describedby="signinEmail" required=""
+                                               data-msg="Please enter a valid email address."
+                                               data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-append">
+                                                                    <span class="input-group-text" id="signinEmail">
+                                                                        <span class="far fa-envelope font-size-20"></span>
+                                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                    <label class="sr-only" for="signinSrPassword">Password</label>
+                                    <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                               placeholder="Password" aria-label="Password"
+                                               aria-describedby="signinPassword" required=""
+                                               data-msg="Your password is invalid. Please try again."
+                                               data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="signinPassword">
+                                                                        <span class="flaticon-password font-size-20"></span>
+                                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                            <div class="mb-3 pb-1">
+                                <button type="submit"
+                                        class="btn btn-md btn-block btn-blue-1 rounded-xs font-weight-bold transition-3d-hover">
+                                    Login
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" id="customCheckboxInline1" name="customCheckboxInline1"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label" for="customCheckboxInline1">Remember me</label>
+                                </div>
+                                <a class="js-animation-link text-primary font-size-14" href="javascript:;"
+                                   data-target="#forgotPassword" data-link-group="idForm" data-animation-in="fadeIn"><u>Forgot
+                                        Password?</u></a>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+
+            <%
+            if(typeof errors !== 'undefined'){
+                    for(var error of errors){
+            %>
+                <h3><%= error.msg %></h3>
+            <%
+            }
+            }
+            %>
+        </div>
+    </div>
+</main>
+
+<!-- End Login -->
+<!-- ========== END MAIN CONTENT ========== -->
+<%- include('_layouts/footer') -%>
+<!-- Go to Top -->
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed"
+   data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+    <span class="flaticon-arrow u-go-to-modern__inner"></span>
+</a>
+<!-- End Go to Top -->
+<%- include('_layouts/scripts') -%>
+</body>
+</html>

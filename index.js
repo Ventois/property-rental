@@ -104,10 +104,10 @@ const views={
     "user":'/userdashboard',
     "admin":'/admindashboard'
 }
- myApp.get('/signin',function(req, res){
+ myApp.get('/login',function(req, res){
     if(!(req.session.userLoggedIn))
     {
-       res.render('SignIn');
+       res.render('login');
     }
     else
     {
