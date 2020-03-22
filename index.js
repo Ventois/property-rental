@@ -56,6 +56,10 @@ myApp.get('/reservation',function(req, res){
     res.render('booking');
 });
 
+myApp.get('/payment',function(req, res){
+    res.render('payment');
+});
+
 myApp.get('/confirmation',function(req, res){
     res.render('confirmation');
 });
