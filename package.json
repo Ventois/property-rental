@@ -1,0 +1,26 @@
+{
+  "name": "origami",
+  "version": "1.0.0",
+  "description": "My Awesome Site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kalpana",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "*",
+    "bootstrap": "^4.4.1",
+    "bootswatch": "^4.4.1",
+    "connect-flash": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-fileupload": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "fs-extra": "*",
+    "googleapis": "^39.2.0",
+    "mongoose": "*"
+  }
+}
