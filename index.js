@@ -40,7 +40,7 @@ myApp.get('/',function(req, res){
     res.render('index');
 });
 
-myApp.get('/about',function(req, res){
+myApp.get('/about-us',function(req, res){
     res.render('about');
 });
 

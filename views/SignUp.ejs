@@ -1,57 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('_layouts/head') -%>
+</head>
+<body>
 <%- include('_layouts/header') -%>
-<main>
-    <section>
-        <h1 class="center p-2">Sign Up</h1>
-        <form method="POST" action="/signup">
-            <div class="form-field">
-                <label for="firstname">First Name:</label>
-                <input type="text" required class="form-input" name="firstname">
-            </div>
-            <div class="form-field">
-                <label for="lastname">Last Name:</label>
-                <input type="text" required class="form-input" name="lastname">
-            </div>
-            <div class="form-field">
-                <label for="phone">Phone Number:</label>
-                <input type="number" maxlength="10"  pattern="[0-9]{10}" required class="form-input" name="phone">
-            </div>
-            <div class="form-field">
-                <label for="email">Email:</label>
-                <input type="email" required class="form-input" name="email">
-            </div>
-            <div class="form-field">
-                <label for="password">Password:</label>
-                <input type="password" required  title="Phone number should be 10 digits only " class="form-input" name="password">
-            </div>
-            <div class="form-field">
-                <label for="confirmpassword">Confirm Password:</label>
-                <input type="password" required class="form-input" name="confirmpassword">
-            </div>
-            <div class="custom-control custom-switch ml-5 p-2">
-                <input type="checkbox" value="On" class="custom-control-input" id="HaveProperty" name="HaveProperty">
-                <label class="custom-control-label" for="HaveProperty">Do you have a property to rent?</label>
-            </div>
-            <div class="custom-control custom-checkbox ml-5 p-2">
-                <input type="checkbox" class="custom-control-input" id="IsAgreePolicy" name="IsAgreePolicy">
-                <label class="custom-control-label" for="IsAgreePolicy">I Agree  with the terms and conditions.</label>
-            </div>
-            <div class="form-field">
-                <input type="submit" class="form-submit" value="Sign Up">
-            </div>
+<!-- ========== MAIN CONTENT ========== -->
+<main id="content">
+    <div class="container">
+        <div class="row">
+            <div class="container max-width-810 mx-auto">
+                <form method="POST" action="/signup">
+                <!-- Signup -->
+                <div id="signup" data-target-group="idForm">
+                    <!-- Header -->
+                    <div class="card-header text-center">
+                        <h3 class="h5 mb-0 font-weight-semi-bold">Register</h3>
+                    </div>
+                    <!-- End Header -->
+                    <div class="card-body pt-5 pb-4">
 
-            <p class="ml-5">Already have an account?<a href="/signin"><b>Sign In</b></a> </p>
-            <p id="error"></p>
-        </form>
-        <% 
-            if(typeof errors !== 'undefined'){
-                for(var error of errors){
-                    %>
-                    <h3><%= error.msg %></h3>
-                    <%
-                }
-            }
-        %>  
-    </section>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="pills-one-code-sample" role="tabpanel" aria-labelledby="pills-one-code-sample-tab">
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="firstname">First Name</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" aria-label="First Name" aria-describedby="firstname" required data-msg="Please enter a valid user name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="username">
+                                                      <span class="flaticon-user font-size-20"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="lastname">Last Name</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" aria-label="Last Name" aria-describedby="normalname" required data-msg="Please enter a valid name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-append">
+                                                 <span class="input-group-text" id="normalname">
+                                                     <span class="flaticon-browser-1 font-size-20"></span>
+                                                  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="email">Email</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Email" aria-describedby="signupEmail" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="signupEmail">
+                                                    <span class="far fa-envelope font-size-20"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="phone">Phone Number</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="email" class="form-control" name="phone" id="phone" placeholder="Phone Number" aria-label="phone" aria-describedby="phone" required data-msg="Please enter a valid phone number." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="phone">
+                                                    <span class="flaticon-phone-call font-size-20"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="signupSrPassword">Password</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="password" class="form-control" name="password" id="signupSrPassword" placeholder="Password" aria-label="Password" aria-describedby="signupPassword" required data-msg="Your password is invalid. Please try again." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-prepend">
+                                                  <span class="input-group-text" id="signupPassword">
+                                                      <span class="flaticon-password font-size-20"></span>
+                                                  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="form-group pb-1">
+                                    <div class="js-form-message js-focus-state border border-width-2 border-color-8 rounded-sm">
+                                        <label class="sr-only" for="confirmpassword">Confirm Password</label>
+                                        <div class="input-group input-group-tranparent input-group-borderless input-group-radiusless">
+                                            <input type="password" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" aria-label="confirmpassword" aria-describedby="confirmpassword" required data-msg="Your password is invalid. Please try again." data-error-class="u-has-error" data-success-class="u-has-success">
+                                            <div class="input-group-prepend">
+                                                  <span class="input-group-text" id="signupPassword">
+                                                      <span class="flaticon-password font-size-20"></span>
+                                                  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Form Group -->
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div class="custom-control custom-switch ml-5 p-2">
+                                        <input type="checkbox" value="On" class="custom-control-input" id="HaveProperty" name="HaveProperty">
+                                        <label class="custom-control-label" for="HaveProperty">Do you have a property to rent?</label>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->                                <!-- End Form Group -->
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" id="customCheckboxInline2" name="customCheckboxInline2" class="custom-control-input">
+                                        <label class="custom-control-label" for="customCheckboxInline2">I have read and accept the <a href="#">Terms and Privacy Policy</a></label>
+                                    </div>
+                                </div>
+
+
+                                <div class="mb-3 pb-1">
+                                    <button type="submit" class="btn btn-md btn-block btn-blue-1 rounded-xs font-weight-bold transition-3d-hover">Register</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0">
+                        <div class="card-footer__bottom p-4 text-center font-size-14">
+                            <span class="text-gray-1">Already have an account?</span>
+                            <a id="rentalMenu" href="/login">Login</a> here
+                        </div>
+                    </div>
+                </div>
+                <!-- End Signup -->
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
+<!-- ========== END MAIN CONTENT ========== -->
 <%- include('_layouts/footer') -%>
+<!-- Go to Top -->
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+    <span class="flaticon-arrow u-go-to-modern__inner"></span>
+</a>
+<!-- End Go to Top -->
+<%- include('_layouts/scripts') -%>
+</body>
 </html>
