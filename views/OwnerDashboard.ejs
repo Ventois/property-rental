@@ -1,0 +1,112 @@
+<%- include('_layouts/header') -%>
+
+<main>
+    <section>
+       <div>
+           <h1>Owner dashboard</h1>
+            <h5 class="float-right">Sign Out</h5>
+        </div>
+        <form class="form-group" method="POST" action="/contact" enctype="multipart/form-data">
+            <div class="form-field">
+                <label for="rentalname">Rental Name:</label>
+                <input type="text" class="form-input" name="rentalname">
+            </div>
+            <div class="form-field">
+                <label for="price">Price:</label>
+                <input type="text" class="form-input" name="price">
+            </div>
+            <div class="form-field">
+                <label for="searchTextField">Location:</label>
+                <input id="searchTextField" class="form-input" type="text" size="50" name="searchTextField" placeholder="Anything you want!">
+            </div>
+            <div class="form-field">
+                <label for="myimage">Image:</label>
+                <input type="file" class="form-input" name="myimage" id="myimage">
+            </div>
+            <div class="form-field">
+                <label for="amenities Included">Amenities:</label>
+                <div class="form-group row">
+                <div class="custom-control custom-checkbox col-sm-10">
+                    <input type="checkbox" class="custom-control-input" id="wifi" name="wifi" value="wifi">
+                    <label class="custom-control-label" for="wifi">Wifi</label>
+                </div>
+                <div class="custom-control custom-checkbox col-sm-10">
+                    <input type="checkbox" class="custom-control-input" id="petfriendly" name="petfriendly" value="petfriendly">
+                    <label class="custom-control-label" for="petfriendly">Pet friendly</label>
+                </div>
+                <div class="custom-control custom-checkbox  col-sm-10">
+                    <input type="checkbox" class="custom-control-input" id="parkingincluded" name="parkingincluded" value="parkingincluded">
+                    <label class="custom-control-label" for="parkingincluded">Parking Included</label>
+                </div>
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <Legend>About Host</Legend>
+                <div class="form-field">
+                    <label for="ownername">Name:</label>
+                    <input type="text" class="form-input" name="ownername" id="ownername">
+                </div>
+                <div class="form-field">
+                    <label for="ownerphone">Phone:</label>
+                    <input type="text" class="form-input" name="ownerphone" id="ownerphone">
+                </div>
+                <div class="form-field">
+                    <label for="owneremail">Email:</label>
+                    <input type="text" class="form-input" name="owneremail" id="owneremail">
+                </div>
+                <div class="form-field">
+                    <label for="ownerimage">Image:</label>
+                    <input type="file" class="form-input" name="ownerimage" id="ownerimage">
+                </div>
+                <div class="form-field">
+                    <label for="message">Host Information:</label>
+                    <textarea id="message" name="message" rows="10" cols="80"></textarea>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Available dates</legend>
+                <div class="calendar-container">
+                    <div id="dycalendar-month-prev-next-button" class="dycalendar-container skin-green shadow-default"></div>
+                </div>
+            </fieldset>
+            <div class="form-field">
+                <input type="submit" class="form-submit" value="Submit">
+            </div>
+            <% 
+                if(typeof errors !== 'undefined'){
+                    for(var error of errors){
+                        %>
+                        <h3 class="error"><%= error.msg %></h3>
+                        <%
+                    }
+                }
+            %>
+        </form>
+
+    </section>
+</main>
+<%- include('_layouts/footer') -%>
+<script src="/js/dycalendar.min.js"></script>
+<script>
+    function activatedPlaces()
+    {
+        var input=document.getElementById('searchTextField');
+        var autocomplete=new google.maps.places.Autocomplete(input);
+    }
+    ClassicEditor
+        .create( document.querySelector( '#message' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
+     dycalendar.draw({
+     target: '.dycalendar-month-prev-next-button',
+     type: 'month',
+     monthformat: "full",
+     highlighttargetdate : true,
+     prevnextbutton : "show"
+});
+
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYwl6FOUaXRUgzeX2P7R10aGFY0UksCMA&libraries=places&callback=activatedPlaces"></script>    
+</html>

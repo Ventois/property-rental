@@ -1,0 +1,57 @@
+<%- include('_layouts/header') -%>
+<main>
+    <section>
+        <h1 class="center p-2">Sign Up</h1>
+        <form method="POST" action="/signup">
+            <div class="form-field">
+                <label for="firstname">First Name:</label>
+                <input type="text" required class="form-input" name="firstname">
+            </div>
+            <div class="form-field">
+                <label for="lastname">Last Name:</label>
+                <input type="text" required class="form-input" name="lastname">
+            </div>
+            <div class="form-field">
+                <label for="phone">Phone Number:</label>
+                <input type="number" maxlength="10"  pattern="[0-9]{10}" required class="form-input" name="phone">
+            </div>
+            <div class="form-field">
+                <label for="email">Email:</label>
+                <input type="email" required class="form-input" name="email">
+            </div>
+            <div class="form-field">
+                <label for="password">Password:</label>
+                <input type="password" required  title="Phone number should be 10 digits only " class="form-input" name="password">
+            </div>
+            <div class="form-field">
+                <label for="confirmpassword">Confirm Password:</label>
+                <input type="password" required class="form-input" name="confirmpassword">
+            </div>
+            <div class="custom-control custom-switch ml-5 p-2">
+                <input type="checkbox" value="On" class="custom-control-input" id="HaveProperty" name="HaveProperty">
+                <label class="custom-control-label" for="HaveProperty">Do you have a property to rent?</label>
+            </div>
+            <div class="custom-control custom-checkbox ml-5 p-2">
+                <input type="checkbox" class="custom-control-input" id="IsAgreePolicy" name="IsAgreePolicy">
+                <label class="custom-control-label" for="IsAgreePolicy">I Agree  with the terms and conditions.</label>
+            </div>
+            <div class="form-field">
+                <input type="submit" class="form-submit" value="Sign Up">
+            </div>
+
+            <p class="ml-5">Already have an account?<a href="/signin"><b>Sign In</b></a> </p>
+            <p id="error"></p>
+        </form>
+        <% 
+            if(typeof errors !== 'undefined'){
+                for(var error of errors){
+                    %>
+                    <h3><%= error.msg %></h3>
+                    <%
+                }
+            }
+        %>  
+    </section>
+</main>
+<%- include('_layouts/footer') -%>
+</html>
