@@ -56,6 +56,10 @@ myApp.get('/reservation',function(req, res){
     res.render('booking');
 });
 
+myApp.get('/payment',function(req, res){
+    res.render('payment');
+});
+
 myApp.get('/confirmation',function(req, res){
     res.render('confirmation');
 });
@@ -99,6 +103,7 @@ myApp.post('/signup',[
         res.redirect('/');
     }
  });
+
 const views={
     "owner":"/ownerdashboard",
     "user":'/userdashboard',
@@ -395,4 +400,4 @@ myApp.get('/single/:anyname',function(req, res){
 //----------- Start the server -------------------
 
 myApp.listen(8080);
-console.log('Server started at 8080 for mywebsite...');
+console.log('Server started at 8080 for spm...');
