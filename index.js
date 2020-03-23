@@ -65,7 +65,7 @@ myApp.get('/confirmation',function(req, res){
 });
 
 myApp.get('/signup',function(req, res){
-   res.render('SignUp')  
+   res.render('SignUp')
 });
 
 myApp.get('/add-property',function(req, res){
@@ -73,7 +73,7 @@ myApp.get('/add-property',function(req, res){
 });
 
 myApp.post('/signup',[
-    check('firstname', 'Please enter first name').not().isEmpty(),  
+    check('firstname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty()
@@ -108,7 +108,7 @@ myApp.post('/signup',[
     }
  });
 const views={
-    "owner":"/ownerdashboard",
+    "owner":"/owner-dashboard",
     "user":'/userdashboard',
     "admin":'/admindashboard'
 }
@@ -122,7 +122,7 @@ const views={
         res.redirect(views[req.session.role]);
         // if(req.session.role=='owner')
         // {
-        //     res.redirect('/ownerdashboard');
+        //     res.redirect('/owner-dashboard');
         // }
         // else if(req.session.role=='user')
         // {
@@ -131,8 +131,8 @@ const views={
         // else
         // {
         //     res.redirect('/admindashboard');
-        // } 
-    } 
+        // }
+    }
  });
 
  myApp.post('/signin',function(req, res){
@@ -150,12 +150,12 @@ const views={
         }
         else if(role=='owner')
         {
-            res.redirect('/ownerdashboard');
+            res.redirect('/owner-dashboard');
         }
         else
         {
-            res.redirect('/admindashboard');
-        } 
+            res.redirect('/admin-dashboard');
+        }
     });
  });
 
@@ -163,17 +163,17 @@ const views={
     res.render('UserDashboard');
 });
 
-myApp.get('/ownerdashboard',function(req, res){
-    res.render('OwnerDashboard');
+myApp.get('/owner-dashboard',function(req, res){
+    res.render('owner-dashboard');
 });
 
-myApp.get('/admindashboard',function(req, res){
-    res.render('AdminDashboard');
+myApp.get('/admin-dashboard',function(req, res){
+    res.render('admin-dashboard');
 });
 
 myApp.get('/contact',function(req, res){
     if(req.session.userLoggedIn)
-    {    
+    {
         Header.findOne({type:'header'}).exec(function(err,header){
             res.render('addPage',{header:header})
         });
@@ -216,7 +216,7 @@ myApp.post('/contact',[
         image.mv(imgpath,function(err){
             console.log(err);
         });
-        
+
         var myAllPages = new Allpages({
             pagetitle: title,
             slug: slug,
@@ -265,10 +265,10 @@ myApp.post('/login',function(req, res){
 myApp.get('/logout',function(req, res){
     if(req.session.userLoggedIn)
     {
-        req.session.destroy();   
+        req.session.destroy();
         Header.findOne({type:'header'}).exec(function(err,header){
             res.render('logout',{header:header})
-        }); 
+        });
     }
 });
 
@@ -278,7 +278,7 @@ myApp.get('/allpages',function(req, res){
         Allpages.find({}).exec(function(err,pages){
             Header.findOne({type:'header'}).exec(function(err,header){
                 res.render('allpages',{header:header,pages:pages})
-            });  
+            });
         });
     }
     else
@@ -289,7 +289,7 @@ myApp.get('/allpages',function(req, res){
 
 myApp.get('/edit/:id',function(req, res){
     if(req.session.userLoggedIn)
-    {     
+    {
         var id=req.params.id;
         //res.send(localname);
         Allpages.findOne({_id:id}).exec(function(err,page){
@@ -311,7 +311,7 @@ myApp.post('/edit/:id',function(req, res){
     var imageName=req.files.myimage.name; // image name is saved
     var image=req.files.myimage // save file in temp buffer
     var imgpath='public/contact_images/'+imageName;
-   
+
     if(imageName==''||imageName==null)
     {
         imageName='default_img.jpg';
@@ -338,7 +338,7 @@ myApp.post('/edit/:id',function(req, res){
 
 myApp.get('/editHeader/header',function(req, res){
     if(req.session.userLoggedIn)
-    {    
+    {
         Header.findOne({type:'header'}).exec(function(err,header){
             res.render('editHeader',{header:header})
         });
@@ -359,7 +359,7 @@ myApp.post('/editHeader',function(req, res){
     image.mv(imgpath,function(err){
         console.log(err);
     });
-   
+
     //fetch the contac with the id from URL from the database
     Header.findOne({type:'header'}).exec(function(err,header){
         // edit the fetch object from the database
@@ -395,9 +395,9 @@ myApp.get('/single/:anyname',function(req, res){
         Header.findOne({type:'header'}).exec(function(err,header){
             Allpages.findOne({pagetitle:localname}).exec(function(err,page){
             res.render('Singlepage',{header:header,pages:pages,page:page})
-        })});  
+        })});
     });
-  
+
    // res.render('singlecontclsact');
 });
 //----------- Start the server -------------------
