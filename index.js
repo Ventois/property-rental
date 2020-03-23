@@ -68,6 +68,10 @@ myApp.get('/signup',function(req, res){
    res.render('SignUp')  
 });
 
+myApp.get('/add-property',function(req, res){
+    res.render('add-property')
+});
+
 myApp.post('/signup',[
     check('firstname', 'Please enter first name').not().isEmpty(),  
     check('lastname', 'Please enter first name').not().isEmpty(),

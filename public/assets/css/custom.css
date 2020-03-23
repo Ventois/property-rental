@@ -1,3 +1,9 @@
 .u-header__nav-link-toggle::after {
     display: none;
 }
+
+.checkbox-list {
+    column-count: 3;
+    column-gap: 2rem;
+    list-style: none;
+}
