@@ -11,13 +11,31 @@ var reSlugChar=/^[a-z]{1,}$/;
 const fileUpload=require('express-fileupload');
 const session=require('express-session');
 
-const SignUp=mongoose.model('SignUp',{
+const Users = mongoose.model('User',{
     firstname:String,
     lastname:String,
     phone:String,
     email:String,
     password:String,
-    role:String
+    role:String,
+    createdOn: Date,
+    updatedOn: Date
+});
+
+const Property = mongoose.model('Propertie',{
+    rentalname: String,
+    description: String,
+    price: String,
+    address: String,
+    city: String,
+    state: String,
+    country: String,
+    area: Number,
+    rooms: Number,
+    baths: Number,
+    beds: Number,
+    amenities: Array,
+    rules: Array,
 });
 
 var myApp = express();
@@ -91,14 +109,16 @@ myApp.post('/signup',[
         var phone=req.body.phone;
         var email=req.body.email;
         var password=req.body.password;
-        var role=req.body.HaveProperty=="On"?"owner":"user";
-        var SignUpMember=new SignUp({
+        var role=req.body.HaveProperty === "On" ?"owner":"user";
+        var SignUpMember=new Users({
             firstname:firstname,
             lastname:lastname,
             phone:phone,
             email:email,
             password:password,
-            role:role
+            role:role,
+            createdOn: new Date(Date.now()).toISOString(),
+            updatedOn: new Date(Date.now()).toISOString(),
         });
 
         SignUpMember.save().then(()=>{
@@ -138,9 +158,8 @@ const views={
  myApp.post('/signin',function(req, res){
     var email=req.body.email;
     var password=req.body.password;
-    SignUp.findOne({email:email,password:password}).exec(function(err,signup){
+    Users.findOne({email:email, password:password}).exec(function(err, signup){
         req.session.email=signup.email;
-        req.session.password=signup.password;
         req.session.role=signup.role;
         req.session.userLoggedIn=true;
         var role=signup.role;
@@ -168,73 +187,63 @@ myApp.get('/owner-dashboard',function(req, res){
 });
 
 myApp.get('/admin-dashboard',function(req, res){
-    res.render('admin-dashboard');
-});
 
-myApp.get('/contact',function(req, res){
-    if(req.session.userLoggedIn)
+    if(!req.session.userLoggedIn)
     {
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('addPage',{header:header})
+        Users.find({}).exec(function(err, users){
+                res.render('admin-dashboard', { users: users})
         });
     }
     else
     {
-        res.redirect('/login');
+        res.render('login')
     }
 });
 
-myApp.post('/contact',[
-    check('title', 'Please enter title').not().isEmpty(),
-    check('slug', 'Please enter slug').not().isEmpty(),
-    check('slug').custom((value, {req}) => {
-        if(!(reSlugChar).test(value))
-        {
-            throw new Error('Slug should contain small alphabets only');
-        }
-        return true;
-    }),
-    check('message', 'Please enter message').not().isEmpty()
-],function(req, res){
-    const errors = validationResult(req);
-    console.log(errors);
-    if(!errors.isEmpty()){
-        var errorsData = {
-            errors: errors.array(),
-        }
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('addPage',{header:header})
+// Delete User / property
+myApp.get('/delete/user/:id',function(req, res){
+    var id=req.params.id;
+        Users.findByIdAndDelete({_id:id}).exec(function(err1, page){
+            Users.find({}).exec(function(err2, users){
+                res.render('admin-dashboard', { users: users})
+            });
         });
-    }
-    else{
-        var title = req.body.title;
-        var slug=req.body.slug;
-        var imageName=req.files.myimage.name; // image name is saved
-        var image=req.files.myimage // save file in temp buffer
-        var imgpath='public/contact_images/'+imageName;
-        var message=req.body.message;
-        image.mv(imgpath,function(err){
-            console.log(err);
-        });
+});
 
-        var myAllPages = new Allpages({
-            pagetitle: title,
-            slug: slug,
-            message: message,
-            image:imageName
+myApp.post('/add-property',function(req, res){
+    console.log("values", req.body);
+    let rentalname = req.body.rentalname;
+    let description = req.body.description;
+    let price = req.body.price;
+    let address = req.body.address;
+    let city = req.body.city;
+    let state = req.body.state;
+    let country = req.body.country;
+    let area = req.body.area;
+    let rooms = req.body.rooms;
+    let baths = req.body.baths;
+    let beds = req.body.beds;
+    let amenities = req.body.amenities;
+    let rules = req.body.rules;
+    let newProperty = new Property({
+            rentalname:rentalname,
+            description:description,
+            price:price,
+            address:address,
+            city:city,
+            state:state,
+            country:country,
+            area: area,
+            rooms:rooms,
+            baths:baths,
+            beds:beds,
+            amenities:amenities,
+            rules:rules
         });
-        myAllPages.save().then(()=>{
-            console.log('New Page added successfully');
+        newProperty.save().then(()=>{
+            console.log('New Property added successfully');
         });
-        var pageData = {
-            // name: name,
-            // phone: phone,
-            // qty: qty,
-            // cost: cost,
-            // message: message
-        };
-        res.redirect('/allpages');
-    }
+        res.redirect('/owner-dashboard');
 });
 
 // ------------ New Routes ---------------------
@@ -277,7 +286,7 @@ myApp.get('/allpages',function(req, res){
     {
         Allpages.find({}).exec(function(err,pages){
             Header.findOne({type:'header'}).exec(function(err,header){
-                res.render('allpages',{header:header,pages:pages})
+                res.render('allpages', {header:header, pages:pages})
             });
         });
     }
