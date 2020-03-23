@@ -11,6 +11,8 @@
 <script src="assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="assets/vendor/slick-carousel/slick/slick.js"></script>
 <script src="assets/vendor/svg-injector/dist/svg-injector.min.js"></script>
+<script src="assets/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="assets/vendor/summernote/dist/summernote-lite.js"></script>
 
 <!-- JS MyTravel -->
 <script src="assets/js/hs.core.js"></script>
@@ -25,6 +27,8 @@
 <script src="assets/vendor/dzsparallaxer/dzsparallaxer.js"></script>
 <script src="assets/js/components/hs.svg-injector.js"></script>
 <script src="assets/js/components/hs.quantity-counter.js"></script>
+<script src="assets/js/components/hs.datatables.js"></script>
+<script src="assets/js/components/hs.summernote-editor.js"></script>
 
 <!-- JS Plugins Init. -->
 <script>
@@ -75,6 +79,10 @@
         $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
             duration: 700
         });
+        // initialization of datatables
+        $.HSCore.components.HSDatatables.init('.js-datatable');
+        // initialization of text editors
+        $.HSCore.components.HSSummernoteEditor.init('.js-summernote-editor');
     });
 </script>
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>

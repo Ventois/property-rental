@@ -41,9 +41,9 @@
                                         <label class="form-label">
                                             Description
                                         </label>
-                                        <textarea class="form-control" name="description" placeholder="Add Intro about your property" aria-label="description" required
-                                               data-msg="Please enter your property description"
-                                               data-error-class="u-has-error" data-success-class="u-has-success"> </textarea>
+                                        <div class="u-summernote-editor">
+                                            <div class="js-summernote-editor" data-height="200"></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- End Input -->
@@ -565,9 +565,20 @@
                                     </div>
                                 </div>
                                 <!-- End Input -->
-
                                 <div class="w-100"></div>
-
+                                <!-- File Attachment Input -->
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                <label class="file-attachment-input w" for="Images">
+                                    <span class="d-block mb-2">Upload Images</span>
+                                    <small class="d-block text-muted">Maximum file size is 2MB</small>
+                                    <input id="images" name="images-attachment" type="file" class="js-custom-file-attach file-attachment-input__label"
+                                           data-result-text-target="#imageFileUploadText">
+                                    <span id="imageFileUploadText"></span>
+                                </label>
+                                </div>
+                                <!-- End File Attachment Input -->
+                                <div class="w-100"></div>
                                 <button type="submit" class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">Save Property</button>
                             </div>
                         </form>
@@ -602,6 +613,7 @@
 <script src="assets/vendor/gmaps/gmaps.min.js"></script>
 <script src="assets/vendor/fancybox/jquery.fancybox.min.js"></script>
 <script src="assets/vendor/appear.js"></script>
+<script src="assets/vendor/summernote/dist/summernote-lite.js"></script>
 
 
 <!-- JS MyTravel -->
@@ -620,6 +632,8 @@
 <script src="assets/js/components/hs.scroll-nav.js"></script>
 <script src="assets/js/components/hs.sticky-block.js"></script>
 <script src="assets/js/components/hs.focus-state.js"></script>
+<script src="assets/js/components/hs.summernote-editor.js"></script>
+<script src="assets/js/components/hs.file-attach.js"></script>
 
 <!-- JS Plugins Init. -->
 <script>
@@ -696,6 +710,10 @@
         $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
             duration: 700
         });
+        // initialization of text editors
+        $.HSCore.components.HSSummernoteEditor.init('.js-summernote-editor');
+        // initialization of file attach module
+        $.HSCore.components.HSFileAttach.init('.js-custom-file-attach');
     });
 </script>
 
