@@ -56,7 +56,14 @@
                          aria-labelledby="pills-one-example-t1-tab">
                         <div class="row">
                             <% if(users.length > 0) { %>
-                                <h1>All Users</h1>
+                                <div class="container d-flex justify-content-between">
+                                    <h1>All Users</h1>
+                                    <a href="new-user" class="link">
+                                        <span class="link__icon ml-1">
+                                            <span class="link__icon-inner">+</span>
+                                            </span>
+                                        Add user</a>
+                                </div>
                                 <!--displaying status message-->
                                 <div class="container d-block">
                                     <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
@@ -102,7 +109,7 @@
                                             <td class="align-middle text-secondary">
                                                 <small class="d-block"><%= user.createdOn %></small>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-center">
                                                 <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover"
                                                    href="/edit-user/<%= user._id %>" data-toggle="tooltip"
                                                    data-placement="top" title="Edit">
