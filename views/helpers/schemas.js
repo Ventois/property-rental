@@ -23,7 +23,8 @@ const PROPERTY_SCHEMA = {
     beds: Number,
     amenities: Array,
     rules: Array,
-    createdOn: Date
+    createdOn: Date,
+    owner: String
 };
 
 module.exports = {

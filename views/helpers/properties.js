@@ -29,7 +29,8 @@ const createProperty = (req, res, Property) => {
         beds: beds,
         amenities: amenities,
         rules: rules,
-        createdOn: new Date(Date.now()).toISOString()
+        createdOn: new Date(Date.now()).toISOString(),
+        owner: req.session.userid
     });
     newProperty.save()
         .then(() => {
@@ -71,8 +72,6 @@ const updateProperty = (req, res, Property) => {
 //Delete Property
 const deleteProperty = (req, res, Property) => {
     var id = req.params.id;
-    var type = req.params.type;
-    if (type === "user") {
         Property.findByIdAndDelete({_id: id}).exec(function (err) {
             if (err) {
                 req.flash('errorMsg', 'Something went wrong while deleting Property!');
@@ -82,7 +81,6 @@ const deleteProperty = (req, res, Property) => {
                 res.redirect('/owner-dashboard');
             }
         });
-    }
 };
 
 module.exports = {

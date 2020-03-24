@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
                 <div class="container max-width-810 mx-auto">
-                    <form method="POST" action="/signin" class="js-validate">
+                    <form method="POST" action="/login" class="js-validate">
                     <div id="login" style="opacity: 1;" data-target-group="idForm" class="animated fadeIn">
                         <!-- Header -->
                         <div class="card-header text-center">
@@ -19,6 +19,25 @@
                         </div>
                         <!-- End Header -->
                         <div class="card-body pt-6 pb-4">
+                            <!--displaying status message-->
+                            <div class="container d-block">
+                                <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <%- errorMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } else if(typeof successMsg != 'undefined' && successMsg) { %>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <%- successMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <!--displaying status message ends here-->
                             <!-- Form Group -->
                             <div class="form-group pb-1">
                                 <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
