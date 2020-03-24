@@ -7,22 +7,23 @@ mongoose.connect('mongodb://localhost:27017/spm', {
     useNewUrlParser: true
 });
 
-var reSlugChar=/^[a-z]{1,}$/;
-const fileUpload=require('express-fileupload');
-const session=require('express-session');
+var reSlugChar = /^[a-z]{1,}$/;
+const fileUpload = require('express-fileupload');
+const session = require('express-session');
+const flash = require('req-flash');
 
-const Users = mongoose.model('User',{
-    firstname:String,
-    lastname:String,
-    phone:String,
-    email:String,
-    password:String,
-    role:String,
+const Users = mongoose.model('User', {
+    firstname: String,
+    lastname: String,
+    phone: String,
+    email: String,
+    password: String,
+    role: String,
     createdOn: Date,
     updatedOn: Date
 });
 
-const Property = mongoose.model('Propertie',{
+const Property = mongoose.model('Propertie', {
     rentalname: String,
     description: String,
     price: String,
@@ -36,181 +37,179 @@ const Property = mongoose.model('Propertie',{
     beds: Number,
     amenities: Array,
     rules: Array,
-    createdOn:Date
+    createdOn: Date
 });
 
 var myApp = express();
 
-myApp.use(bodyParser.urlencoded({ extended:false}));
+myApp.use(bodyParser.urlencoded({extended: false}));
 myApp.use(session({
-    secret:"randomsecret",
-    resave:false,
-    saveUninitialized:true
+    secret: "randomsecret",
+    resave: false,
+    saveUninitialized: true
 }));
+myApp.use(flash());
 myApp.use(bodyParser.json())
 myApp.use(fileUpload());
 
 myApp.set('views', path.join(__dirname, 'views'));
-myApp.use(express.static(__dirname+'/public'));
+myApp.use(express.static(__dirname + '/public'));
 myApp.set('view engine', 'ejs');
 
 //---------------- Routes ------------------
 
-myApp.get('/',function(req, res){
+myApp.get('/', function (req, res) {
     res.render('index');
 });
 
-myApp.get('/about-us',function(req, res){
+myApp.get('/about-us', function (req, res) {
     res.render('about');
 });
 
-myApp.get('/property-list',function(req, res){
-  res.render('property-list');      
+myApp.get('/property-list', function (req, res) {
+    res.render('property-list');
 });
 
-myApp.get('/property-details',function(req, res){
-    res.render('property-details');      
-  });
+myApp.get('/property-details', function (req, res) {
+    res.render('property-details');
+});
 
-myApp.get('/property-details/:id',function(req, res){
-    if(req.session.userLoggedIn)
-    {     
-       var id=req.params.id;
-        Property.find({_id:id}).exec(function(err,property_details){
-            res.render('property-details',{property_details: property_details});
+myApp.get('/property-details/:id', function (req, res) {
+    if (req.session.userLoggedIn) {
+        var id = req.params.id;
+        Property.find({_id: id}).exec(function (err, property_details) {
+            res.render('property-details', {property_details: property_details});
         });
-    }
-    else
-    {
+    } else {
         res.redirect('/login');
     }
 });
 
-myApp.get('/reservation',function(req, res){
+myApp.get('/reservation', function (req, res) {
     res.render('booking');
 });
 
-myApp.get('/payment',function(req, res){
+myApp.get('/payment', function (req, res) {
     res.render('payment');
 });
 
-myApp.get('/confirmation',function(req, res){
+myApp.get('/confirmation', function (req, res) {
     res.render('confirmation');
 });
 
-myApp.get('/signup',function(req, res){
-   res.render('SignUp')
+myApp.get('/signup', function (req, res) {
+    res.render('SignUp')
 });
 
-myApp.get('/add-property',function(req, res){
+myApp.get('/add-property', function (req, res) {
     res.render('add-property')
 });
 
-myApp.post('/signup',[
+myApp.post('/signup', [
     check('firstname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty()
-],function(req, res){
+], function (req, res) {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
         var errorsData = {
             errors: errors.array(),
         }
-       res.render('SignUp',errorsData);
-    }
-    else{
+        res.render('SignUp', errorsData);
+    } else {
         var firstname = req.body.firstname;
-        var lastname=req.body.lastname;
-        var phone=req.body.phone;
-        var email=req.body.email;
-        var password=req.body.password;
-        var role=req.body.HaveProperty === "On" ?"owner":"user";
-        var SignUpMember=new Users({
-            firstname:firstname,
-            lastname:lastname,
-            phone:phone,
-            email:email,
-            password:password,
-            role:role,
+        var lastname = req.body.lastname;
+        var phone = req.body.phone;
+        var email = req.body.email;
+        var password = req.body.password;
+        var role = req.body.HaveProperty === "On" ? "owner" : "user";
+        var SignUpMember = new Users({
+            firstname: firstname,
+            lastname: lastname,
+            phone: phone,
+            email: email,
+            password: password,
+            role: role,
             createdOn: new Date(Date.now()).toISOString(),
             updatedOn: new Date(Date.now()).toISOString(),
         });
 
-        SignUpMember.save().then(()=>{
+        SignUpMember.save().then(() => {
             console.log('New member Sign Up successfully');
         });
         res.redirect('/');
     }
- });
- myApp.post('/signin',function(req, res){
-    var email=req.body.email;
-    var password=req.body.password;
-    Users.findOne({email:email, password:password}).exec(function(err, signup){
-        req.session.email=signup.email;
-        req.session.role=signup.role;
-        req.session.id=signup._id;
+});
+myApp.post('/signin', function (req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    Users.findOne({email: email, password: password}).exec(function (err, signup) {
+        req.session.email = signup.email;
+        req.session.role = signup.role;
+        req.session.id = signup._id;
         console.log(req.session.id);
-        req.session.userLoggedIn=true;
-        var role=signup.role;
-        if(role==='user')
-        {
+        req.session.userLoggedIn = true;
+        var role = signup.role;
+        if (role === 'user') {
             res.redirect('/userdashboard');
-        }
-        else if(role==='owner')
-        {
+        } else if (role === 'owner') {
             res.redirect('/owner-dashboard');
-        }
-        else
-        {
+        } else {
             res.redirect('/admin-dashboard');
         }
     });
- });
+});
 
- myApp.get('/userdashboard',function(req, res){
+myApp.get('/userdashboard', function (req, res) {
     res.render('UserDashboard');
 });
 
-myApp.get('/owner-dashboard',function(req, res){
-    if(req.session.userLoggedIn)
-    {
-        Property.find({}).exec(function(err,properties){
-            SignUp.findOne({_id:req.session.id}).exec(function(err,owner){
-                res.render('owner-dashboard',{properties: properties,owner:owner});
+myApp.get('/owner-dashboard', function (req, res) {
+    if (req.session.userLoggedIn) {
+        Property.find({}).exec(function (err, properties) {
+            SignUp.findOne({_id: req.session.id}).exec(function (err, owner) {
+                res.render('owner-dashboard', {properties: properties, owner: owner});
             });
-        });  
-    }
-    else
-    {
+        });
+    } else {
         res.redirect('/login');
     }
 });
 
-myApp.get('/admin-dashboard',function(req, res){
+myApp.get('/admin-dashboard', function (req, res) {
 
-    if(!req.session.userLoggedIn)
-    {
-        Users.find({}).exec(function(err, users){
-                res.render('admin-dashboard', { users: users})
+    if (!req.session.userLoggedIn) {
+        Users.find({}).exec(function (err, users) {
+            res.render('admin-dashboard',
+                {
+                    successMsg: req.flash('deleteUserSuccessMsg'),
+                    errorMsg: req.flash('deleteUserErrorMsg'),
+                    users: users
+                })
         });
-    }
-    else
-    {
+    } else {
         res.render('login')
     }
 });
 // Delete User / property
-myApp.get('/delete/:type/:id',function(req, res){
-    var id=req.params.id;
-    var type=req.params.type;
-    if(type === "user") {
-        Users.findByIdAndDelete({_id:id}).exec(function(err1, page){
-            res.redirect('/admin-dashboard');
+myApp.get('/delete/:type/:id', function (req, res) {
+    var id = req.params.id;
+    var type = req.params.type;
+    if (type === "user") {
+        Users.findByIdAndDelete({_id: id}).exec(function (err) {
+            if (err) {
+                req.flash('deleteUserErrorMsg', 'Something went wrong while deleting user!');
+                res.redirect('/admin-dashboard');
+            } else {
+                req.flash('deleteUserSuccessMsg', 'User deleted successfully!');
+                res.redirect('/admin-dashboard');
+            }
+
         });
     }
 });
-myApp.post('/add-property',function(req, res){
+myApp.post('/add-property', function (req, res) {
     let rentalname = req.body.rentalname;
     let description = req.body.description;
     let price = req.body.price;
@@ -225,74 +224,68 @@ myApp.post('/add-property',function(req, res){
     let amenities = req.body.amenities;
     let rules = req.body.rules;
     let newProperty = new Property({
-            rentalname:rentalname,
-            description:description,
-            price:price,
-            address:address,
-            city:city,
-            state:state,
-            country:country,
-            area: area,
-            rooms:rooms,
-            baths:baths,
-            beds:beds,
-            amenities:amenities,
-            rules:rules,
-            createdOn: new Date(Date.now()).toISOString()
-        });
-        newProperty.save().then(()=>{
-            console.log('New Property added successfully');
-        });
-        res.redirect('/owner-dashboard');
+        rentalname: rentalname,
+        description: description,
+        price: price,
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        area: area,
+        rooms: rooms,
+        baths: baths,
+        beds: beds,
+        amenities: amenities,
+        rules: rules,
+        createdOn: new Date(Date.now()).toISOString()
+    });
+    newProperty.save().then(() => {
+        console.log('New Property added successfully');
+    });
+    res.redirect('/owner-dashboard');
 });
 
 // Editing user GET
-myApp.get('/edit-user/:id',function(req, res){
-    if(!req.session.userLoggedIn)
-    {
-        var id=req.params.id;
-        Users.findOne({_id:id}).exec(function(err, user){
-            res.render('edit-user',{user : user})
+myApp.get('/edit-user/:id', function (req, res) {
+    if (!req.session.userLoggedIn) {
+        var id = req.params.id;
+        Users.findOne({_id: id}).exec(function (err, user) {
+            res.render('edit-user', {user: user})
         });
-    }
-    else
-    {
+    } else {
         res.redirect('/login');
     }
 });
 // Editing user POST
-myApp.post('/edit-user',function(req, res){
+myApp.post('/edit-user', function (req, res) {
     var firstname = req.body.firstname;
-    var lastname=req.body.lastname;
-    var phone=req.body.phone;
-    var email=req.body.email;
-    var role=req.body.role === "On" ?"owner":"user";
+    var lastname = req.body.lastname;
+    var phone = req.body.phone;
+    var email = req.body.email;
+    var role = req.body.role === "On" ? "owner" : "user";
     var id = req.body.userid;
-    Users.findOne({_id:id}).exec(function(err,user){
+    Users.findOne({_id: id}).exec(function (err, user) {
         user.firstname = firstname;
-            user.lastname = lastname;
-            user.phone = phone;
-            user.email = email;
-            user.role = role;
-            user.updatedOn = new Date(Date.now()).toISOString();
-            user.save().then( ()=>{
-             console.log("user editied");
+        user.lastname = lastname;
+        user.phone = phone;
+        user.email = email;
+        user.role = role;
+        user.updatedOn = new Date(Date.now()).toISOString();
+        user.save().then(() => {
+            console.log("user editied");
         });
         res.redirect("/admin-dashboard")
     });
 });
 
-myApp.get('/logout',function(req, res){
-    if(req.session.userLoggedIn)
-    {
+myApp.get('/logout', function (req, res) {
+    if (req.session.userLoggedIn) {
         req.session.destroy();
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('logout',{header:header})
+        Header.findOne({type: 'header'}).exec(function (err, header) {
+            res.render('logout', {header: header})
         });
     }
 });
-
-
 
 
 //----------- Start the server -------------------
