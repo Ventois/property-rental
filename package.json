@@ -9,6 +9,7 @@
   "author": "Kalpana",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
     "bootstrap": "^4.4.1",
     "bootswatch": "^4.4.1",

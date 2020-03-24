@@ -20,9 +20,13 @@ var myApp = express();
 
 myApp.use(bodyParser.urlencoded({extended: false}));
 myApp.use(session({
-    secret: "randomsecret",
-    resave: false,
-    saveUninitialized: true
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        httpOnly: false,
+    }
 }));
 myApp.use(flash());
 myApp.use(bodyParser.json());
@@ -67,35 +71,35 @@ myApp.get('/confirmation', function (req, res) {
     res.render('confirmation');
 });
 myApp.get('/signup', function (req, res) {
-    res.render('SignUp')
+    res.render('SignUp', {
+        successMsg: req.flash('successMsg'),
+        errorMsg: req.flash('errorMsg'),
+    })
 });
 myApp.get('/add-property', function (req, res) {
-    res.render('add-property')
+    res.render('add-property', {
+        successMsg: req.flash('successMsg'),
+        errorMsg: req.flash('errorMsg'),
+    })
 });
 myApp.get('/login', function (req, res) {
-    res.render('login')
+    res.render('login', {
+        successMsg: req.flash('successMsg'),
+        errorMsg: req.flash('errorMsg'),
+    })
 });
 // Creating user GET
 myApp.get('/new-user', function (req, res) {
     res.render('edit-user', {action: 'new', user: EMPTY_USER, postAction: "/signup"})
 });
-myApp.post('/signup', [
-    check('firstname', 'Please enter first name').not().isEmpty(),
-    check('lastname', 'Please enter first name').not().isEmpty(),
-    check('lastname', 'Please enter first name').not().isEmpty(),
-    check('lastname', 'Please enter first name').not().isEmpty()
-], function (req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var errorsData = {
-            errors: errors.array(),
-        };
-        res.render('SignUp', errorsData);
+myApp.post('/signup', function (req, res) {
+    if (req.body.password !== req.body.confirmpassword && req.body.action !== "new") {
+        res.render('signup',  {errorMsg: "Your password and Confirm password are not same"});
     } else {
         createUser(req, res, Users);
     }
 });
-myApp.post('/signin', function (req, res) {
+myApp.post('/login', function (req, res) {
     authenticateUser(req, res, Users)
 });
 
@@ -106,7 +110,7 @@ myApp.get('/user-dashboard', function (req, res) {
 myApp.get('/owner-dashboard', function (req, res) {
     if (!req.session.userLoggedIn) {
         Property.find({}).exec(function (err, properties) {
-            Users.findOne({_id: req.session.id}).exec(function (err, owner) {
+            Users.findOne({_id: req.session.userid}).exec(function (err, owner) {
                 res.render('owner-dashboard', {
                     successMsg: req.flash('successMsg'),
                     errorMsg: req.flash('errorMsg'),
@@ -121,7 +125,7 @@ myApp.get('/owner-dashboard', function (req, res) {
 });
 
 myApp.get('/admin-dashboard', function (req, res) {
-    if (!req.session.userLoggedIn) {
+    if (req.session.userLoggedIn) {
         Users.find({}).exec(function (err, users) {
             res.render('admin-dashboard',
                 {
@@ -136,9 +140,17 @@ myApp.get('/admin-dashboard', function (req, res) {
 });
 // Delete User / property
 myApp.get('/delete/:type/:id', function (req, res) {
-    deleteUser(req, res, Users)
+    var type = req.params.type;
+    if(type === "user") {
+        deleteUser(req, res, Users)
+    }
+    if(type === "property") {
+        deleteProperty(req, res, Property)
+    }
+
 });
 myApp.post('/add-property', function (req, res) {
+    console.log(req.session.userid);
     createProperty(req, res, Property)
 });
 
