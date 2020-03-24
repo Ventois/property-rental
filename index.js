@@ -51,14 +51,21 @@ myApp.get('/property-list', function (req, res) {
 });
 
 myApp.get('/property-details/:id', function (req, res) {
-    if (req.session.userLoggedIn) {
+    console.log("inside  properyid : "+req.params.id);
+   // if (req.session.userLoggedIn) {
         var id = req.params.id;
+        console.log("id="+id);
         Property.find({_id: id}).exec(function (err, property_details) {
-            res.render('property-details', {property_details: property_details});
+            console.log("found properyid : "+property_details);
+            if(property_details.length > 0)
+            {
+                console.log("rendering properyid : "+property_details.length);
+            res.render('property-details', {PropertyDetails: property_details[0]});
+            }
         });
-    } else {
-        res.redirect('/login');
-    }
+    // } else {
+    //     res.redirect('/login');
+    // }
 });
 
 myApp.get('/reservation', function (req, res) {
@@ -172,6 +179,59 @@ myApp.post('/edit-user', function (req, res) {
 myApp.get('/logout', function (req, res) {
     logoutUser(req, res, Users)
 });
+
+//Search The Property Based on following 3 Queries
+//1.Location 
+myApp.post('/property-list', function (req, res) {
+    let location = req.body.location;
+    console.log("Searching Properties for location/hotel :" +location);
+    // var items = Property.find({city: location},function(err,result){
+    //     if (err)
+    //         console.log('error occured in the database');
+    //         console.log("Results found :");
+    //     console.log(result);
+    //     res.render('property-list',{
+    //         PropertyList : result           
+    //     });
+
+var locationWithExpr = { $regex : new RegExp(location, "i") };
+        var items = Property.find({ $or: [
+            {
+                
+            city: locationWithExpr
+        },
+        {
+            address: locationWithExpr
+        },
+        {
+            state: locationWithExpr
+        },
+        {
+            country: locationWithExpr
+        },
+        {
+            rentalname: locationWithExpr
+        }]}
+        ,function(err,result){
+            if (err)
+                console.log('error occured in the database');
+                console.log("Results found :");
+            console.log(result);
+            res.render('property-list',{
+                PropertyList : result           
+            });
+       
+    //console.log(items.model.Property);
+    //.fetch();//function(err, result) {
+        //if (err) throw err;
+        //items.forEach(element => {
+       //     console.log(element);
+      //  });
+        //db.close();
+})
+});
+    //console.log(items);
+
 
 
 //----------- Start the server -------------------
