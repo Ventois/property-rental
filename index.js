@@ -199,7 +199,6 @@ myApp.get('/admin-dashboard',function(req, res){
         res.render('login')
     }
 });
-
 // Delete User / property
 myApp.get('/delete/user/:id',function(req, res){
     var id=req.params.id;
@@ -210,6 +209,39 @@ myApp.get('/delete/user/:id',function(req, res){
         });
 });
 
+myApp.post('/add-property',function(req, res){
+    console.log("values", req.body);
+    let rentalname = req.body.rentalname;
+    let description = req.body.description;
+    let price = req.body.price;
+    let address = req.body.address;
+    let city = req.body.city;
+    let state = req.body.state;
+    let country = req.body.country;
+    let area = req.body.area;
+    let rooms = req.body.rooms;
+    let baths = req.body.baths;
+    let beds = req.body.beds;
+    let amenities = req.body.amenities;
+    let rules = req.body.rules;
+    let newProperty = new Property({
+            rentalname:rentalname,
+            description:description,
+            price:price,
+            address:address,
+            city:city,
+            state:state,
+            country:country,
+            area: area,
+            rooms:rooms,
+            baths:baths,
+            beds:beds,
+            amenities:amenities,
+            rules:rules
+        });
+        newProperty.save().then(()=>{
+            console.log('New Property added successfully');
+        });
 myApp.post('/add-property',function(req, res){
     console.log("values", req.body);
     let rentalname = req.body.rentalname;
