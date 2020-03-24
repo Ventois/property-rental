@@ -36,6 +36,7 @@ const Property = mongoose.model('Propertie',{
     beds: Number,
     amenities: Array,
     rules: Array,
+    createdOn:Date
 });
 
 var myApp = express();
@@ -64,11 +65,25 @@ myApp.get('/about-us',function(req, res){
 });
 
 myApp.get('/property-list',function(req, res){
-    res.render('property-list');
+  res.render('property-list');      
 });
 
+myApp.get('/property-details',function(req, res){
+    res.render('property-details');      
+  });
+
 myApp.get('/property-details/:id',function(req, res){
-    res.render('property-details');
+    if(req.session.userLoggedIn)
+    {     
+       var id=req.params.id;
+        Property.find({_id:id}).exec(function(err,property_details){
+            res.render('property-details',{property_details: property_details});
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
 });
 
 myApp.get('/reservation',function(req, res){
@@ -134,6 +149,8 @@ myApp.post('/signup',[
     Users.findOne({email:email, password:password}).exec(function(err, signup){
         req.session.email=signup.email;
         req.session.role=signup.role;
+        req.session.id=signup._id;
+        console.log(req.session.id);
         req.session.userLoggedIn=true;
         var role=signup.role;
         if(role==='user')
@@ -156,7 +173,18 @@ myApp.post('/signup',[
 });
 
 myApp.get('/owner-dashboard',function(req, res){
-    res.render('owner-dashboard');
+    if(req.session.userLoggedIn)
+    {
+        Property.find({}).exec(function(err,properties){
+            SignUp.findOne({_id:req.session.id}).exec(function(err,owner){
+                res.render('owner-dashboard',{properties: properties,owner:owner});
+            });
+        });  
+    }
+    else
+    {
+        res.redirect('/login');
+    }
 });
 
 myApp.get('/admin-dashboard',function(req, res){
@@ -209,7 +237,8 @@ myApp.post('/add-property',function(req, res){
             baths:baths,
             beds:beds,
             amenities:amenities,
-            rules:rules
+            rules:rules,
+            createdOn: new Date(Date.now()).toISOString()
         });
         newProperty.save().then(()=>{
             console.log('New Property added successfully');
