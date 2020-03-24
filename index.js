@@ -11,7 +11,7 @@ var reSlugChar=/^[a-z]{1,}$/;
 const fileUpload=require('express-fileupload');
 const session=require('express-session');
 
-const SignUp=mongoose.model('User',{
+const Users = mongoose.model('User',{
     firstname:String,
     lastname:String,
     phone:String,
@@ -49,6 +49,7 @@ myApp.use(session({
 }));
 myApp.use(bodyParser.json())
 myApp.use(fileUpload());
+
 myApp.set('views', path.join(__dirname, 'views'));
 myApp.use(express.static(__dirname+'/public'));
 myApp.set('view engine', 'ejs');
@@ -125,7 +126,7 @@ myApp.post('/signup',[
         var email=req.body.email;
         var password=req.body.password;
         var role=req.body.HaveProperty === "On" ?"owner":"user";
-        var SignUpMember=new SignUp({
+        var SignUpMember=new Users({
             firstname:firstname,
             lastname:lastname,
             phone:phone,
@@ -142,49 +143,21 @@ myApp.post('/signup',[
         res.redirect('/');
     }
  });
-const views={
-    "owner":"/owner-dashboard",
-    "user":'/user-dashboard',
-    "admin":'/admin-dashboard'
-}
- myApp.get('/login',function(req, res){
-    if(!(req.session.userLoggedIn))
-    {
-       res.render('login');
-    }
-    else
-    {
-        res.redirect(views[req.session.role]);
-        // if(req.session.role=='owner')
-        // {
-        //     res.redirect('/owner-dashboard');
-        // }
-        // else if(req.session.role=='user')
-        // {
-        //     res.redirect('/userdashboard');
-        // }
-        // else
-        // {
-        //     res.redirect('/admindashboard');
-        // }
-    }
- });
-
  myApp.post('/signin',function(req, res){
     var email=req.body.email;
     var password=req.body.password;
-    SignUp.findOne({email:email, password:password}).exec(function(err, signup){
+    Users.findOne({email:email, password:password}).exec(function(err, signup){
         req.session.email=signup.email;
         req.session.role=signup.role;
         req.session.id=signup._id;
         console.log(req.session.id);
         req.session.userLoggedIn=true;
         var role=signup.role;
-        if(role=='user')
+        if(role==='user')
         {
             res.redirect('/userdashboard');
         }
-        else if(role=='owner')
+        else if(role==='owner')
         {
             res.redirect('/owner-dashboard');
         }
@@ -215,24 +188,29 @@ myApp.get('/owner-dashboard',function(req, res){
 });
 
 myApp.get('/admin-dashboard',function(req, res){
-    res.render('admin-dashboard');
-});
 
-myApp.get('/contact',function(req, res){
-    if(req.session.userLoggedIn)
+    if(!req.session.userLoggedIn)
     {
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('addPage',{header:header})
+        Users.find({}).exec(function(err, users){
+                res.render('admin-dashboard', { users: users})
         });
     }
     else
     {
-        res.redirect('/login');
+        res.render('login')
     }
 });
-
+// Delete User / property
+myApp.get('/delete/:type/:id',function(req, res){
+    var id=req.params.id;
+    var type=req.params.type;
+    if(type === "user") {
+        Users.findByIdAndDelete({_id:id}).exec(function(err1, page){
+            res.redirect('/admin-dashboard');
+        });
+    }
+});
 myApp.post('/add-property',function(req, res){
-    console.log("values", req.body);
     let rentalname = req.body.rentalname;
     let description = req.body.description;
     let price = req.body.price;
@@ -268,28 +246,39 @@ myApp.post('/add-property',function(req, res){
         res.redirect('/owner-dashboard');
 });
 
-// ------------ New Routes ---------------------
-
-myApp.get('/login',function(req, res){
-    if(!(req.session.userLoggedIn))
+// Editing user GET
+myApp.get('/edit-user/:id',function(req, res){
+    if(!req.session.userLoggedIn)
     {
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('login',{header:header})
+        var id=req.params.id;
+        Users.findOne({_id:id}).exec(function(err, user){
+            res.render('edit-user',{user : user})
         });
     }
     else
     {
-        res.redirect('/allpages');
+        res.redirect('/login');
     }
 });
-
-myApp.post('/login',function(req, res){
-    var username=req.body.username;
-    var password=req.body.password;
-    Admin.findOne({username:username,password:password}).exec(function(err,admins){
-        req.session.username=admins.username;
-        req.session.userLoggedIn=true;
-        res.redirect('/allpages');
+// Editing user POST
+myApp.post('/edit-user',function(req, res){
+    var firstname = req.body.firstname;
+    var lastname=req.body.lastname;
+    var phone=req.body.phone;
+    var email=req.body.email;
+    var role=req.body.role === "On" ?"owner":"user";
+    var id = req.body.userid;
+    Users.findOne({_id:id}).exec(function(err,user){
+        user.firstname = firstname;
+            user.lastname = lastname;
+            user.phone = phone;
+            user.email = email;
+            user.role = role;
+            user.updatedOn = new Date(Date.now()).toISOString();
+            user.save().then( ()=>{
+             console.log("user editied");
+        });
+        res.redirect("/admin-dashboard")
     });
 });
 
@@ -303,134 +292,9 @@ myApp.get('/logout',function(req, res){
     }
 });
 
-myApp.get('/allpages',function(req, res){
-    if(req.session.userLoggedIn)
-    {
-        Allpages.find({}).exec(function(err,pages){
-            Header.findOne({type:'header'}).exec(function(err,header){
-                res.render('allpages',{header:header,pages:pages})
-            });
-        });
-    }
-    else
-    {
-        res.redirect('/login');
-    }
-});
 
-myApp.get('/edit/:id',function(req, res){
-    if(req.session.userLoggedIn)
-    {
-        var id=req.params.id;
-        //res.send(localname);
-        Allpages.findOne({_id:id}).exec(function(err,page){
-            Header.findOne({type:'header'}).exec(function(err,header){
-                res.render('edit',{header:header,page:page})
-            });
-        });
-    }
-    else
-    {
-        res.redirect('/login');
-    }
-});
 
-myApp.post('/edit/:id',function(req, res){
-    //fetch all data to updated
-    var id=req.params.id;
-    var pagetitle = req.body.title;
-    var imageName=req.files.myimage.name; // image name is saved
-    var image=req.files.myimage // save file in temp buffer
-    var imgpath='public/contact_images/'+imageName;
 
-    if(imageName==''||imageName==null)
-    {
-        imageName='default_img.jpg';
-        imgpath='public/contact_images/default_img.jpg';
-    }
-    image.mv(imgpath,function(err){
-        console.log(err);
-    });
-    var slug = req.body.slug;
-    var message = req.body.message;
-    //fetch the page with the id from URL from the database
-    Allpages.findOne({_id:id}).exec(function(err,page){
-        // edit the fetch object from the database
-        page.pagetitle=pagetitle;
-        page.slug=slug;
-        page.message=message;
-        page.image=imageName;
-        page.save().then( ()=>{
-            console.log('page updated');
-        });
-    });
-    res.redirect('/allpages');
-});
-
-myApp.get('/editHeader/header',function(req, res){
-    if(req.session.userLoggedIn)
-    {
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('editHeader',{header:header})
-        });
-    }
-    else
-    {
-        res.redirect('/login');
-    }
-});
-
-myApp.post('/editHeader',function(req, res){
-    //fetch all data to updated
-    var id=req.params.id;
-    var pagetitle = req.body.name;
-    var imageName=req.files.myimage.name; // image name is saved
-    var image=req.files.myimage // save file in temp buffer
-    var imgpath='public/contact_images/'+imageName;
-    image.mv(imgpath,function(err){
-        console.log(err);
-    });
-
-    //fetch the contac with the id from URL from the database
-    Header.findOne({type:'header'}).exec(function(err,header){
-        // edit the fetch object from the database
-        header.type='header';
-        header.pagetitle=pagetitle;
-        header.logo=imageName;
-        header.save().then( ()=>{
-            console.log('Header updated');
-        });
-    });
-    res.redirect('/allpages');
-});
-
-myApp.get('/delete/:id',function(req, res){
-    var id=req.params.id;
-    //res.send(localname);
-    Allpages.findByIdAndDelete({_id:id}).exec(function(err,page){
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('delete',{header:header})
-        });
-    });
-});
-
-myApp.get('/single/:anyname',function(req, res){
-    var localname=req.params.anyname;
-    console.log(localname)
-    if(localname=='Home')
-    {
-        res.redirect('/');
-    }
-    //res.send(localname);
-    Allpages.find({}).exec(function(err,pages){
-        Header.findOne({type:'header'}).exec(function(err,header){
-            Allpages.findOne({pagetitle:localname}).exec(function(err,page){
-            res.render('Singlepage',{header:header,pages:pages,page:page})
-        })});
-    });
-
-   // res.render('singlecontclsact');
-});
 //----------- Start the server -------------------
 
 myApp.listen(8080);
