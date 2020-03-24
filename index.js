@@ -6,48 +6,15 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/spm', {
     useNewUrlParser: true
 });
-
-var reSlugChar = /^[a-z]{1,}$/;
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const flash = require('req-flash');
-
-const Users = mongoose.model('User', {
-    firstname: String,
-    lastname: String,
-    phone: String,
-    email: String,
-    password: String,
-    role: String,
-    createdOn: Date,
-    updatedOn: Date
-});
-
-const Property = mongoose.model('Propertie', {
-    rentalname: String,
-    description: String,
-    price: String,
-    address: String,
-    city: String,
-    state: String,
-    country: String,
-    area: Number,
-    rooms: Number,
-    baths: Number,
-    beds: Number,
-    amenities: Array,
-    rules: Array,
-    createdOn: Date
-});
-
-const userInit = {
-    firstname: "",
-    lastname: "",
-    phone: "",
-    email: "",
-    password: "",
-    role: ""
-};
+const {USER_SCHEMA, PROPERTY_SCHEMA} = require('./views/helpers/schemas');
+const Users = mongoose.model('User', USER_SCHEMA);
+const Property = mongoose.model('Propertie', PROPERTY_SCHEMA);
+const {userInit} = require("./views/helpers/constants");
+const {createUser, updateUser, deleteUser, authenticateUser, logoutUser} = require("./views/helpers/users");
+const {createProperty, updateProperty, deleteProperty,} = require("./views/helpers/properties");
 
 var myApp = express();
 
@@ -58,7 +25,7 @@ myApp.use(session({
     saveUninitialized: true
 }));
 myApp.use(flash());
-myApp.use(bodyParser.json())
+myApp.use(bodyParser.json());
 myApp.use(fileUpload());
 
 myApp.set('views', path.join(__dirname, 'views'));
@@ -77,10 +44,6 @@ myApp.get('/about-us', function (req, res) {
 
 myApp.get('/property-list', function (req, res) {
     res.render('property-list');
-});
-
-myApp.get('/property-details', function (req, res) {
-    res.render('property-details');
 });
 
 myApp.get('/property-details/:id', function (req, res) {
@@ -126,61 +89,18 @@ myApp.post('/signup', [
     if (!errors.isEmpty()) {
         var errorsData = {
             errors: errors.array(),
-        }
+        };
         res.render('SignUp', errorsData);
     } else {
-        var firstname = req.body.firstname;
-        var lastname = req.body.lastname;
-        var phone = req.body.phone;
-        var email = req.body.email;
-        var password = req.body.password;
-        var role = req.body.HaveProperty === "On" ? "owner" : "user";
-        var action =req.body.action;
-        var SignUpMember = new Users({
-            firstname: firstname,
-            lastname: lastname,
-            phone: phone,
-            email: email,
-            password: password,
-            role: role,
-            createdOn: new Date(Date.now()).toISOString(),
-            updatedOn: new Date(Date.now()).toISOString(),
-        });
-        SignUpMember.save()
-            .then(() => {console.log("user added");})
-            .catch(() => {console.log("something went wrong");});
-        if(action === "new") {
-            req.flash('successMsg', 'User Added successfully!');
-            res.redirect('/admin-dashboard');
-        } else {
-            req.flash('errorMsg', 'Something went wrong while adding user!');
-            res.redirect('/login');
-        }
-
+        createUser(req, res, Users);
     }
 });
 myApp.post('/signin', function (req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
-    Users.findOne({email: email, password: password}).exec(function (err, signup) {
-        req.session.email = signup.email;
-        req.session.role = signup.role;
-        req.session.id = signup._id;
-        console.log(req.session.id);
-        req.session.userLoggedIn = true;
-        var role = signup.role;
-        if (role === 'user') {
-            res.redirect('/userdashboard');
-        } else if (role === 'owner') {
-            res.redirect('/owner-dashboard');
-        } else {
-            res.redirect('/admin-dashboard');
-        }
-    });
+    authenticateUser(req, res, Users)
 });
 
-myApp.get('/userdashboard', function (req, res) {
-    res.render('UserDashboard');
+myApp.get('/user-dashboard', function (req, res) {
+    res.render('user-dashboard');
 });
 
 myApp.get('/owner-dashboard', function (req, res) {
@@ -201,7 +121,6 @@ myApp.get('/owner-dashboard', function (req, res) {
 });
 
 myApp.get('/admin-dashboard', function (req, res) {
-
     if (!req.session.userLoggedIn) {
         Users.find({}).exec(function (err, users) {
             res.render('admin-dashboard',
@@ -217,59 +136,10 @@ myApp.get('/admin-dashboard', function (req, res) {
 });
 // Delete User / property
 myApp.get('/delete/:type/:id', function (req, res) {
-    var id = req.params.id;
-    var type = req.params.type;
-    if (type === "user") {
-        Users.findByIdAndDelete({_id: id}).exec(function (err) {
-            if (err) {
-                req.flash('errorMsg', 'Something went wrong while deleting user!');
-                res.redirect('/admin-dashboard');
-            } else {
-                req.flash('successMsg', 'User deleted successfully!');
-                res.redirect('/admin-dashboard');
-            }
-        });
-    }
+    deleteUser(req, res, Users)
 });
 myApp.post('/add-property', function (req, res) {
-    let rentalname = req.body.rentalname;
-    let description = req.body.description;
-    let price = req.body.price;
-    let address = req.body.address;
-    let city = req.body.city;
-    let state = req.body.state;
-    let country = req.body.country;
-    let area = req.body.area;
-    let rooms = req.body.rooms;
-    let baths = req.body.baths;
-    let beds = req.body.beds;
-    let amenities = req.body.amenities;
-    let rules = req.body.rules;
-    let newProperty = new Property({
-        rentalname: rentalname,
-        description: description,
-        price: price,
-        address: address,
-        city: city,
-        state: state,
-        country: country,
-        area: area,
-        rooms: rooms,
-        baths: baths,
-        beds: beds,
-        amenities: amenities,
-        rules: rules,
-        createdOn: new Date(Date.now()).toISOString()
-    });
-    newProperty.save()
-        .then(() => {
-        req.flash('successMsg', 'Property Added successfully!');
-        res.redirect('/owner-dashboard');
-         })
-        .catch(() => {
-            req.flash('errorMsg', 'Something went wrong while adding property!');
-            res.redirect('/owner-dashboard');
-        });
+    createProperty(req, res, Property)
 });
 
 // Editing user GET
@@ -285,37 +155,10 @@ myApp.get('/edit-user/:id', function (req, res) {
 });
 // Editing user POST
 myApp.post('/edit-user', function (req, res) {
-    var firstname = req.body.firstname;
-    var lastname = req.body.lastname;
-    var phone = req.body.phone;
-    var email = req.body.email;
-    var role = req.body.role === "On" ? "owner" : "user";
-    var id = req.body.userid;
-    Users.findOne({_id: id}).exec(function (err, user) {
-        user.firstname = firstname;
-        user.lastname = lastname;
-        user.phone = phone;
-        user.email = email;
-        user.role = role;
-        user.updatedOn = new Date(Date.now()).toISOString();
-        user.save()
-            .then(() => {
-                req.flash('successMsg', 'User updated successfully!');
-                res.redirect('/admin-dashboard');
-            })
-            .catch(() => {
-                req.flash('errorMsg', 'Something went wrong while editing user!');
-                res.redirect('/admin-dashboard');
-            });
-    });
+    updateUser(req, res, Users)
 });
 myApp.get('/logout', function (req, res) {
-    if (req.session.userLoggedIn) {
-        req.session.destroy();
-        Header.findOne({type: 'header'}).exec(function (err, header) {
-            res.render('logout', {header: header})
-        });
-    }
+    logoutUser(req, res, Users)
 });
 
 
