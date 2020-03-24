@@ -12,7 +12,7 @@ const flash = require('req-flash');
 const {USER_SCHEMA, PROPERTY_SCHEMA} = require('./views/helpers/schemas');
 const Users = mongoose.model('User', USER_SCHEMA);
 const Property = mongoose.model('Propertie', PROPERTY_SCHEMA);
-const {userInit} = require("./views/helpers/constants");
+const {EMPTY_USER} = require("./views/helpers/constants");
 const {createUser, updateUser, deleteUser, authenticateUser, logoutUser} = require("./views/helpers/users");
 const {createProperty, updateProperty, deleteProperty,} = require("./views/helpers/properties");
 
@@ -77,7 +77,7 @@ myApp.get('/login', function (req, res) {
 });
 // Creating user GET
 myApp.get('/new-user', function (req, res) {
-    res.render('edit-user', {action: 'new', user: userInit, postAction: "/signup"})
+    res.render('edit-user', {action: 'new', user: EMPTY_USER, postAction: "/signup"})
 });
 myApp.post('/signup', [
     check('firstname', 'Please enter first name').not().isEmpty(),

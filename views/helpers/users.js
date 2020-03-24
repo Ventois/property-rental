@@ -38,7 +38,7 @@ const createUser = (req, res, Users) => {
     var phone = req.body.phone;
     var email = req.body.email;
     var password = req.body.password;
-    var role = req.body.HaveProperty === "On" ? "owner" : "user";
+    var role = req.body.HaveProperty === "owner" ? "owner" : "user";
     var action =req.body.action;
     var SignUpMember = new Users({
         firstname: firstname,
@@ -68,7 +68,7 @@ const updateUser = (req, res, Users) => {
     var lastname = req.body.lastname;
     var phone = req.body.phone;
     var email = req.body.email;
-    var role = req.body.role === "On" ? "owner" : "user";
+    var role = req.body.role === "owner" ? "owner" : "user";
     var id = req.body.userid;
     Users.findOne({_id: id}).exec(function (err, user) {
         user.firstname = firstname;
