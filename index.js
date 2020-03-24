@@ -40,6 +40,15 @@ const Property = mongoose.model('Propertie', {
     createdOn: Date
 });
 
+const userInit = {
+    firstname: "",
+    lastname: "",
+    phone: "",
+    email: "",
+    password: "",
+    role: ""
+};
+
 var myApp = express();
 
 myApp.use(bodyParser.urlencoded({extended: false}));
@@ -88,23 +97,25 @@ myApp.get('/property-details/:id', function (req, res) {
 myApp.get('/reservation', function (req, res) {
     res.render('booking');
 });
-
 myApp.get('/payment', function (req, res) {
     res.render('payment');
 });
-
 myApp.get('/confirmation', function (req, res) {
     res.render('confirmation');
 });
-
 myApp.get('/signup', function (req, res) {
     res.render('SignUp')
 });
-
 myApp.get('/add-property', function (req, res) {
     res.render('add-property')
 });
-
+myApp.get('/login', function (req, res) {
+    res.render('login')
+});
+// Creating user GET
+myApp.get('/new-user', function (req, res) {
+    res.render('edit-user', {action: 'new', user: userInit, postAction: "/signup"})
+});
 myApp.post('/signup', [
     check('firstname', 'Please enter first name').not().isEmpty(),
     check('lastname', 'Please enter first name').not().isEmpty(),
@@ -124,6 +135,7 @@ myApp.post('/signup', [
         var email = req.body.email;
         var password = req.body.password;
         var role = req.body.HaveProperty === "On" ? "owner" : "user";
+        var action =req.body.action;
         var SignUpMember = new Users({
             firstname: firstname,
             lastname: lastname,
@@ -134,11 +146,17 @@ myApp.post('/signup', [
             createdOn: new Date(Date.now()).toISOString(),
             updatedOn: new Date(Date.now()).toISOString(),
         });
+        SignUpMember.save()
+            .then(() => {console.log("user added");})
+            .catch(() => {console.log("something went wrong");});
+        if(action === "new") {
+            req.flash('successMsg', 'User Added successfully!');
+            res.redirect('/admin-dashboard');
+        } else {
+            req.flash('errorMsg', 'Something went wrong while adding user!');
+            res.redirect('/login');
+        }
 
-        SignUpMember.save().then(() => {
-            console.log('New member Sign Up successfully');
-        });
-        res.redirect('/');
     }
 });
 myApp.post('/signin', function (req, res) {
@@ -259,7 +277,7 @@ myApp.get('/edit-user/:id', function (req, res) {
     if (!req.session.userLoggedIn) {
         var id = req.params.id;
         Users.findOne({_id: id}).exec(function (err, user) {
-            res.render('edit-user', {user: user})
+            res.render('edit-user', {user: user, action: "edit", postAction: "/edit-user"})
         });
     } else {
         res.redirect('/login');
@@ -291,7 +309,6 @@ myApp.post('/edit-user', function (req, res) {
             });
     });
 });
-
 myApp.get('/logout', function (req, res) {
     if (req.session.userLoggedIn) {
         req.session.destroy();

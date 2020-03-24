@@ -11,9 +11,13 @@
         <div class="row">
             <div class="container max-width-810 mx-auto">
                 <div class="py-3 px-4 px-xl-12 border-bottom">
-                    <h1 class="text-center">Editing user: <%= user.firstname %> <%= user.lastname %></h1>
+                    <% if(action === "edit") {%>
+                        <h1 class="text-center">Creating a new user</h1>
+                    <% } else {%>
+                            <h1 class="text-center">Editing user: <%= user.firstname %> <%= user.lastname %></h1>
+                    <% } %>
                 </div>
-                <form class="js-validate mt-8" action="/edit-user" method="POST">
+                <form class="js-validate mt-8" action="<%= postAction %>" method="POST">
                     <div class="row">
                         <!-- Input -->
                         <div class="col-sm-6 mb-4">
@@ -21,10 +25,10 @@
                                 <label class="form-label">
                                     First Name
                                 </label>
-                                <input type="text" class="form-control" name="firstname" placeholder="Ali" aria-label="Ali" required
+                                <input type="text" class="form-control" name="firstname" placeholder="First name" aria-label="firstname" required
                                        data-msg="Please enter your first name."
                                        data-error-class="u-has-error"
-                                       data-success-class="u-has-success" value="<%= user.firstname %>">
+                                       data-success-class="u-has-success" value="<%= user.firstname  %>">
                             </div>
                         </div>
                         <!-- End Input -->
@@ -36,7 +40,7 @@
                                     Last name
                                 </label>
 
-                                <input type="text" class="form-control" name="lastname" placeholder="TUFAN" aria-label="TUFAN" required
+                                <input type="text" class="form-control" name="lastname" placeholder="Last name" aria-label="lastname" required
                                        data-msg="Please enter your last name."
                                        data-error-class="u-has-error"
                                        data-success-class="u-has-success" value="<%= user.lastname %>">
@@ -51,7 +55,7 @@
                                     Email
                                 </label>
 
-                                <input type="email" class="form-control" name="email" placeholder="creativelayers088@gmail.com" aria-label="creativelayers088@gmail.com" required
+                                <input type="email" class="form-control" name="email" placeholder="example@example.com" aria-label="example@example.com" required
                                        data-msg="Please enter a valid email address."
                                        data-error-class="u-has-error"
                                        data-success-class="u-has-success" value="<%= user.email %>">
@@ -66,12 +70,29 @@
                                     Phone
                                 </label>
 
-                                <input type="number" class="form-control" name="phone" placeholder="+90 (254) 458 96 32" aria-label="+90 (254) 458 96 32" required
+                                <input type="number" class="form-control" name="phone" placeholder="+1-111-111-1111" aria-label="+1-111-111-1111" required
                                        data-msg="Please enter a valid phone number."
                                        data-error-class="u-has-error"
                                        data-success-class="u-has-success" value="<%= user.phone %>">
                             </div>
                         </div>
+
+                        <!-- Input -->
+                        <% if(action === "new") { %>
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <input type="password" class="form-control" name="password" placeholder="" aria-label="+1-111-111-1111" required
+                                       data-msg="Please enter a valid password."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.phone %>">
+                            </div>
+                        </div>
+                        <% } %>
+                        <div class="w-100"></div>
                         <div class="d-flex justify-content-between mb-1">
                             <div class="custom-control custom-switch mb-4">
                                 <input type="checkbox" value="<%= user.role === 'owner' ? "On" : undefined %>"
@@ -79,7 +100,12 @@
                                 <label class="custom-control-label" for="HaveProperty">Owner</label>
                             </div>
                         </div>
+                        <% if(action === "edit") { %>
                         <input type="hidden" name="userid" value="<%= user._id %>">
+                        <% } %>
+                        <% if(action === "new") { %>
+                        <input type="hidden" name="action" value="<%= action %>">
+                        <% } %>
                         <div class="w-100"></div>
                         <a href="/admin-dashboard" class="btn btn-secondary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Cancel</a>
                         <button type="submit" class="btn btn-primary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Update</button>
