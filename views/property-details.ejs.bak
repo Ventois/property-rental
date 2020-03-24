@@ -211,67 +211,18 @@
                                 Amenities
                             </h5>
                             <ul class="list-group list-group-borderless list-group-horizontal list-group-flush no-gutters row">
-                               <%
-                                   if (PropertyDetails.amenities.indexOf('wifi') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-wifi-signal mr-3 text-primary font-size-24"></i>Wifi</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Wake-up call') !== -1)
-                               {%>
-                               
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-alarm mr-3 text-primary font-size-24"></i>Wake-up call</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Bathrobes') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-bathrobe mr-3 text-primary font-size-24"></i>Bathrobes</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Fitness center') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-weightlifting mr-3 text-primary font-size-24"></i>Fitness center</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Telephone') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-phone-call mr-3 text-primary font-size-24"></i>Telephone</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Dry cleaning') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-folded-towel mr-3 text-primary font-size-24"></i>Dry cleaning</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Mini bar') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-wine-glass mr-3 text-primary font-size-24"></i>Mini bar</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Hair dryer') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-hair-dryer mr-3 text-primary font-size-24"></i>Hair dryer</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('High chair') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-desk-chair mr-3 text-primary font-size-24"></i>High chair</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Restaurant') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-hamburger mr-3 text-primary font-size-24"></i>Restaurant</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Air Conditioning') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-air-conditioner mr-3 text-primary font-size-24"></i>Air Conditioning</li>
-                                <%} %>
-                                <%
-                                   if (PropertyDetails.amenities.indexOf('Slippers') !== -1)
-                               {%>
                                 <li class="col-md-4 mb-3 list-group-item"><i class="flaticon-slippers mr-3 text-primary font-size-24"></i>Slippers</li>
-                                <%} %>
                             </ul>
                         </div>
                         <div class="border-bottom py-4">
@@ -280,45 +231,12 @@
                             </h5>
                             <ul class="list-group list-group-borderless list-group-horizontal list-group-flush no-gutters row">
                                 <li class="col-md-5 mb-5 mb-md-0 list-group-item pt-0 border-bottom pb-3">
-                                    <%
-                                   if (PropertyDetails.rules.indexOf('Children allowed') !== -1)
-                               {%>
                                     <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-tick mr-3 font-size-16 text-primary"></i>Children allowed</div>
-                                    <%}
-                                   if (PropertyDetails.rules.indexOf('Smoking allowed') !== -1)
-                               {%>
-                                    <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-tick mr-3 font-size-16 text-primary"></i>Smoking allowed</div>
-                                    <%}
-                                   if (PropertyDetails.rules.indexOf('Pets allowed') !== -1)
-                               {%>
-                                    <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-tick mr-3 font-size-16 text-primary"></i>Pets allowed</div>
-                                    <%}
-                                   if (PropertyDetails.rules.indexOf('Party allowed') !== -1)
-                               {%>
-                                    <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-tick mr-3 font-size-16 text-primary"></i>Party allowed</div>
-                                    <%} %>
                                 </li>
                                 <li class="col-md-5 mb-5 mb-md-0 list-group-item pt-0 border-bottom pb-3">
-                                    <%
-                                    if (PropertyDetails.rules.indexOf('Children allowed') == -1)
-                                {%>
-                                    <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-close mr-3 font-size-12 text-primary"></i>Children allowed</div>
-                                    <%} 
-                                                                   
-                                    if (PropertyDetails.rules.indexOf('Children allowed') === -1)
-                                {%>
                                     <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-close mr-3 font-size-12 text-primary"></i>Smoking allowed</div>
-                                    <%} 
-                                   
-                                   if (PropertyDetails.rules.indexOf('Party allowed') === -1)
-                               {%>
                                     <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-close mr-3 font-size-12 text-primary"></i>Pets allowed</div>
-                                    <%}
-                                   if (PropertyDetails.rules.indexOf('Party allowed') === -1)
-                               {%>
                                     <div class="flex-horizontal-center mb-3 text-gray-1"><i class="flaticon-close mr-3 font-size-12 text-primary"></i>Party allowed</div>
-                                    <%} %>
-                                    
                                 </li>
                             </ul>
                         </div>
@@ -335,7 +253,7 @@
                                 <div class="border-bottom">
                                     <div class="p-4">
                                         <span class="font-size-14">Price</span>
-                                        <span class="font-size-24 text-gray-6 font-weight-bold ml-1">£<%= PropertyDetails.price%></span>
+                                        <span class="font-size-24 text-gray-6 font-weight-bold ml-1">£350.00</span>
                                     </div>
                                 </div>
                                 <div class="p-4">
