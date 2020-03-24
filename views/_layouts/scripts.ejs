@@ -13,6 +13,8 @@
 <script src="/assets/vendor/svg-injector/dist/svg-injector.min.js"></script>
 <script src="/assets/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="/assets/vendor/summernote/dist/summernote-lite.js"></script>
+<script src="/assets/vendor/custombox/dist/custombox.min.js"></script>
+<script src="/assets/vendor/custombox/dist/custombox.legacy.min.js"></script>
 
 <!-- JS MyTravel -->
 <script src="/assets/js/hs.core.js"></script>
@@ -29,6 +31,7 @@
 <script src="/assets/js/components/hs.quantity-counter.js"></script>
 <script src="/assets/js/components/hs.datatables.js"></script>
 <script src="/assets/js/components/hs.summernote-editor.js"></script>
+<script src="/assets/js/components/hs.modal-window.js"></script>
 
 <!-- JS Plugins Init. -->
 <script>
@@ -83,6 +86,10 @@
         $.HSCore.components.HSDatatables.init('.js-datatable');
         // initialization of text editors
         $.HSCore.components.HSSummernoteEditor.init('.js-summernote-editor');
+        // initialization of autonomous popups
+        $.HSCore.components.HSModalWindow.init('[data-modal-target]', '.js-modal-window', {
+            autonomous: true
+        });
     });
 </script>
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>

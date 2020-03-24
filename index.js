@@ -166,10 +166,15 @@ myApp.get('/userdashboard', function (req, res) {
 });
 
 myApp.get('/owner-dashboard', function (req, res) {
-    if (req.session.userLoggedIn) {
+    if (!req.session.userLoggedIn) {
         Property.find({}).exec(function (err, properties) {
-            SignUp.findOne({_id: req.session.id}).exec(function (err, owner) {
-                res.render('owner-dashboard', {properties: properties, owner: owner});
+            Users.findOne({_id: req.session.id}).exec(function (err, owner) {
+                res.render('owner-dashboard', {
+                    successMsg: req.flash('successMsg'),
+                    errorMsg: req.flash('errorMsg'),
+                    properties: properties,
+                    owner: owner
+                });
             });
         });
     } else {
@@ -183,8 +188,8 @@ myApp.get('/admin-dashboard', function (req, res) {
         Users.find({}).exec(function (err, users) {
             res.render('admin-dashboard',
                 {
-                    successMsg: req.flash('deleteUserSuccessMsg'),
-                    errorMsg: req.flash('deleteUserErrorMsg'),
+                    successMsg: req.flash('successMsg'),
+                    errorMsg: req.flash('errorMsg'),
                     users: users
                 })
         });
@@ -199,13 +204,12 @@ myApp.get('/delete/:type/:id', function (req, res) {
     if (type === "user") {
         Users.findByIdAndDelete({_id: id}).exec(function (err) {
             if (err) {
-                req.flash('deleteUserErrorMsg', 'Something went wrong while deleting user!');
+                req.flash('errorMsg', 'Something went wrong while deleting user!');
                 res.redirect('/admin-dashboard');
             } else {
-                req.flash('deleteUserSuccessMsg', 'User deleted successfully!');
+                req.flash('successMsg', 'User deleted successfully!');
                 res.redirect('/admin-dashboard');
             }
-
         });
     }
 });
@@ -239,10 +243,15 @@ myApp.post('/add-property', function (req, res) {
         rules: rules,
         createdOn: new Date(Date.now()).toISOString()
     });
-    newProperty.save().then(() => {
-        console.log('New Property added successfully');
-    });
-    res.redirect('/owner-dashboard');
+    newProperty.save()
+        .then(() => {
+        req.flash('successMsg', 'Property Added successfully!');
+        res.redirect('/owner-dashboard');
+         })
+        .catch(() => {
+            req.flash('errorMsg', 'Something went wrong while adding property!');
+            res.redirect('/owner-dashboard');
+        });
 });
 
 // Editing user GET
@@ -271,10 +280,15 @@ myApp.post('/edit-user', function (req, res) {
         user.email = email;
         user.role = role;
         user.updatedOn = new Date(Date.now()).toISOString();
-        user.save().then(() => {
-            console.log("user editied");
-        });
-        res.redirect("/admin-dashboard")
+        user.save()
+            .then(() => {
+                req.flash('successMsg', 'User updated successfully!');
+                res.redirect('/admin-dashboard');
+            })
+            .catch(() => {
+                req.flash('errorMsg', 'Something went wrong while editing user!');
+                res.redirect('/admin-dashboard');
+            });
     });
 });
 

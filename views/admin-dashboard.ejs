@@ -12,33 +12,38 @@
         <div class="tabs-block tabs-v1">
             <div class="container space-1">
                 <div class="w-md-80 w-lg-50 text-center mx-md-auto my-3">
-                    <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello Administrator, Welcome to your Dashboard</h2>
+                    <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello Administrator, Welcome
+                        to your Dashboard</h2>
                 </div>
                 <!-- Nav Classic -->
                 <ul class="nav tab-nav-pill flex-nowrap pb-4 pb-lg-5 tab-nav justify-content-lg-center" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link font-weight-medium active" id="pills-one-example-t1-tab" data-toggle="pill" href="#properties" role="tab" aria-controls="pills-one-example-t1" aria-selected="true">
+                        <a class="nav-link font-weight-medium active" id="pills-one-example-t1-tab" data-toggle="pill"
+                           href="#properties" role="tab" aria-controls="pills-one-example-t1" aria-selected="true">
                             <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
                                 <span class="tabtext font-weight-semi-bold">All users</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-medium" id="pills-five-example-t1-tab" data-toggle="pill" href="#upcoming" role="tab" aria-controls="pills-five-example-t1" aria-selected="true">
+                        <a class="nav-link font-weight-medium" id="pills-five-example-t1-tab" data-toggle="pill"
+                           href="#upcoming" role="tab" aria-controls="pills-five-example-t1" aria-selected="true">
                             <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
                                 <span class="tabtext font-weight-semi-bold">All Properties</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-medium" id="pills-six-example-t1-tab" data-toggle="pill" href="#allstays" role="tab" aria-controls="pills-six-example-t1" aria-selected="true">
+                        <a class="nav-link font-weight-medium" id="pills-six-example-t1-tab" data-toggle="pill"
+                           href="#allstays" role="tab" aria-controls="pills-six-example-t1" aria-selected="true">
                             <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
                                 <span class="tabtext font-weight-semi-bold">All Stays</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-medium" id="pills-seven-example-t1-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="pills-seven-example-t1" aria-selected="true">
+                        <a class="nav-link font-weight-medium" id="pills-seven-example-t1-tab" data-toggle="pill"
+                           href="#profile" role="tab" aria-controls="pills-seven-example-t1" aria-selected="true">
                             <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
                                 <span class="tabtext font-weight-semi-bold">Your Profile</span>
                             </div>
@@ -47,72 +52,80 @@
                 </ul>
                 <!-- End Nav Classic -->
                 <div class="tab-content">
-                    <div class="tab-pane fade active show" id="properties" role="tabpanel" aria-labelledby="pills-one-example-t1-tab">
+                    <div class="tab-pane fade active show" id="properties" role="tabpanel"
+                         aria-labelledby="pills-one-example-t1-tab">
                         <div class="row">
                             <% if(users.length > 0) { %>
-                            <h1>All Users</h1>
+                                <h1>All Users</h1>
                                 <!--displaying status message-->
                                 <div class="container d-block">
-                                <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
-                                <div class="alert alert-error alert-dismissible fade show" role="alert">
-                                    <%- errorMsg %>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div> <% } else if(typeof successMsg != 'undefined' && successMsg) { %>
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <%- successMsg %>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                <% } %>
+                                    <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <%- errorMsg %>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                    <% } else if(typeof successMsg != 'undefined' && successMsg) { %>
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <%- successMsg %>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                    <% } %>
                                 </div>
-                            <table class="table table-light">
-                                <thead>
-                                <tr>
-                                    <th scope="col"><span class="fas fa-user mr-2"></span>Full name</th>
-                                    <th scope="col"><span class="fas fa-mail-bulk mr-2"></span>Email</th>
-                                    <th scope="col"><span class="fas fa-user mr-2"></span>Role</th>
-                                    <th scope="col"><span class="fas fa-calendar mr-2"></span>Date Created</th>
-                                    <th scope="col"><span class="fas fa-cogs mr-2"></span>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <% users.forEach(function(user){ %>
+                                <table class="table table-light">
+                                    <thead>
                                     <tr>
-                                        <th scope="row" class="align-middle">
-                                            <div class="d-flex align-items-center text-primary font-weight-medium">
-                                                <label><%= user.firstname %> <%= user.lastname %></label>
-                                            </div>
-                                        </th>
-                                        <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= user.email %></small>
-                                        </td>
-                                        <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= user.role %></small>
-                                        </td>
-                                        <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= user.createdOn %></small>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/edit-user/<%= user._id %>" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                <span class="fas fa-pen btn-icon__inner"></span>
-                                            </a>
-                                            <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete/user/<%= user._id %>" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                <span class="fas fa-trash btn-icon__inner"></span>
-                                            </a>
-                                        </td>
+                                        <th scope="col"><span class="fas fa-user mr-2"></span>Full name</th>
+                                        <th scope="col"><span class="fas fa-mail-bulk mr-2"></span>Email</th>
+                                        <th scope="col"><span class="fas fa-user mr-2"></span>Role</th>
+                                        <th scope="col"><span class="fas fa-calendar mr-2"></span>Date Created</th>
+                                        <th scope="col"><span class="fas fa-cogs mr-2"></span>Actions</th>
                                     </tr>
-                                <% }); %>
-                                </tbody>
-                            </table>
-                                <% } else {%>
-                                    <div class="alert alert-warning m-auto" role="alert">
-                                        <h4 class="alert-heading">No users !</h4>
-                                        <p class="alert-text">Aww yeah, your website dont have any users / owners. If you want you can add users and define their roles.</p>
-                                    </div>
-                                <% }%>
+                                    </thead>
+                                    <tbody>
+                                    <% users.forEach(function(user){ %>
+                                        <tr>
+                                            <th scope="row" class="align-middle">
+                                                <div class="d-flex align-items-center text-primary font-weight-medium">
+                                                    <label><%= user.firstname %> <%= user.lastname %></label>
+                                                </div>
+                                            </th>
+                                            <td class="align-middle text-secondary">
+                                                <small class="d-block"><%= user.email %></small>
+                                            </td>
+                                            <td class="align-middle text-secondary">
+                                                <small class="d-block"><%= user.role %></small>
+                                            </td>
+                                            <td class="align-middle text-secondary">
+                                                <small class="d-block"><%= user.createdOn %></small>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover"
+                                                   href="/edit-user/<%= user._id %>" data-toggle="tooltip"
+                                                   data-placement="top" title="Edit">
+                                                    <span class="fas fa-pen btn-icon__inner"></span>
+                                                </a>
+                                                <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover"
+                                                   href="/delete/user/<%= user._id %>" data-toggle="tooltip"
+                                                   data-placement="top" title="Delete"
+                                                   onclick="return confirm('Are you sure?')">
+                                                    <span class="fas fa-trash btn-icon__inner"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                    </tbody>
+                                </table>
+                            <% } else { %>
+                                <div class="alert alert-warning m-auto" role="alert">
+                                    <h4 class="alert-heading">No users !</h4>
+                                    <p class="alert-text">Aww yeah, your website dont have any users / owners. If you
+                                        want you can add users and define their roles.</p>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="upcoming" role="tabpanel" aria-labelledby="pills-two-example-t1-tab">
@@ -120,7 +133,8 @@
                             <h1>All Properties</h1>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="allstays" role="tabpanel" aria-labelledby="pills-three-example-t1-tab">
+                    <div class="tab-pane fade" id="allstays" role="tabpanel"
+                         aria-labelledby="pills-three-example-t1-tab">
                         <div class="row">
                             <h1>All Stays</h1>
                             <div class="container">
@@ -448,33 +462,35 @@
 <!-- ========== END MAIN CONTENT ========== -->
 <%- include('_layouts/footer') -%>
 <!-- Go to Top -->
-<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed"
+   data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
     <span class="flaticon-arrow u-go-to-modern__inner"></span>
 </a>
 <!-- End Go to Top -->
 <%- include('_layouts/scripts') -%>
 <script src="/js/dycalendar.min.js"></script>
 <script>
-    function activatedPlaces()
-    {
-        var input=document.getElementById('searchTextField');
-        var autocomplete=new google.maps.places.Autocomplete(input);
+    function activatedPlaces() {
+        var input = document.getElementById('searchTextField');
+        var autocomplete = new google.maps.places.Autocomplete(input);
     }
+
     ClassicEditor
-        .create( document.querySelector( '#message' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        .create(document.querySelector('#message'))
+        .catch(error => {
+            console.error(error);
+        });
 
     dycalendar.draw({
         target: '.dycalendar-month-prev-next-button',
         type: 'month',
         monthformat: "full",
-        highlighttargetdate : true,
-        prevnextbutton : "show"
+        highlighttargetdate: true,
+        prevnextbutton: "show"
     });
 
 </script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYwl6FOUaXRUgzeX2P7R10aGFY0UksCMA&libraries=places&callback=activatedPlaces"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYwl6FOUaXRUgzeX2P7R10aGFY0UksCMA&libraries=places&callback=activatedPlaces"></script>
 </body>
 </html>
