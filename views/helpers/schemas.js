@@ -23,6 +23,7 @@ const PROPERTY_SCHEMA = {
     beds: Number,
     amenities: Array,
     rules: Array,
+    images: Array,
     createdOn: Date,
     owner: String
 };
