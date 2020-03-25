@@ -15,6 +15,19 @@ const createProperty = (req, res, Property) => {
     let beds = req.body.beds;
     let amenities = req.body.amenities;
     let rules = req.body.rules;
+    var imagesNames = [];
+    if(req.files.images){
+        const file = req.files.images;
+        for(let i = 0 ; i < file.length; i++){
+            imagesNames[i] = file[i].name;
+            file[i].mv('./public/images/'+file[i].name, function (err){
+                if(err){
+                    res.send(err);
+                }
+            })
+        }
+        console.log("images uploaded successfully");
+    };
     let newProperty = new Property({
         rentalname: rentalname,
         description: description,
@@ -30,6 +43,7 @@ const createProperty = (req, res, Property) => {
         amenities: amenities,
         rules: rules,
         createdOn: new Date(Date.now()).toISOString(),
+        images: imagesNames,
         owner: req.session.userid
     });
     newProperty.save()
