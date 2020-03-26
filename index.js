@@ -143,25 +143,42 @@ myApp.post('/signup',[
         res.redirect('/');
     }
  });
+
+ myApp.get('/logoff',function(req, res){
+    if(req.session.userLoggedIn)
+    {
+        req.session.destroy();   
+            res.render('index')
+    }
+    else
+    {
+        res.redirect('/login')
+    }
+});
+
+myApp.get('/login',function(req, res){
+    res.render('login')
+});
+
  myApp.post('/signin',function(req, res){
     var email=req.body.email;
     var password=req.body.password;
     Users.findOne({email:email, password:password}).exec(function(err, signup){
         req.session.email=signup.email;
         req.session.role=signup.role;
-        req.session.id=signup._id;
-        console.log(req.session.id);
+        req.session.loginId=signup._id;
+       // console.log(req.session.loginId+" "+req.session.role+" "+signup.email);
         req.session.userLoggedIn=true;
         var role=signup.role;
-        if(role==='user')
+        if(role=='user')
         {
             res.redirect('/userdashboard');
         }
-        else if(role==='owner')
+        else if(role=='owner')
         {
             res.redirect('/owner-dashboard');
         }
-        else
+        else if(role==='admin')
         {
             res.redirect('/admin-dashboard');
         }
@@ -176,7 +193,7 @@ myApp.get('/owner-dashboard',function(req, res){
     if(req.session.userLoggedIn)
     {
         Property.find({}).exec(function(err,properties){
-            SignUp.findOne({_id:req.session.id}).exec(function(err,owner){
+            Users.findOne({_id:req.session.loginId}).exec(function(err,owner){
                 res.render('owner-dashboard',{properties: properties,owner:owner});
             });
         });  
@@ -187,12 +204,31 @@ myApp.get('/owner-dashboard',function(req, res){
     }
 });
 
+// delete property
+myApp.get('/delete/:type/:id',function(req, res){
+    var id=req.params.id;
+    var type=req.params.type;
+   
+        Property.findByIdAndDelete({_id:id}).exec(function(err1, property){
+            if(type==='owner'){
+                res.redirect('/owner-dashboard');
+            }
+            else{
+                res.redirect('/admin-dashboard');
+            }   
+        });
+});
+
 myApp.get('/admin-dashboard',function(req, res){
 
-    if(!req.session.userLoggedIn)
+    if(req.session.userLoggedIn)
     {
         Users.find({}).exec(function(err, users){
-                res.render('admin-dashboard', { users: users})
+            Users.findOne({_id:req.session.loginId}).exec(function(err,login_user){
+                 Property.find({}).exec(function(err,properties){
+                    res.render('admin-dashboard', { users: users,properties:properties,login_user:login_user});
+                });
+            });
         });
     }
     else
@@ -243,12 +279,83 @@ myApp.post('/add-property',function(req, res){
         newProperty.save().then(()=>{
             console.log('New Property added successfully');
         });
-        res.redirect('/owner-dashboard');
+
+        if(req.session.role==='owner')
+        {
+           res.redirect('/owner-dashboard');
+        }
+        else
+        {
+            res.redirect('/admin-dashboard');
+        }
+       
 });
+
+// edit to get property
+myApp.get('/edit-property/:type/:id',function(req, res){
+    if(req.session.userLoggedIn)
+    {
+        var id=req.params.id;
+        Property.findOne({_id:id}).exec(function(err, property){
+                res.render('edit-property',{property : property})
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+});
+
+myApp.post('/edit-property',function(req, res){
+    let rentalname = req.body.rentalname;
+    let description = req.body.description;
+    let price = req.body.price;
+    let address = req.body.address;
+    let city = req.body.city;
+    let state = req.body.state;
+    let country = req.body.country;
+    let area = req.body.area;
+    let rooms = req.body.rooms;
+    let baths = req.body.baths;
+    let beds = req.body.beds;
+    let amenities = req.body.amenities;
+    let rules = req.body.rules;
+    let id=req.body.property_id;
+    Property.findOne({_id:id}).exec(function(err,property){
+        property.rentalname=rentalname;
+        property.description=description;
+        property.price=price;
+        property.address=address;
+        property.city=city;
+        property.state=state;
+        property.country=country;
+        property.area= area;
+        property.rooms=rooms;
+        property.baths=baths;
+        property.beds=beds;
+        property.amenities=amenities;
+        property.rules=rules;
+        property.createdOn= new Date(Date.now()).toISOString();
+        property.save().then( ()=>{
+            console.log("property editied");
+        });
+    });
+        
+        if(req.session.role==='owner')
+        {
+           res.redirect('/owner-dashboard');
+        }
+        else
+        {
+            res.redirect('/admin-dashboard');
+        }
+
+});
+
 
 // Editing user GET
 myApp.get('/edit-user/:id',function(req, res){
-    if(!req.session.userLoggedIn)
+    if(req.session.userLoggedIn)
     {
         var id=req.params.id;
         Users.findOne({_id:id}).exec(function(err, user){
@@ -286,14 +393,10 @@ myApp.get('/logout',function(req, res){
     if(req.session.userLoggedIn)
     {
         req.session.destroy();
-        Header.findOne({type:'header'}).exec(function(err,header){
-            res.render('logout',{header:header})
-        });
+          res.render('logout',{header:header})
+       
     }
 });
-
-
-
 
 //----------- Start the server -------------------
 
