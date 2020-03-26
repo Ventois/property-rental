@@ -36,12 +36,11 @@ const authenticateUser = (req, res, Users) => {
 };
 
 //Logout User
-const logoutUser = (req, res, Users) => {
+const logoutUser = (req, res) => {
     if (req.session.userLoggedIn) {
         req.session.destroy();
-        Users.findOne({type: 'header'}).exec(function (err, header) {
-            res.render('logout', {header: header})
-        });
+        req.flash('successMsg', 'You have successfully logged out.');
+        res.redirect('/login');
     }
 };
 
