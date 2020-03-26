@@ -111,18 +111,33 @@ myApp.post('/login', function (req, res) {
 });
 
 myApp.get('/user-dashboard', function (req, res) {
-    res.render('user-dashboard');
+    if (req.session.userLoggedIn) {
+        Property.find({}).exec(function (err, properties) {
+            Users.findOne({_id: req.session.userid}).exec(function (err, user) {
+                res.render('user-dashboard', {
+                    successMsg: req.flash('successMsg'),
+                    errorMsg: req.flash('errorMsg'),
+                    properties: properties,
+                    user: user,
+                    session: req.session
+                });
+            });
+        });
+    } else {
+        res.redirect('/login');
+    }
 });
 
 myApp.get('/owner-dashboard', function (req, res) {
-    if (!req.session.userLoggedIn) {
+    if (req.session.userLoggedIn) {
         Property.find({}).exec(function (err, properties) {
             Users.findOne({_id: req.session.userid}).exec(function (err, owner) {
                 res.render('owner-dashboard', {
                     successMsg: req.flash('successMsg'),
                     errorMsg: req.flash('errorMsg'),
                     properties: properties,
-                    owner: owner
+                    owner: owner,
+                    session: req.session
                 });
             });
         });
@@ -138,7 +153,8 @@ myApp.get('/admin-dashboard', function (req, res) {
                 {
                     successMsg: req.flash('successMsg'),
                     errorMsg: req.flash('errorMsg'),
-                    users: users
+                    users: users,
+                    session: req.session
                 })
         });
     } else {
@@ -177,7 +193,7 @@ myApp.post('/edit-user', function (req, res) {
     updateUser(req, res, Users)
 });
 myApp.get('/logout', function (req, res) {
-    logoutUser(req, res, Users)
+    logoutUser(req, res)
 });
 
 //Search The Property Based on following 3 Queries
