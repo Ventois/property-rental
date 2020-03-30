@@ -1,14 +1,15 @@
 {
-  "name": "origami",
+  "name": "SPM",
   "version": "1.0.0",
-  "description": "My Awesome Site",
+  "description": "Solo Property Management and Booking System",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Kalpana",
+  "author": "Mounika Kasarla",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
     "bootstrap": "^4.4.1",
     "bootswatch": "^4.4.1",
@@ -21,6 +22,7 @@
     "express-validator": "*",
     "fs-extra": "*",
     "googleapis": "^39.2.0",
+    "jquery": "^3.4.1",
     "mongoose": "*",
     "nodemailer": "^6.4.6",
     "req-flash": "0.0.3"

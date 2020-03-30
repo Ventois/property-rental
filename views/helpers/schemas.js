@@ -23,10 +23,26 @@ const PROPERTY_SCHEMA = {
     beds: Number,
     amenities: Array,
     rules: Array,
-    createdOn: Date
+    images: Array,
+    createdOn: Date,
+    owner: String
+};
+
+const BOOKING_SCHEMA = {
+    property_id: String,
+    customer_id: String,
+    checkinDate: Date,
+    checkoutDate: Date,
+    guests: Number,
+    rooms: Number,
+    totalPrice: Number,
+    bookingDate:Date,
+    totalNights:Number,
+    emailNotification : String
 };
 
 module.exports = {
     USER_SCHEMA,
-    PROPERTY_SCHEMA
+    PROPERTY_SCHEMA,
+    BOOKING_SCHEMA
 };

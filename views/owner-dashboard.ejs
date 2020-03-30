@@ -48,7 +48,16 @@
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="properties" role="tabpanel" aria-labelledby="pills-one-example-t1-tab">
                     <div class="row">
-                        <h1>All Properties</h1>
+
+                        <div class="container d-flex justify-content-between">
+                            <h1>All Properties</h1>
+                            <a href="add-property" class="link">
+                                        <span class="link__icon ml-1">
+                                            <span class="link__icon-inner">+</span>
+                                            </span>
+                                Add Property</a>
+                        </div>
+                        <% if(properties.length > 0) { %>
                         <!--displaying status message-->
                         <div class="container d-block">
                             <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
@@ -98,7 +107,7 @@
                                     <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/add-property" data-toggle="tooltip" data-placement="top" title="Edit">
                                         <span class="fas fa-pen btn-icon__inner"></span>
                                     </a>
-                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete" data-toggle="tooltip" data-placement="top" title="Delete">
+                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete/property/<%= property._id %>" data-toggle="tooltip" data-placement="top" title="Delete"  onclick="return confirm('Are you sure?')">
                                         <span class="fas fa-trash btn-icon__inner"></span>
                                     </a>
                                 </td>
@@ -107,8 +116,16 @@
                         });%>
                             </tbody>
                         </table>
+                            <% } else { %>
+                                <div class="alert alert-warning m-auto" role="alert">
+                                    <h4 class="alert-heading">No Properties !</h4>
+                                    <p class="alert-text">Aww yeah, your account dont have any properties. Please add a property and it will appear here.</p>
+                                </div>
+                            <% } %>
                     </div>
                 </div>
+
+                
 
                 <div class="tab-pane fade" id="upcoming" role="tabpanel" aria-labelledby="pills-two-example-t1-tab">
                     <div class="row">
@@ -423,6 +440,9 @@
                         <!-- End Pagination -->
                     </div>
                 </div>
+
+
+                
                 <div class="tab-pane fade" id="allstays" role="tabpanel" aria-labelledby="pills-three-example-t1-tab">
                     <div class="row">
                         <h1>All Stays</h1>

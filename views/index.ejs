@@ -2,6 +2,24 @@
 <html lang="en">
     <head>
         <%- include('_layouts/head') -%>
+        <%- include('_layouts/scripts') -%>
+        <script language="javascript" type="text/javascript">
+            $(function(){
+                var dtToday = new Date();
+                
+                var month = dtToday.getMonth() + 1;
+                var day = dtToday.getDate();
+                var year = dtToday.getFullYear();
+                if(month < 10)
+                    month = '0' + month.toString();
+                if(day < 10)
+                    day = '0' + day.toString();
+                
+                var maxDate = year + '-' + month + '-' + day;
+                //alert(maxDate);
+                $('#checkin_checkout_dates').attr('min', maxDate);
+            });
+        </script>
     </head>
     <body>
     <%- include('_layouts/header') -%>
@@ -21,47 +39,14 @@
                     <div class="mb-lg-n16">
                         <div class="card border-0 tab-shadow">
                             <div class="card-body">
-                                <form class="js-validate" action="/property-list">
+                                <form class="js-validate" action="/property-list" method="POST">
                                   <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3">
                                     <div class="col-sm-12 col-lg-3dot6 col-xl-3dot7 mb-4 mb-lg-0 ">
                                         <span class="d-block text-gray-1 font-weight-normal text-left mb-0">Destination</span>
                                         <!-- Select -->
-                                        <select class="js-select selectpicker dropdown-select tab-dropdown col-12 pl-0 flaticon-pin-1 d-flex align-items-center text-primary font-weight-semi-bold" title="Where are you going?"
-                                            data-style=""
-                                            data-live-search="true"
-                                            data-searchbox-classes="input-group-sm"
-                                        id="search-property">
-                                            <option class="border-bottom border-color-1" value="project1" data-content='
-                                                <span class="d-flex align-items-center">
-                                                    <span class="font-size-16">London, United Kingdom</span>
-                                                </span>'>
-                                                London, United Kingdom
-                                            </option>
-                                            <option class="border-bottom border-color-1" value="project2" data-content='
-                                                <span class="d-flex align-items-center">
-                                                    <span class="font-size-16">New York, United States</span>
-                                                </span>'>
-                                                New York, United States
-                                            </option>
-                                            <option  class="border-bottom border-color-1" value="project3" data-content='
-                                                <span class="d-flex align-items-center">
-                                                    <span class="font-size-16">New South Wales, Australia</span>
-                                                </span>'>
-                                                New South Wales, Australia
-                                            </option>
-                                            <option class="border-bottom border-color-1" value="project4" data-content='
-                                                <span class="d-flex align-items-center">
-                                                    <span class="font-size-16">Istanbul, Turkey</span>
-                                                </span>'>
-                                                Istanbul, Turkey
-                                            </option>
-                                            <option class="" value="project4" data-content='
-                                                <span class="d-flex align-items-center">
-                                                    <span class="font-size-16">Reykjavík, Iceland</span>
-                                                </span>'>
-                                                Reykjavík, Iceland
-                                            </option>
-                                        </select>
+                                        
+                                            <input class="form-control" type="text" id="location" name= "location" placeholder="AnyWhere" />
+                                        
                                         <!-- End Select -->
                                     </div>
 
@@ -78,8 +63,10 @@
                                                  <input class="js-range-datepicker font-size-lg-16 shadow-none font-weight-bold form-control hero-form bg-transparent  border-0" type="date"
                                                      data-rp-wrapper="#datepickerWrapperFromOne"
                                                      data-rp-type="range"
-                                                     data-rp-date-format="M d / Y"
-                                                     data-rp-default-date='["Jul 7 / 2020", "Aug 25 / 2020"]'>
+                                                     data-rp-date-format="M d / y"
+                                                     data-rp-default-date='["Jul 7 / 2020", "Aug 25 / 2020"]'
+                                                        id =  "checkin_checkout_dates"                 
+                                                     name= "checkin_checkout_dates">
                                             </div>
                                              <!-- End Datepicker -->
                                         </div>
@@ -103,6 +90,7 @@
                                             data-unfold-animation-out="fadeOut">
                                             <i class="flaticon-plus d-flex align-items-center mr-3 font-size-18 text-primary font-weight-semi-bold"></i>
                                             <span class="text-black font-size-16 font-weight-semi-bold">1 Adult - 0 Child</span>
+                                            <input type="hidden"  name="GuestsAndRooms" id="GuestsAndRooms"  value="1 Adult - 0 Child">
                                         </a>
                                         <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col-11 m-0" aria-labelledby="basicDropdownClickInvoker">
                                             <div class="w-100 py-2 px-3 mb-3">
@@ -121,7 +109,7 @@
                                             </div>
                                             <div class="w-100 py-2 px-3">
                                                 <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Child</span>
+                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Rooms</span>
                                                     <div class="d-flex">
                                                         <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/property-list">
                                                             <small class="fas fa-minus btn-icon__inner"></small>

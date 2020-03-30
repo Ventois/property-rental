@@ -343,11 +343,18 @@
             <div class="map-collapse map-collapse-hidden" id="MapcollapseExample">
                 <div class="pt-xl-6 px-xl-8 pt-4 px-4 ">
                     <div class="row">
+                       
+                        <%
+                                    for(var i=0;i<PropertyList.length;i++)
+                                    {
+                                        %>
                         <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
                             <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
                                 <div class="position-relative">
-                                    <a href="/property-details" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img9.jpg" alt="Image Description">
+                                    
+
+                                    <a href="/property-details/<%= PropertyList[i]._id%>" class="d-block gradient-overlay-half-bg-gradient-v5">
+                                        <img class="card-img-top" src="/images/<%= PropertyList[i]._id%>/<%= PropertyList[i].images[0]%>" alt="Image Description">
                                     </a>
                                     <div class="position-absolute top-0 right-0 pt-3 pr-3">
                                       <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
@@ -356,303 +363,28 @@
                                     </div>
                                     <div class="position-absolute bottom-0 left-0 right-0">
                                         <div class="px-4 pb-3">
-                                            <a href="/property-details" class="d-block">
+                                            <a href="/property-details/<%= PropertyList[i]._id%>" class="d-block">
                                                 <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Greater London, United Kingdom
+                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> 
+                                                    <%= PropertyList[i].city%>
                                                 </div>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">Empire Prestige Causeway Bay</a>
+                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">
+                                        <%= PropertyList[i].rentalname%>  </a>
                                     <div class="mb-0">
                                         <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
+                                        <span class="font-weight-bold">£<%= PropertyList[i].price%></span>
                                         <span class="font-size-14 text-gray-1"> / night</span>
                                     </div>
+                               
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="/property-details" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img10.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="/property-details" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">Park Avenue Baker Street London</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="/property-details" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img12.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="/property-details" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">New Road Hotel</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="/property-details" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img11.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="/property-details" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">New York Marriott Downtown</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="/property-details" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img9.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="/property-details" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Greater London, United Kingdom
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">Empire Prestige Causeway Bay</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="../rental/rental-single-v2.html" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img12.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="../rental/rental-single-v2.html" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="../rental/rental-single-v2.html" class="card-title font-size-17 font-weight-medium text-dark">New Road Hotel</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="../rental/rental-single-v2.html" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img9.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="../rental/rental-single-v2.html" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Greater London, United Kingdom
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="../rental/rental-single-v2.html" class="card-title font-size-17 font-weight-medium text-dark">Empire Prestige Causeway Bay</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="../rental/rental-single-v2.html" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img11.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="../rental/rental-single-v2.html" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="../rental/rental-single-v2.html" class="card-title font-size-17 font-weight-medium text-dark">New York Marriott Downtown</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="../rental/rental-single-v2.html" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img10.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="../rental/rental-single-v2.html" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="../rental/rental-single-v2.html" class="card-title font-size-17 font-weight-medium text-dark">Park Avenue Baker Street London</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
-                            <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
-                                <div class="position-relative">
-                                    <a href="../rental/rental-single-v2.html" class="d-block gradient-overlay-half-bg-gradient-v5">
-                                        <img class="card-img-top" src="assets/img/300x230/img11.jpg" alt="Image Description">
-                                    </a>
-                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                      <button type="button" class="btn btn-sm btn-icon text-white rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save for later">
-                                        <span class="flaticon-heart-1 font-size-20"></span>
-                                      </button>
-                                    </div>
-                                    <div class="position-absolute bottom-0 left-0 right-0">
-                                        <div class="px-4 pb-3">
-                                            <a href="../rental/rental-single-v2.html" class="d-block">
-                                                <div class="d-flex align-items-center font-size-14 text-white">
-                                                    <i class="icon flaticon-placeholder mr-2 font-size-20"></i> Istanbul, Turkey
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="../rental/rental-single-v2.html" class="card-title font-size-17 font-weight-medium text-dark">New York Marriott Downtown</a>
-                                    <div class="mb-0">
-                                        <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">£899.00</span>
-                                        <span class="font-size-14 text-gray-1"> / night</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <% }%>
                     </div>
                 </div>
             </div>
