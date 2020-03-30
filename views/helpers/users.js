@@ -125,7 +125,6 @@ const deleteUser = (req, res, Users) => {
             }
         });
 };
-
 //Hash User Password
 const hashPassword = async (password) => {
     try {
@@ -135,8 +134,8 @@ const hashPassword = async (password) => {
         throw new Error('Hashing failed', error)
     }
 };
+
 //Compare User Password
-//Hash User Password
 const comparePassword = async (password, dbHash) => {
     bcrypt.compare(password, dbHash, function(err, result) {
         if (err) {
@@ -150,6 +149,34 @@ const comparePassword = async (password, dbHash) => {
         }
     });
 };
+
+// Update User
+const updateUserProfile = (req, res, Users) => {
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
+    var phone = req.body.phone;
+    var email = req.body.email;
+    var role = req.body.role === "owner" ? "owner" : "user";
+    var id = req.body.userid;
+    Users.findOne({_id: id}).exec(function (err, user) {
+        user.firstname = firstname;
+        req.session.firstname = firstname;
+        user.lastname = lastname;
+        user.phone = phone;
+        user.email = email;
+        user.role = role;
+        user.updatedOn = new Date(Date.now()).toISOString();
+        user.save()
+            .then(() => {
+                req.flash('successMsg', 'User updated successfully!');
+                res.redirect('/user-dashboard');
+            })
+            .catch(() => {
+                req.flash('errorMsg', 'Something went wrong while editing user!');
+                res.redirect('/user-dashboard');
+            });
+    });
+};
 module.exports = {
     createUser,
     updateUser,
@@ -157,5 +184,6 @@ module.exports = {
     authenticateUser,
     logoutUser,
     hashPassword,
-    comparePassword
+    comparePassword,
+    updateUserProfile
 };

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <%- include('_layouts/head') -%>
+    <%- include('_layouts/scripts') -%>
+    <script language="javascript" type="text/javascript">
+		
+        	$(document).ready(function () {
+    
+        		$('#btnBookNow').click(function () {
+                  
+        			var bookingInfo = {
+                        PropertyID: '<%=BookingInfo.PropertyID%>',
+            CustomerID:  '<%=BookingInfo.CustomerID%>',
+            CheckInDate: '<%=BookingInfo.CheckInDate%>',
+            CheckOutDate: '<%=BookingInfo.CheckOutDate%>',
+            Guests: '<%=BookingInfo.Guests%>',
+            Rooms: '<%=BookingInfo.Rooms%>',
+            TotalPrice :  '<%=BookingInfo.TotalPrice%>',
+            TotalNights :  '<%=BookingInfo.TotalNights%>',
+            RentalName :  '<%=BookingInfo.PropertyName%>',
+            EmailID : document.getElementById("txtEmailID").value,
+        };
+        				$.ajax({
+        					url: '/BookProperty',
+        					type: 'POST',
+        					datatype: 'json',
+        					data: bookingInfo,
+        					success: function (result) {
+                                
+        						if (result.status == 1) {
+        							$('#txtMessage').text('You booked a property successfully!');
+                                    $('#txtMessage').css('color','green');
+                                    $('#btnBookNow').hide();
+        						}
+        						else {
+        							$('#txtMessage').text('Your booking failed!');
+        							$('#txtMessage').css('color','red');
+        						}
+        					}
+        				});
+                    
+        		});
+           });
+        </script>
+</head>
+    <body>
+    <%- include('_layouts/header') -%>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <main id="content">
+            <!-- Breadcrumb -->
+            <div class="border-bottom mb-7">
+                <div class="container">
+                    <nav class="py-3" aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-no-gutter mb-0 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
+                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Hotels</a></li>
+                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">London Hotels</a></li>
+                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Park Avenue Baker Street London</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!-- End Breadcrumb -->
+
+            <div class="container"  align="center">
+                
+                <div class="col-lg-4 col-xl-3"">
+                    <div class="mb-4"  style="width: 400px;" align="center">
+                        <div><h2>Complete your Booking</h2></div>
+                        <div class="border border-color-7 rounded mb-5">
+                            <div class="border-bottom">
+                                <div>
+                                    
+                                    <span class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=BookingInfo.PropertyName%></span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <!-- Input -->
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Address : <span align="right" style="color: black;">
+                                    <%=BookingInfo.PropertyAddress%></span></span>
+                                <br/>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">CheckIn Date : <span align="right" style="color: black;">
+                                    <%=BookingInfo.DisplayCheckInDate%></span></span>
+                                <br/>
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">CheckOut Date : <span align="right" style="color: black;">
+                                    <%=BookingInfo.DisplayCheckOutDate%></span></span>
+                                <br/>
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">No.Of Guests : <span align="right" style="color: black;">
+                                    <%=BookingInfo.Guests%></span></span>
+                                <br/>
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Total Nights : <span align="right" style="color: black;">
+                                    <%=BookingInfo.TotalNights%></span></span>
+                                <br/>
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Total Rooms : <span align="right" style="color: black;">
+                                    <%=BookingInfo.Rooms%></span></span>
+                                <br/>
+
+                                
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Price/Night : <span align="right" style="color: black;">
+                                    <%=BookingInfo.PricePerNight%></span></span>
+                                <br/>
+                                <!-- End Input -->
+
+                                <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Total Price : <span align="right" style="color: black;">
+                                    <%=BookingInfo.TotalPrice%></span></span>
+                                <br/><span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Notification EmailID : <span align="right" style="color: black;">
+                                    <input type="text" name="txtEmailID" id="txtEmailID" value="<%=BookingInfo.CustomerEmailID%>"/></span></span>
+                                <br/>
+                                <br/>
+                                <!-- <div class="text-center">
+                                    <a href="reservation" class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold">Book Now</a>
+                                </div> -->
+                                <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
+                                    <button type="button" id= "btnBookNow" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"><i class="font-size-20 mr-2"></i>Confirm Booking</button>
+                                    
+                                </div>
+                                <a href=""></a>
+                                <div><label id="txtMessage"></label></div>
+                            </div>
+                </div>
+            </div>
+        </main>
+        <!-- ========== END MAIN CONTENT ========== -->
+
+    <%- include('_layouts/footer') -%>
+
+        <!-- Go to Top -->
+        <a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+            <span class="flaticon-arrow u-go-to-modern__inner"></span>
+        </a>
+        <!-- End Go to Top -->
+    <%- include('_layouts/scripts') -%>
+
+    </body>
+</html>

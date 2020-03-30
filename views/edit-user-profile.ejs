@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('_layouts/head') -%>
+</head>
+<body>
+<%- include('_layouts/header') -%>
+<!-- ========== MAIN CONTENT ========== -->
+<main id="content">
+    <div class="container bg-light pb-10">
+        <div class="row">
+            <div class="container max-width-810 mx-auto">
+                <div class="py-3 px-4 px-xl-12 border-bottom">
+                    <% if(action === "new") {%>
+                        <h1 class="text-center">Creating a new user</h1>
+                    <% } else {%>
+                            <h1 class="text-center">Editing user: <%= user.firstname %> <%= user.lastname %></h1>
+                    <% } %>
+                </div>
+                <form class="js-validate mt-8" action="<%= postAction %>" method="POST">
+                    <div class="row">
+                        <!-- Input -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message js-focus-state">
+                                <label class="form-label">
+                                    First Name
+                                </label>
+                                <input type="text" class="form-control" name="firstname" placeholder="First name" aria-label="firstname" required
+                                       data-msg="Please enter your first name."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.firstname  %>">
+                            </div>
+                        </div>
+                        <!-- End Input -->
+
+                        <!-- Input -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">
+                                    Last name
+                                </label>
+
+                                <input type="text" class="form-control" name="lastname" placeholder="Last name" aria-label="lastname" required
+                                       data-msg="Please enter your last name."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.lastname %>">
+                            </div>
+                        </div>
+                        <!-- End Input -->
+
+                        <!-- Input -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">
+                                    Email
+                                </label>
+
+                                <input type="email" class="form-control" name="email" placeholder="example@example.com" aria-label="example@example.com" readonly
+                                       data-msg="Please enter a valid email address."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.email %>">
+                            </div>
+                        </div>
+                        <!-- End Input -->
+
+                        <!-- Input -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">
+                                    Phone
+                                </label>
+
+                                <input type="number" class="form-control" name="phone" placeholder="+1-111-111-1111" aria-label="+1-111-111-1111" required
+                                       data-msg="Please enter a valid phone number."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.phone %>">
+                            </div>
+                        </div>
+
+                        <!-- Input -->
+                        <% if(action === "new") { %>
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <input type="password" class="form-control" name="password" placeholder="" aria-label="+1-111-111-1111" required
+                                       data-msg="Please enter a valid password."
+                                       data-error-class="u-has-error"
+                                       data-success-class="u-has-success" value="<%= user.phone %>">
+                            </div>
+                        </div>
+                        <% } %>
+                        <div class="w-100"></div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <div class="custom-control custom-switch mb-4">
+                                <input type="checkbox"
+                                       class="custom-control-input" id="HaveProperty" name="role" value="owner">
+                                <label class="custom-control-label" for="HaveProperty">Owner</label>
+                            </div>
+                        </div>
+                        <% if(action === "edit") { %>
+                        <input type="hidden" name="userid" value="<%= user._id %>">
+                        <% } %>
+                        <% if(action === "new") { %>
+                        <input type="hidden" name="action" value="<%= action %>">
+                        <% } %>
+                        <div class="w-100"></div>
+                        <a href="/user-dashboard" class="btn btn-secondary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Cancel</a>
+                        <button type="submit" class="btn btn-primary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- ========== END MAIN CONTENT ========== -->
+<%- include('_layouts/footer') -%>
+<!-- Go to Top -->
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+    <span class="flaticon-arrow u-go-to-modern__inner"></span>
+</a>
+<!-- End Go to Top -->
+<!-- JS Global Compulsory -->
+<script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+<script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+<script src="assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>
+<script src="assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
+<script src="assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="assets/vendor/slick-carousel/slick/slick.js"></script>
+<script src="assets/vendor/gmaps/gmaps.min.js"></script>
+<script src="assets/vendor/fancybox/jquery.fancybox.min.js"></script>
+<script src="assets/vendor/appear.js"></script>
+
+
+<!-- JS MyTravel -->
+<script src="assets/js/hs.core.js"></script>
+<script src="assets/js/components/hs.header.js"></script>
+<script src="assets/js/components/hs.unfold.js"></script>
+<script src="assets/js/components/hs.validation.js"></script>
+<script src="assets/js/components/hs.show-animation.js"></script>
+<script src="assets/js/components/hs.range-datepicker.js"></script>
+<script src="assets/js/components/hs.selectpicker.js"></script>
+<script src="assets/js/components/hs.go-to.js"></script>
+<script src="assets/js/components/hs.slick-carousel.js"></script>
+<script src="assets/js/components/hs.quantity-counter.js"></script>
+<script src="assets/js/components/hs.g-map.js"></script>
+<script src="assets/js/components/hs.fancybox.js"></script>
+<script src="assets/js/components/hs.scroll-nav.js"></script>
+<script src="assets/js/components/hs.sticky-block.js"></script>
+<script src="assets/js/components/hs.focus-state.js"></script>
+
+<!-- JS Plugins Init. -->
+<script>
+    $(window).on('load', function () {
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 1199.98,
+            hideTimeOut: 0
+        });
+
+        // Page preloader
+        setTimeout(function () {
+            $('#jsPreloader').fadeOut(500)
+        }, 800);
+    });
+
+    $(document).on('ready', function () {
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#header'));
+
+        // initialization of google map
+        function initMap() {
+            $.HSCore.components.HSGMap.init('.js-g-map');
+        }
+
+        // initialization of unfold component
+        $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate', {
+            rules: {
+                confirmPassword: {
+                    equalTo: '#signupPassword'
+                }
+            }
+        });
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of forms
+        $.HSCore.components.HSFocusState.init();
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of popups
+        $.HSCore.components.HSFancyBox.init('.js-fancybox');
+
+        // initialization of datepicker
+        $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+
+        // initialization of select
+        $.HSCore.components.HSSelectPicker.init('.js-select');
+
+        // initialization of sticky blocks
+        $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+
+        // initialization of quantity counter
+        $.HSCore.components.HSQantityCounter.init('.js-quantity');
+
+        // initialization of slick carousel
+        $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
+
+        // initialization of go to
+        $.HSCore.components.HSGoTo.init('.js-go-to');
+
+        // initialization of HSScrollNav component
+        $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
+            duration: 700
+        });
+    });
+</script>
+</body>
+</html>
