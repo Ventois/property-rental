@@ -162,7 +162,7 @@ myApp.get('/admin-dashboard', function (req, res) {
         res.render('login')
     }
 });
-// Delete User / property
+// Delete User / property / booking
 myApp.get('/delete/:type/:id', function (req, res) {
     var type = req.params.type;
     if(type === "user") {
@@ -488,12 +488,14 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
         res.redirect('/login');
     }
 });
-
-//----------- Start the server -------------------
-
 myApp.post('/edit-user-profile', function (req, res) {
     updateUserProfile(req, res, Users)
 });
+
+myApp.post('/edit-property',function(req, res){
+    updateProperty(req, res, Property)
+});
+
 
 //----------- Start the server -------------------
 
