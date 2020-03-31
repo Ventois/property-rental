@@ -15,7 +15,7 @@ const Users = mongoose.model('User', USER_SCHEMA);
 const Property = mongoose.model('Propertie', PROPERTY_SCHEMA);
 const Booking = mongoose.model('Booking', BOOKING_SCHEMA);
 const {EMPTY_USER} = require("./views/helpers/constants");
-const {createUser, updateUser, deleteUser, authenticateUser, logoutUser,updateUserProfile} = require("./views/helpers/users");
+const {createUser, updateUser, deleteUser, authenticateUser, logoutUser,updateUserProfile, renderIndex} = require("./views/helpers/users");
 const {createProperty, updateProperty, deleteProperty,} = require("./views/helpers/properties");
 const {bookProperty, deleteBooking} = require("./views/helpers/bookings");
 
@@ -49,7 +49,7 @@ myApp.set('view engine', 'ejs');
 //---------------- Routes ------------------
 
 myApp.get('/', function (req, res) {
-    res.render('index');
+    renderIndex(req, res, Users)
 });
 
 myApp.get('/about-us', function (req, res) {
@@ -105,6 +105,10 @@ myApp.get('/add-property', function (req, res) {
     })
 });
 myApp.get('/login', function (req, res) {
+    // clear existing sessions if any
+    if(req.session.userLoggedIn) {
+        logoutUser(req,res);
+    }
     res.render('login', {
         successMsg: req.flash('successMsg'),
         errorMsg: req.flash('errorMsg'),
@@ -130,7 +134,7 @@ myApp.post('/login', function (req, res) {
 // });
 
 myApp.get('/owner-dashboard', function (req, res) {
-    if (req.session.userLoggedIn) {
+    if (req.session.userLoggedIn && req.session.role === 'owner') {
         Property.find({}).exec(function (err, properties) {
             Users.findOne({_id: req.session.userid}).exec(function (err, owner) {
                 res.render('owner-dashboard', {
@@ -148,7 +152,7 @@ myApp.get('/owner-dashboard', function (req, res) {
 });
 
 myApp.get('/admin-dashboard', function (req, res) {
-    if (req.session.userLoggedIn) {
+    if (req.session.userLoggedIn && req.session.role === 'admin') {
         Users.find({}).exec(function (err, users) {
             res.render('admin-dashboard',
                 {
@@ -393,7 +397,7 @@ myApp.get('/user-dashboard', function (req, res) {
                                 {
                                     upcomingStaysList.push(stay);
                                 }
-                                if(tempDocsCount == totalDocsCount)
+                                if(tempDocsCount === totalDocsCount)
                                 {
                                     res.render('user-dashboard', {
                                         stays: staysList,
