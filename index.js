@@ -52,8 +52,13 @@ myApp.get('/', function (req, res) {
     renderIndex(req, res, Users)
 });
 
+
 myApp.get('/about-us', function (req, res) {
     res.render('about');
+});
+
+myApp.get('/booking', function (req, res) {
+    res.render('booking');
 });
 
 myApp.get('/property-list', function (req, res) {
@@ -135,7 +140,7 @@ myApp.post('/login', function (req, res) {
 
 myApp.get('/owner-dashboard', function (req, res) {
     if (req.session.userLoggedIn && req.session.role === 'owner') {
-        Property.find({}).exec(function (err, properties) {
+        Property.find({owner: req.session.userid}).exec(function (err, properties) {
             Users.findOne({_id: req.session.userid}).exec(function (err, owner) {
                 res.render('owner-dashboard', {
                     successMsg: req.flash('successMsg'),
@@ -299,9 +304,11 @@ myApp.post('/BookProperty', function (req, res) {
 // });
 
 myApp.post('/BookingConfirmation', function (req, res) {
+    if(!req.session.userLoggedIn || req.session.role !== "user") {
+            res.render("login");
+    };
+
     var dates= req.body.checkin_checkout_dates.split(" - ");
-
-
     var checkinDate = new Date(Date.parse(dates[0].replace("[","")));
     var checkoutDate = new Date(Date.parse(dates[1].replace("]","")));
 
