@@ -177,31 +177,6 @@ const updateUserProfile = (req, res, Users) => {
             });
     });
 };
-
-//Hash User Password
-const hashPassword = async (password) => {
-    try {
-        const salt = await bcrypt.genSalt(10);
-        return await bcrypt.hash(password, salt)
-    } catch(error) {
-        throw new Error('Hashing failed', error)
-    }
-};
-//Compare User Password
-//Hash User Password
-const comparePassword = async (password, dbHash) => {
-    bcrypt.compare(password, dbHash, function(err, result) {
-        if (err) {
-            console.log(err);
-        }
-        else if (result) {
-            console.log("password match");
-        }
-        else {
-            console.log("not match");
-        }
-    });
-};
 module.exports = {
     createUser,
     updateUser,

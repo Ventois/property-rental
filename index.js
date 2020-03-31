@@ -488,14 +488,10 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
         res.redirect('/login');
     }
 });
-myApp.post('/edit-user-profile', function (req, res) {
-    updateUserProfile(req, res, Users)
-});
 
 myApp.post('/edit-property',function(req, res){
     updateProperty(req, res, Property)
 });
-
 
 //----------- Start the server -------------------
 
