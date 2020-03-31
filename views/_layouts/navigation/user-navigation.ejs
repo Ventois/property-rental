@@ -26,7 +26,7 @@
 
             <!-- Hotel -->
             <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
-                <a id="hotelMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="#search-property" aria-haspopup="true" aria-expanded="false" aria-labelledby="hotelSubMenu">Search Property</a>
+                <a id="hotelMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="/#location" aria-haspopup="true" aria-expanded="false" aria-labelledby="hotelSubMenu">Search Property</a>
             </li>
             <!-- End Hotel -->
 
@@ -35,7 +35,13 @@
                 <a id="tourMegaMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle" href="/about-us" aria-haspopup="true" aria-expanded="false">About us</a>
             </li>
             <!-- End Tour -->
-
+            <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
+                <%if(userLoggedIn)
+                {
+                %>
+                    <a id="rentalMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="/user-dashboard" aria-haspopup="true" aria-expanded="false" aria-labelledby="rentalSubMenu">My Dashboard</a>
+                <% } %>
+            </li>
             <!-- Rental -->
             <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
                 <%if(userLoggedIn)

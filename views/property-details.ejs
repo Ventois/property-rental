@@ -4,7 +4,20 @@
     <%- include('_layouts/head') -%>
     <%- include('_layouts/scripts') -%>
     <script language="javascript" type="text/javascript">
-		
+         
+         function updateBookingInfo()
+        {
+            var element = document.getElementById("spanGuestsAndRooms");
+            var adultsCount = $('#txtGuestsCount').val();
+            var roomsCount = $('#txtRoomsCount').val();
+            var msg = adultsCount+" Guests - "+roomsCount+" Rooms";
+           element.innerHTML = msg;
+            $('#txtRoomsAndGuests').val(msg);
+            window.location = "#";
+            //document.getElementById('#').scrollIntoView();
+            //$('#basicDropdownClick').hide();
+            //$('#basicDropdownClick').show();
+        }
 	//	$(document).ready(function () {
 
 	// 		$('#btnBookNow').click(function () {
@@ -60,12 +73,7 @@
             <div class="border-bottom mb-7">
                 <div class="container">
                     <nav class="py-3" aria-label="breadcrumb">
-                        <ol class="breadcrumb breadcrumb-no-gutter mb-0 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">London Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Park Avenue Baker Street London</li>
-                        </ol>
+                        <br>
                     </nav>
                 </div>
             </div>
@@ -85,13 +93,9 @@
                                     <a href="#" class="ml-1 d-block d-md-inline"> - View on map</a>
                                 </div>
                             </div>
-                            <ul class="list-group list-group-borderless list-group-horizontal custom-social-share">
-                                <li class="list-group-item px-1">
-                                    <a href="#" class="height-45 width-45 border rounded border-width-2 flex-content-center">
-                                        <i class="flaticon-share font-size-18 text-dark"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                            <a href="javascript:history.go(-1);">
+                                Backto Search List 
+                              </a>
                         </div>
                         <div class="py-4 border-top mb-4">
                             <ul class="mb-4 list-group list-group-borderless list-group-horizontal flex-center-between text-center flex-wrap">
@@ -363,23 +367,22 @@
                     </div>
                     
                     <div class="col-lg-4 col-xl-3">
-                        <form action="/BookingConfirmation" name="frmBookingConfirmation" method="POST" >
+                        <form action="/BookingConfirmation" name="frmBookingConfirmation" id = "frmBookingConfirmation" method="POST" >
                             <input type="hidden" value="<%=PropertyDetails._id%>" name="property_id" id="property_id" />
                         <div class="mb-4">
                             <div class="border border-color-7 rounded mb-5">
                                 <div class="border-bottom">
-                                    <div align="Center">
-                                        
-                                        <span class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=PropertyDetails.rentalname%></span>
-                                    </div>
+                                 
+                                        <span style='font-family:"Rubik", Helvetica, Arial, sans-serif;'  class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=PropertyDetails.rentalname%></span>
+                                    
                                 </div>
                                 <div class="p-4">
                                     <!-- Input -->
                                     <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Price / Night</span>
                                     <div class="mb-4">
                                         <div class="input-group border-bottom border-width-2 border-color-1" disabled="disabled">
-                                            <i class="flaticon-pin-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
-                                          <input  type="text" value="£<%=PropertyDetails.price%>" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Where are you going?" aria-label="Where are you going?" aria-describedby="keywordInputAddon">
+                                            <i class="flaticon-price-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
+                                          <input  type="text" value="$<%=PropertyDetails.price%>" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Where are you going?" aria-label="Where are you going?" aria-describedby="keywordInputAddon">
                                         </div>
                                     </div>
                                     <!-- End Input -->
@@ -425,10 +428,25 @@
                                                 data-unfold-animation-in="slideInUp"
                                                 data-unfold-animation-out="fadeOut">
                                                 <i class="flaticon-add-group d-flex align-items-center mr-3 font-size-20 text-primary font-weight-semi-bold"></i>
+                                                <span class="text-black font-size-16 font-weight-semi-bold" id="spanGuestsAndRooms" name="spanGuestsAndRooms"><%= UserPreference.Guests%> Guests - <%= UserPreference.Rooms%> Rooms</span>
                                                 <input type="hidden" name="txtRoomsAndGuests" id="txtRoomsAndGuests" class="text-black font-size-16 font-weight-semi-bold mr-auto"
-                                                value="1 Rooms - 2 Guests"></span>
+                                                value="<%= UserPreference.Guests%> Guests - <%= UserPreference.Rooms%> Rooms"></span>
                                             </a>
                                             <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col m-0" aria-labelledby="basicDropdownClickInvoker">
+                                                <div class="w-100 py-2 px-3 mb-3">
+                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Guests</span>
+                                                        <div class="d-flex">
+                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                                <small class="fas fa-minus btn-icon__inner"></small>
+                                                            </a>
+                                                            <input  id="txtGuestsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="<%= UserPreference.Guests%>">
+                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                                <small class="fas fa-plus btn-icon__inner"></small>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="w-100 py-2 px-3 mb-3">
                                                     <div class="js-quantity mx-3 row align-items-center justify-content-between">
                                                         <span class="d-block font-size-16 text-secondary font-weight-medium">Rooms</span>
@@ -436,55 +454,30 @@
                                                             <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                                 <small class="fas fa-minus btn-icon__inner"></small>
                                                             </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                            <input id="txtRoomsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="<%= UserPreference.Rooms%>">
                                                             <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                                 <small class="fas fa-plus btn-icon__inner"></small>
                                                             </a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="w-100 py-2 px-3 mb-3">
-                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Adults</span>
-                                                        <div class="d-flex">
-                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
-                                                                <small class="fas fa-minus btn-icon__inner"></small>
-                                                            </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
-                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
-                                                                <small class="fas fa-plus btn-icon__inner"></small>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="w-100 py-2 px-3">
-                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Child</span>
-                                                        <div class="d-flex">
-                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/reservation">
-                                                                <small class="fas fa-minus btn-icon__inner"></small>
-                                                            </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
-                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/reservation">
-                                                                <small class="fas fa-plus btn-icon__inner"></small>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              
                                                 <div class="w-100 text-right py-1 pr-5">
-                                                    <a class="text-primary font-weight-semi-bold font-size-16" href="#">Done</a>
+                                                    <a class="text-primary font-weight-semi-bold font-size-16" href="javascript:updateBookingInfo();">Done</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- End Input -->
 
-                                    <!-- <div class="text-center">
-                                        <a href="reservation" class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold">Book Now</a>
+                                 <!-- <div class="text-center"> -->
+                                        <a href="javascript:;" 
+                                        onclick="document.getElementById('frmBookingConfirmation').submit(); return false;"
+                                        class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold">Book Now</a>
+                                    <!-- </div>  -->
+                                    <!-- <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right" style="margin: 0 auto;">
+                                        <input  type="submit" value="Book Now" id= "btnBookNow"  class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold"/>
                                     </div> -->
-                                    <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
-                                        <input type="submit" value="Book Now" id= "btnBookNow" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"/>
-                                    </div>
                                     <div align="center"><label id="txtMessage"></label></div>
                                 </div>
                             </div>

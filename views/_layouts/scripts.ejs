@@ -15,6 +15,9 @@
 <script src="/assets/vendor/summernote/dist/summernote-lite.js"></script>
 <script src="/assets/vendor/custombox/dist/custombox.min.js"></script>
 <script src="/assets/vendor/custombox/dist/custombox.legacy.min.js"></script>
+<script src="/assets/vendor/gmaps/gmaps.min.js"></script>
+<script src="/assets/vendor/fancybox/jquery.fancybox.min.js"></script>
+<script src="/assets/vendor/appear.js"></script>
 
 <!-- JS MyTravel -->
 <script src="/assets/js/hs.core.js"></script>
@@ -32,6 +35,11 @@
 <script src="/assets/js/components/hs.datatables.js"></script>
 <script src="/assets/js/components/hs.summernote-editor.js"></script>
 <script src="/assets/js/components/hs.modal-window.js"></script>
+<script src="assets/js/components/hs.g-map.js"></script>
+<script src="assets/js/components/hs.fancybox.js"></script>
+<script src="assets/js/components/hs.scroll-nav.js"></script>
+<script src="assets/js/components/hs.sticky-block.js"></script>
+<script src="assets/js/components/hs.focus-state.js"></script>
 
 <!-- JS Plugins Init. -->
 <script>
@@ -90,6 +98,9 @@
         $.HSCore.components.HSModalWindow.init('[data-modal-target]', '.js-modal-window', {
             autonomous: true
         });
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
     });
 </script>
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>
