@@ -42,11 +42,16 @@
                                 <form class="js-validate" action="/property-list" method="POST">
                                   <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3">
                                     <div class="col-sm-12 col-lg-3dot6 col-xl-3dot7 mb-4 mb-lg-0 ">
+                                        <div class="js-form-message js-focus-stae">
                                         <span class="d-block text-gray-1 font-weight-normal text-left mb-0">Destination</span>
                                         <!-- Select -->
-                                        
-                                            <input class="form-control" type="text" id="location" name= "location" placeholder="AnyWhere" />
-                                        
+                                            <input class="form-control" type="text" id="location" name= "location"
+                                                   placeholder="AnyWhere"
+                                                   aria-describedby="location" required
+                                                   data-msg="Please enter a City name to Search."
+                                                   data-error-class="u-has-error"
+                                                   data-success-class="u-has-success"/>
+                                        </div>
                                         <!-- End Select -->
                                     </div>
 
