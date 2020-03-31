@@ -38,7 +38,16 @@
 
             <!-- Rental -->
             <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
-                <a id="rentalMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="/login" aria-haspopup="true" aria-expanded="false" aria-labelledby="rentalSubMenu">Login or Register</a>
+                <%if(userLoggedIn)
+                {
+                %>
+                    <a id="rentalMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="/logout" aria-haspopup="true" aria-expanded="false" aria-labelledby="rentalSubMenu">Signout</a>
+                <%}
+                else
+                {
+                %>
+                    <a id="rentalMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle u-header__nav-link-border" href="/login" aria-haspopup="true" aria-expanded="false" aria-labelledby="rentalSubMenu">Login or Register</a>
+                <%}%>
             </li>
             <!-- End Rental -->
         </ul>

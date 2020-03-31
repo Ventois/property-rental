@@ -1,6 +1,7 @@
 // All the methods related to property management
 
 // Create Property
+// Create Property
 const createProperty = (req, res, Property) => {
     let rentalname = req.body.rentalname;
     let description = req.body.description;
@@ -16,18 +17,12 @@ const createProperty = (req, res, Property) => {
     let amenities = req.body.amenities;
     let rules = req.body.rules;
     var imagesNames = [];
-    if(req.files.images){
-        const file = req.files.images;
-        for(let i = 0 ; i < file.length; i++){
-            imagesNames[i] = file[i].name;
-            file[i].mv('./public/images/'+file[i].name, function (err){
-                if(err){
-                    res.send(err);
-                }
-            })
-        }
-        console.log("images uploaded successfully");
-    };
+    const file = req.files.images;
+    for(let i = 0 ; i < file.length; i++)
+    {
+        let ext ="."+file[i].name.split('.').pop();
+        imagesNames[i] = (i+1)+ext;//file[i].name;
+    }
     let newProperty = new Property({
         rentalname: rentalname,
         description: description,
@@ -48,6 +43,26 @@ const createProperty = (req, res, Property) => {
     });
     newProperty.save()
         .then(() => {
+            let propertyId = newProperty._id;
+            console.log("Added Property :"+propertyId+" , Now uploading images for rental");
+            if(file){
+                //const file = req.files.images;
+                for(let i = 0 ; i < file.length; i++){
+                    //imagesNames[i] = file[i].name;
+                    let path = './public/images/'+propertyId+'/';
+                    if (!fs.existsSync(path)){
+                        fs.mkdirSync(path);
+                    }
+                    let ext ="."+file[i].name.split('.').pop();
+                    file[i].mv(path + (i+1)+ext, function (err){
+                        if(err){
+                            res.send(err);
+                        }
+                    })
+                }
+                console.log("images uploaded successfully");
+            };
+
             req.flash('successMsg', 'Property Added successfully!');
             res.redirect('/owner-dashboard');
         })
