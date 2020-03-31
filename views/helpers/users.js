@@ -3,6 +3,38 @@ const bcrypt = require('bcryptjs');
 // All the methods related to user management
 
 // Authenticate User
+const renderIndex = async (req, res, Users) => {
+    Users.findOne({email:"admin@spm.com", role: "admin"}).exec(function (err, admin) {
+        console.log("admin value ",admin);
+        if(!admin) {
+            var firstname = "Administrator";
+            var lastname = "SPM";
+            var phone = "+1-123-123-1234";
+            var email = "admin@spm.com";
+            var role = "admin";
+            var SignUpMember = new Users({
+                firstname: firstname,
+                lastname: lastname,
+                phone: phone,
+                email: email,
+                // Default Password Admin@123
+                password: "$2a$10$5FKpDRJhm3Ct3mELO5lL8uyG9V7fC/FNX5KtRfKX/XGmf13iaXNra",
+                role: role,
+                createdOn: new Date(Date.now()).toISOString(),
+                updatedOn: new Date(Date.now()).toISOString(),
+            });
+            SignUpMember.save()
+                .then(() => {
+                    res.render("index");
+                });
+        } else {
+            res.render("index");
+        }
+    });
+};
+
+
+// Authenticate User
 const authenticateUser = (req, res, Users) => {
     var email = req.body.email;
     var password = req.body.password;
@@ -18,12 +50,12 @@ const authenticateUser = (req, res, Users) => {
                     req.session.userid = signup._id;
                     req.session.userLoggedIn = true;
                     var role = signup.role;
-                    if (role === 'user') {
-                        res.redirect('/user-dashboard');
+                    if (role === 'admin') {
+                        res.redirect('/admin-dashboard');
                     } else if (role === 'owner') {
                         res.redirect('/owner-dashboard');
                     } else {
-                        res.redirect('/admin-dashboard');
+                        res.redirect('/user-dashboard');
                     }
                 } else {
                     console.log("login failed");
@@ -185,5 +217,6 @@ module.exports = {
     logoutUser,
     hashPassword,
     comparePassword,
-    updateUserProfile
+    updateUserProfile,
+    renderIndex
 };
