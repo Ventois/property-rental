@@ -64,11 +64,22 @@ const createProperty = (req, res, Property) => {
             };
 
             req.flash('successMsg', 'Property Added successfully!');
-            res.redirect('/owner-dashboard');
+            if(req.session.role==="owner"){
+                res.redirect('/owner-dashboard');     
+            }
+            else{
+                 res.redirect('/admin-dashboard');
+            }
+           
         })
         .catch(() => {
             req.flash('errorMsg', 'Something went wrong while adding property!');
-            res.redirect('/owner-dashboard');
+            if(req.session.role==="owner"){
+                res.redirect('/owner-dashboard');     
+            }
+            else{
+                 res.redirect('/admin-dashboard');
+            }
         });
 };
 // Update Property

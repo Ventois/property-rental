@@ -201,11 +201,23 @@ const updateUserProfile = (req, res, Users) => {
         user.save()
             .then(() => {
                 req.flash('successMsg', 'User updated successfully!');
-                res.redirect('/user-dashboard');
+                if(req.session.role=="user"){
+                    res.redirect('/user-dashboard');
+                }else if(req.session.role=="owner"){
+                    res.redirect('/owner-dashboard');
+                }else{
+                    res.redirect('/admin-dashboard');
+                } 
             })
             .catch(() => {
                 req.flash('errorMsg', 'Something went wrong while editing user!');
-                res.redirect('/user-dashboard');
+                if(req.session.role=="user"){
+                    res.redirect('/user-dashboard');
+                }else if(req.session.role=="owner"){
+                    res.redirect('/owner-dashboard');
+                }else{
+                    res.redirect('/admin-dashboard');
+                } 
             });
     });
 };
