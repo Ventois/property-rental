@@ -1,7 +1,5 @@
 // All the methods related to property management
-
-// Create Property
-// Create Property
+var fs = require('fs');
 const createProperty = (req, res, Property) => {
     let rentalname = req.body.rentalname;
     let description = req.body.description;
@@ -65,17 +63,17 @@ const createProperty = (req, res, Property) => {
 
             req.flash('successMsg', 'Property Added successfully!');
             if(req.session.role==="owner"){
-                res.redirect('/owner-dashboard');     
+                res.redirect('/owner-dashboard');
             }
             else{
                  res.redirect('/admin-dashboard');
             }
-           
+
         })
         .catch(() => {
             req.flash('errorMsg', 'Something went wrong while adding property!');
             if(req.session.role==="owner"){
-                res.redirect('/owner-dashboard');     
+                res.redirect('/owner-dashboard');
             }
             else{
                  res.redirect('/admin-dashboard');

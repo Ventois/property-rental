@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const {check, validationResult} = require('express-validator');
 const mongoose = require('mongoose');
+const dateFormat = require('dateformat');
 mongoose.connect('mongodb://localhost:27017/spm', {
     useNewUrlParser: true
 });
@@ -66,11 +67,14 @@ myApp.get('/property-list', function (req, res) {
 });
 
 myApp.get('/property-details/:id', function (req, res) {
-console.log("user pref : "+req.session.UserPreference.Location);
-    //console.log("dproperty :"+PropertyList);
-    //console.log("inside  properyid : "+req.params.id);
-    // if (req.session.userLoggedIn) {
-    var id = req.params.id;
+    console.log("user pref : "+req.session.UserPreference.Location);
+    req.session.BookingID = req.params.id;
+    getPropertyDetails(req.params.id, req, res);
+    
+});
+
+function getPropertyDetails(id,req, res)
+{
     console.log("id="+id);
     Property.find({_id: id}).exec(function (err, property_details) {
         // console.log("found properyid : "+property_details);
@@ -83,20 +87,29 @@ console.log("user pref : "+req.session.UserPreference.Location);
             });
         }
     });
-    // } else {
-    //     res.redirect('/login');
-    // }
-});
+}
 
 myApp.get('/reservation', function (req, res) {
     res.render('booking');
 });
-myApp.get('/payment', function (req, res) {
-    res.render('payment');
+myApp.post('/payment', function (req, res) {
+    req.session.UserInfo["City"] = req.body.city;
+    req.session.UserInfo["Country"] = req.body.country;
+    req.session.BookingInfo["ReservationEmailID"] = req.body.email;
+    res.render('payment',{
+        BookingInfo : req.session.BookingInfo,
+        UserInfo : req.session.UserInfo,
+        BookingEmailID : req.body.email
+
+    });
 });
-myApp.get('/confirmation', function (req, res) {
-    res.render('confirmation');
-});
+// myApp.post('/confirmation', function (req, res) {
+//     res.render('confirmation',{
+//         BookingInfo : req.session.BookingInfo,
+//         UserInfo : req.session.UserInfo
+       
+//     });
+// });
 myApp.get('/signup', function (req, res) {
     res.render('SignUp', {
         successMsg: req.flash('successMsg'),
@@ -309,8 +322,9 @@ myApp.post('/property-list', function (req, res) {
     //     });
 
     let GuestsAndRooms = req.body.GuestsAndRooms;
-    GuestsAndRooms = GuestsAndRooms.replace("Adult","");
+    GuestsAndRooms = GuestsAndRooms.replace("Guests","");
     GuestsAndRooms = GuestsAndRooms.replace("Rooms","");
+    GuestsAndRooms = GuestsAndRooms.replace("Room","");
     GuestsAndRooms = GuestsAndRooms.trim();
     GuestsAndRooms = GuestsAndRooms.split(" - ");
     var guests = GuestsAndRooms[0];
@@ -357,7 +371,8 @@ myApp.post('/property-list', function (req, res) {
                 DisplayDate : dispDate// req.body.checkin_checkout_dates//'["Jul 1 / 2020", "Aug 25 / 2020"]'//
             };
             res.render('property-list',{
-                PropertyList : result
+                PropertyList : result,
+                SearchTerm : req.body.location
             });
 
             //console.log(items.model.Property);
@@ -370,7 +385,8 @@ myApp.post('/property-list', function (req, res) {
         })
 });
 //console.log(items);
-myApp.post('/BookProperty', function (req, res) {
+myApp.post('/Confirmation', function (req, res) {   
+
     console.log('Book Property called with data: ');
     bookProperty(req, res, Booking)
 });
@@ -381,6 +397,7 @@ myApp.post('/BookProperty', function (req, res) {
 
 myApp.post('/BookingConfirmation', function (req, res) {
     if(!req.session.userLoggedIn || req.session.role !== "user") {
+            req.session.isBookingPending = true;
             res.render("login");
     };
 
@@ -391,10 +408,11 @@ myApp.post('/BookingConfirmation', function (req, res) {
     var GuestsAndRooms = req.body.txtRoomsAndGuests;
     GuestsAndRooms = GuestsAndRooms.replace("Guests","");
     GuestsAndRooms = GuestsAndRooms.replace("Rooms","");
+    GuestsAndRooms = GuestsAndRooms.replace("Room","");
     GuestsAndRooms = GuestsAndRooms.trim();
     GuestsAndRooms = GuestsAndRooms.split(" - ");
-    var guests = GuestsAndRooms[1].trim();
-    var rooms = GuestsAndRooms[0].trim();
+    var guests = GuestsAndRooms[0].trim();
+    var rooms = GuestsAndRooms[1].trim();
     var bookingInfo = {
         PropertyID: req.body.property_id,
         //customer_id:  "501",//Later change to some session userid
@@ -424,13 +442,20 @@ myApp.post('/BookingConfirmation', function (req, res) {
             bookingInfo['TotalNights'] = totalNights;
             bookingInfo['TotalPrice'] = totalNights * Number(propertyInfo.price) * Number(rooms);
             bookingInfo['CustomerEmailID'] = req.session.email;
-            bookingInfo['DisplayCheckInDate'] = dates[0].replace("[","");
-            bookingInfo['DisplayCheckOutDate'] = dates[1].replace("]","");
+            bookingInfo['DisplayCheckInDate'] = dateFormat(new Date(checkinDate),"dd mmm yyyy");
+            bookingInfo['DisplayCheckOutDate'] = dateFormat(new Date(checkoutDate),"dd mmm yyyy");
             bookingInfo['CustomerID'] = req.session.userid;
-            res.render('BookingConfirmation', {
-                BookingInfo: bookingInfo
+            bookingInfo['CustomerFirstName'] = req.session.userid;
+            Users.findOne({_id: req.session.userid},function (err, user) {
+            req.session.BookingInfo = bookingInfo;
+            req.session.UserInfo = user;
+            
+            res.render('Booking', {
+                BookingInfo: bookingInfo,
+                UserInfo : user
             });
-        }
+        });
+    }
     });
 });
 
@@ -457,6 +482,8 @@ myApp.get('/user-dashboard', function (req, res) {
                     var tempDocsCount =0;
                     bookings.forEach(booking => {
                         Property.findOne({_id: booking.property_id}).exec(function (err, property) {
+                            if(property)
+                            {
                                 tempDocsCount++;
                                 var stay = {
                                     PropertyID : property._id,
@@ -491,6 +518,7 @@ myApp.get('/user-dashboard', function (req, res) {
                                         errorMsg: req.flash('errorMsg'),
                                     });
                                 }
+                            }
                             }
                         )
                     });
@@ -586,3 +614,6 @@ myApp.post('/edit-user-profile', function (req, res) {
 
 myApp.listen(8080);
 console.log('Server started at 8080 for mywebsite...');
+
+
+module.exports.GetPropertyDetails = getPropertyDetails;
