@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-
+const indexfile = require('../../index');
 // All the methods related to user management
 
 // Authenticate User
@@ -55,7 +55,15 @@ const authenticateUser = (req, res, Users) => {
                     } else if (role === 'owner') {
                         res.redirect('/owner-dashboard');
                     } else {
-                        res.redirect('/user-dashboard');
+                        if(req.session.isBookingPending)
+                        {
+                                req.session.isBookingPending = false;
+                                indexfile.GetPropertyDetails(req.session.BookingID, req, res);
+                        }
+                        else
+                         {
+                            res.redirect('/user-dashboard');
+                         }       
                     }
                 } else {
                     console.log("login failed");

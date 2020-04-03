@@ -9,7 +9,7 @@
 
         function GetDeleteConfirmation(name,checkin,checkout,guests,rooms,nights,price,bookingdt,rowid) {
             // document.getElementById(rowid).style.backgroundColor = "red";
-            var msg = "Are you sure you want to delete the tollowing booking?\n"+
+            var msg = "Are you sure you want to delete the following booking?\n"+
                 "Rental Name : "+name+"\n"+
                 "Checkin Date : "+checkin+"\n"+
                 "Checkout Date : "+checkout+"\n"+
@@ -17,7 +17,7 @@
                 "Rooms : "+rooms+"\n"+
                 "Guests : "+guests+"\n"+
                 "Total Nights : "+nights+"\n"+
-                "Total Price : "+price+"\n"+
+                "Total Price : $"+price+"\n"+
                 "Booked On : "+bookingdt;
 
             return confirm(msg);
@@ -134,7 +134,7 @@
                                             <small class="d-block"><%= stay.TotalNights%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= stay.TotalPrice%></small>
+                                            <small class="d-block">$<%= stay.TotalPrice%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
                                             <small class="d-block"><%= stay.BookingDate%></small>
@@ -236,7 +236,7 @@
                                             <small class="d-block"><%= stay.TotalNights%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= stay.TotalPrice%></small>
+                                            <small class="d-block">$<%= stay.TotalPrice%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
                                             <small class="d-block"><%= stay.BookingDate%></small>
@@ -339,7 +339,7 @@
                                             <small class="d-block"><%= stay.TotalNights%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
-                                            <small class="d-block"><%= stay.TotalPrice%></small>
+                                            <small class="d-block">$<%= stay.TotalPrice%></small>
                                         </td>
                                         <td class="align-middle text-secondary">
                                             <small class="d-block"><%= stay.BookingDate%></small>
