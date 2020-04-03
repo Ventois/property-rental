@@ -4,6 +4,22 @@
         <%- include('_layouts/head') -%>
         <%- include('_layouts/scripts') -%>
         <script language="javascript" type="text/javascript">
+          
+        function updateBookingInfo()
+        {
+            var element = document.getElementById("spanGuestsAndRooms");
+            var adultsCount = $('#txtGuestsCount').val();
+            var roomsCount = $('#txtRoomsCount').val();
+            var msg = adultsCount+" Guests - "+roomsCount+" Rooms";
+           element.innerHTML = msg;
+            $('#GuestsAndRooms').val(msg);
+            //$('#GuestsAndRooms').text = msg;
+           // window.location = "#";
+            //document.getElementById('#').scrollIntoView();
+            //$('#basicDropdownClick').hide();
+            //$('#basicDropdownClick').show();
+        }
+       
             $(function(){
                 var dtToday = new Date();
                 
@@ -30,17 +46,17 @@
                 <div class="container space-2 space-top-xl-6">
                     <div class="justify-content-md-center py-xl-10">
                         <!-- Info -->
-                        <div class="pb-lg-11 mb-7">
+                        <div class="pb-lg-11 mb-7" >
                             <h1 class="font-size-60 font-size-xs-30 text-white font-weight-bold">Find your next rental</h1>
                             <p class="font-size-20 font-weight-normal text-white">Book experiences you’ll want to tell the world about</p>
                         </div>
                         <!-- End Info -->
                     </div>
                     <div class="mb-lg-n16">
-                        <div class="card border-0 tab-shadow">
-                            <div class="card-body">
+                        <div class="card border-0 tab-shadow" id="searchPanel">
+                            <div class="card-body" >
                                 <form class="js-validate" action="/property-list" method="POST">
-                                  <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3">
+                                  <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3" >
                                     <div class="col-sm-12 col-lg-3dot6 col-xl-3dot7 mb-4 mb-lg-0 ">
                                         <div class="js-form-message js-focus-stae">
                                         <span class="d-block text-gray-1 font-weight-normal text-left mb-0">Destination</span>
@@ -94,18 +110,18 @@
                                             data-unfold-animation-in="slideInUp"
                                             data-unfold-animation-out="fadeOut">
                                             <i class="flaticon-plus d-flex align-items-center mr-3 font-size-18 text-primary font-weight-semi-bold"></i>
-                                            <span class="text-black font-size-16 font-weight-semi-bold">1 Adult - 0 Child</span>
-                                            <input type="hidden"  name="GuestsAndRooms" id="GuestsAndRooms"  value="1 Adult - 0 Child">
+                                            <span class="text-black font-size-16 font-weight-semi-bold" id="spanGuestsAndRooms" name="spanGuestsAndRooms">2 Guests - 1 Room</span>
+                                            <input type="hidden"  name="GuestsAndRooms" id="GuestsAndRooms"  value="2 Guests - 1 Room">
                                         </a>
                                         <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col-11 m-0" aria-labelledby="basicDropdownClickInvoker">
                                             <div class="w-100 py-2 px-3 mb-3">
                                                 <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Adults</span>
+                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Guests</span>
                                                     <div class="d-flex">
                                                         <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                             <small class="fas fa-minus btn-icon__inner"></small>
                                                         </a>
-                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                        <input id="txtGuestsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="2">
                                                         <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                             <small class="fas fa-plus btn-icon__inner"></small>
                                                         </a>
@@ -119,7 +135,7 @@
                                                         <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/property-list">
                                                             <small class="fas fa-minus btn-icon__inner"></small>
                                                         </a>
-                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                        <input id="txtRoomsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
                                                         <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/property-list">
                                                             <small class="fas fa-plus btn-icon__inner"></small>
                                                         </a>
@@ -127,13 +143,13 @@
                                                 </div>
                                             </div>
                                             <div class="w-100 text-right py-1 pr-5">
-                                                <a class="text-primary font-weight-semi-bold font-size-16" href="#">Done</a>
+                                                <a class="text-primary font-weight-semi-bold font-size-16" href="javascript:updateBookingInfo();">Done</a>
                                             </div>
                                         </div>
                                         <!-- End Input -->
                                     </div>
 
-                                    <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
+                                    <div id="searchLocation" class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
                                         <button type="submit" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"><i class="flaticon-magnifying-glass font-size-20 mr-2"></i>Search</button>
                                     </div>
                                   </div>

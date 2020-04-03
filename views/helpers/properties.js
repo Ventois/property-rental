@@ -1,5 +1,5 @@
 // All the methods related to property management
-
+var fs = require('fs');
 // Create Property
 // Create Property
 const createProperty = (req, res, Property) => {
