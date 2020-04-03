@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('_layouts/head') -%>
+</head>
+<body>
+<%- include('_layouts/header') -%>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main id="content" class="space-2">
+    <div class="container max-width-810">
+        <div class="row">
+           <div class="mb-5 shadow-soft bg-white rounded-sm">
+                    <div class="py-3 px-4 px-xl-12 border-bottom">
+                        <h1 class="text-center">Edit a property: <%= property.rentalname %></h1>
+                    </div>
+                    <div class="pt-4 pb-5 px-5">
+                        <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-4">
+                            Please edit the details about your property
+                        </h5>
+                        <!-- Contacts Form -->
+                        <form class="js-validate" method="POST" action="/edit-property" enctype="multipart/form-data">
+                            <div class="row">
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                           Property Title
+                                        </label>
+                                        <input type="text" class="form-control" name="rentalname" placeholder="Property Name" aria-label="rentalname" required
+                                               data-msg="Please enter your property name"
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.rentalname%>" >
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Description
+                                        </label>
+
+                                        <textarea class="form-control u-summernote-editor js-summernote-editor" name="description" placeholder="Add Intro about your property" aria-label="description" required
+                                                  data-msg="Please enter your property description"
+                                                  data-error-class="u-has-error" data-success-class="u-has-success"data-height="200"><%- property.description%> </textarea>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Price
+                                        </label>
+
+                                        <input type="text" class="form-control" name="price" placeholder="Price" aria-label="price" required
+                                               data-msg="Please enter price per night."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.price%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Address
+                                        </label>
+
+                                        <input type="text" class="form-control" name="address" placeholder="Property Address" aria-label="address" required
+                                               data-msg="Please enter a valid address."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.address%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            City
+                                        </label>
+
+                                        <input type="text" class="form-control" name="city" placeholder="City/Town" aria-label="city" required
+                                               data-msg="Please enter a valid city."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.city%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            State/Province
+                                        </label>
+
+                                        <input type="text" class="form-control" name="state" placeholder="State/Province" aria-label="state" required
+                                               data-msg="Please enter a valid state."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.state%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Country
+                                        </label>
+                                        <%- include('_layouts/countries') -%>
+                                       </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <div class="w-100"></div>
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                           Area (Sft)
+                                        </label>
+
+                                        <input type="text" class="form-control" name="area" placeholder="Sqft" aria-label="area" required
+                                               data-msg="Please enter a valid state."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.area%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Number of Rooms
+                                        </label>
+
+                                        <input type="text" class="form-control" name="rooms" placeholder="Number of Rooms" aria-label="rooms" required
+                                               data-msg="Please enter number of rooms."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.rooms%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Number of Bathrooms
+                                        </label>
+
+                                        <input type="text" class="form-control" name="baths" placeholder="Number of Baths" aria-label="baths" required
+                                               data-msg="Please enter number of bathrooms."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.baths%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Number of Beds
+                                        </label>
+
+                                        <input type="text" class="form-control" name="beds" placeholder="Number of Beds" aria-label="beds" required
+                                               data-msg="Please enter number of beds."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= property.beds%>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Amenities
+                                        </label>
+                                        <div class="col-12">
+                                            <ul class="checkbox-list">
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="wifi"/>
+                                                        <span>wifi</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="wake-up-call"/>
+                                                        <span>wake-up-call</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Bathrobes"/>
+                                                        <span>Bathrobes</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Fitness center"/>
+                                                        <span>Fitness center</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Telephone"/>
+                                                        <span>Telephone</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Dry cleaning"/>
+                                                        <span>Dry cleaning</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Mini Bar"/>
+                                                        <span>Mini Bar</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Hair dryer"/>
+                                                        <span>Hair dryer</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="High chair"/>
+                                                        <span>High chair</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Restaurant"/>
+                                                        <span>Restaurant</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Air Conditioning"/>
+                                                        <span>Air Conditioning</span>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="amenities" value="Slippers"/>
+                                                        <span>Slippers</span>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Rules
+                                        </label>
+                                        <div class="col-12">
+                                            <ul class="checkbox-list">
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="rules" value="Children Allowed"/>
+                                                        <span>Children Allowed</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="rules" value="Pets Allowed"/>
+                                                        <span>Pets Allowed</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="rules" value="Smoking allowed"/>
+                                                        <span>Smoking allowed</span>
+                                                    </label>
+                                                </li>
+
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="rules" value="Party Allowed"/>
+                                                        <span>Party Allowed</span>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+                                <!--Hidden input-->
+                                <input type="hidden" name="property_id" value="<%= property._id %>">
+
+                                <div class="w-100"></div>
+                                <!-- File Attachment Input -->
+                                <!-- Input -->
+                                <div class="col-sm-12 mb-4">
+                                <label class="file-attachment-input w" for="Images">
+                                    <span class="d-block mb-2">Upload Images</span>
+                                    <small class="d-block text-muted">Maximum file size is 2MB</small>
+                                    <input id="images" name="images-attachment" type="file" class="js-custom-file-attach file-attachment-input__label"
+                                           data-result-text-target="#imageFileUploadText">
+                                    <span id="imageFileUploadText"></span>
+                                </label>
+                                </div>
+                                <!-- End File Attachment Input -->
+                                <div class="w-100"></div>
+                                <a href="/admin-dashboard" class="btn btn-secondary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Cancel</a>
+                                <button type="submit" class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">Edit Property</button>
+                            </div>
+                        </form>
+                        <!-- End Contacts Form -->
+                    </div>
+                </div>
+        </div>
+    </div>
+</main>
+<!-- ========== END MAIN CONTENT ========== -->
+
+<%- include('_layouts/footer') -%>
+
+<!-- Go to Top -->
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+    <span class="flaticon-arrow u-go-to-modern__inner"></span>
+</a>
+<!-- End Go to Top -->
+
+<!-- JS Global Compulsory -->
+<script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+<script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+<script src="assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>
+<script src="assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
+<script src="assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="assets/vendor/slick-carousel/slick/slick.js"></script>
+<script src="assets/vendor/gmaps/gmaps.min.js"></script>
+<script src="assets/vendor/fancybox/jquery.fancybox.min.js"></script>
+<script src="assets/vendor/appear.js"></script>
+<script src="assets/vendor/summernote/dist/summernote-lite.js"></script>
+
+
+<!-- JS MyTravel -->
+<script src="assets/js/hs.core.js"></script>
+<script src="assets/js/components/hs.header.js"></script>
+<script src="assets/js/components/hs.unfold.js"></script>
+<script src="assets/js/components/hs.validation.js"></script>
+<script src="assets/js/components/hs.show-animation.js"></script>
+<script src="assets/js/components/hs.range-datepicker.js"></script>
+<script src="assets/js/components/hs.selectpicker.js"></script>
+<script src="assets/js/components/hs.go-to.js"></script>
+<script src="assets/js/components/hs.slick-carousel.js"></script>
+<script src="assets/js/components/hs.quantity-counter.js"></script>
+<script src="assets/js/components/hs.g-map.js"></script>
+<script src="assets/js/components/hs.fancybox.js"></script>
+<script src="assets/js/components/hs.scroll-nav.js"></script>
+<script src="assets/js/components/hs.sticky-block.js"></script>
+<script src="assets/js/components/hs.focus-state.js"></script>
+<script src="assets/js/components/hs.summernote-editor.js"></script>
+<script src="assets/js/components/hs.file-attach.js"></script>
+
+<!-- JS Plugins Init. -->
+<script>
+    $(window).on('load', function () {
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 1199.98,
+            hideTimeOut: 0
+        });
+
+        // Page preloader
+        setTimeout(function() {
+            $('#jsPreloader').fadeOut(500)
+        }, 800);
+    });
+
+    $(document).on('ready', function () {
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#header'));
+
+        // initialization of google map
+        function initMap() {
+            $.HSCore.components.HSGMap.init('.js-g-map');
+        }
+
+        // initialization of unfold component
+        $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate', {
+            rules: {
+                confirmPassword: {
+                    equalTo: '#signupPassword'
+                }
+            }
+        });
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of forms
+        $.HSCore.components.HSFocusState.init();
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of popups
+        $.HSCore.components.HSFancyBox.init('.js-fancybox');
+
+        // initialization of datepicker
+        $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+
+        // initialization of select
+        $.HSCore.components.HSSelectPicker.init('.js-select');
+
+        // initialization of sticky blocks
+        $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+
+        // initialization of quantity counter
+        $.HSCore.components.HSQantityCounter.init('.js-quantity');
+
+        // initialization of slick carousel
+        $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
+
+        // initialization of go to
+        $.HSCore.components.HSGoTo.init('.js-go-to');
+
+        // initialization of HSScrollNav component
+        $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
+            duration: 700
+        });
+        // initialization of text editors
+        $.HSCore.components.HSSummernoteEditor.init('.js-summernote-editor');
+        // initialization of file attach module
+        $.HSCore.components.HSFileAttach.init('.js-custom-file-attach');
+    });
+</script>
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>
+
+</body>
+</html>
