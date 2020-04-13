@@ -49,7 +49,7 @@ myApp.set('view engine', 'ejs');
 
 //---------------- Routes ------------------
 
-myApp.get('/', function (req, res) {
+myApp.get('/', function (req, res) {   
     renderIndex(req, res, Users)
 });
 
@@ -73,18 +73,51 @@ myApp.get('/property-details/:id', function (req, res) {
     
 });
 
-function getPropertyDetails(id,req, res)
-{
-    console.log("id="+id);
-    Property.find({_id: id}).exec(function (err, property_details) {
+function getPropertyDetails(id, req, res) {
+    var disabledDates = [];
+    console.log("id=" + id);
+    Property.findOne({ _id: id }).exec(function (err, property_details) {
         // console.log("found properyid : "+property_details);
-        if(property_details.length > 0)
-        {
-            //console.log("rendering properyid : "+property_details.length);
-            res.render('property-details', {
-                PropertyDetails: property_details[0],
-                UserPreference : req.session.UserPreference
+        if (property_details) {
+            //Check if property available for the selected dates or already Booked.
+            var isPropertyAvailable = true;
+            Booking.find({ property_id: property_details._id }).exec(function (err, bookings) {
+                if (err) {
+                    console.log('error boss : ' + err);
+                }
+               
+                if (bookings && bookings.length > 0) {
+                    var userCheckInDate = new Date(Date.parse(req.session.UserPreference.CheckInDate));
+                    var userCheckOutDate = new Date(Date.parse(req.session.UserPreference.CheckOutDate));
+                    for (let bookedProperty of bookings)// bookings.forEach(bookedProperty => 
+                    {
+                        disabledDates.push(
+                            {
+                                from : dateFormat(new Date(Date.parse(bookedProperty.checkinDate)),"dd mmm yyyy"),
+                                to : dateFormat(new Date(Date.parse(bookedProperty.checkoutDate)),"dd mmm yyyy")
+                            }
+                        );
+                        
+                        if ((userCheckInDate >= bookedProperty.checkinDate &&
+                            userCheckInDate <= bookedProperty.checkoutDate) ||
+                            (userCheckOutDate >= bookedProperty.checkinDate &&
+                                userCheckOutDate <= bookedProperty.checkoutDate) ||
+                            (bookedProperty.checkinDate >= userCheckInDate &&
+                                bookedProperty.checkoutDate <= userCheckOutDate)) {
+                            isPropertyAvailable = false;
+                        }
+                    }
+
+                }
+                //console.log("rendering properyid : "+property_details.length);
+                res.render('property-details', {
+                    PropertyDetails: property_details,
+                    UserPreference: req.session.UserPreference,
+                    IsPropertyAvailable: isPropertyAvailable,
+                    DisabledDates: disabledDates
+                });
             });
+
         }
     });
 }
@@ -154,12 +187,12 @@ myApp.post('/login', function (req, res) {
 myApp.get('/owner-dashboard', function (req, res) {
     if (req.session.userLoggedIn && req.session.role === 'owner') {
         Property.find({owner: req.session.userid}).exec(function (err, properties) {
-            Users.findOne({_id: req.session.userid}).exec(function (err, owner) {
+            Users.findOne({_id: req.session.userid}).exec(function (err, login_user) {
                 res.render('owner-dashboard', {
                     successMsg: req.flash('successMsg'),
                     errorMsg: req.flash('errorMsg'),
                     properties: properties,
-                    owner: owner,
+                    login_user: login_user,
                     session: req.session
                 });
             });
@@ -170,16 +203,24 @@ myApp.get('/owner-dashboard', function (req, res) {
 });
 
 myApp.get('/admin-dashboard', function (req, res) {
-    if (req.session.userLoggedIn && req.session.role === 'admin') {
-        Users.find({}).exec(function (err, users) {
-            res.render('admin-dashboard',
-                {
-                    successMsg: req.flash('successMsg'),
-                    errorMsg: req.flash('errorMsg'),
-                    users: users,
-                    session: req.session
-                })
+    if (req.session.userLoggedIn) {
+        Property.find({}).exec(function (err, properties) {
+            Users.find({}).exec(function (err, users) {
+                Users.findOne({_id: req.session.userid}).exec(function (err, login_user) {
+                    res.render('admin-dashboard',
+                        {
+                            successMsg: req.flash('successMsg'),
+                            errorMsg: req.flash('errorMsg'),
+                            users: users,
+                            login_user: login_user,
+                            properties:properties,
+                            session: req.session
+                        })
+            
+                });
+            });
         });
+
     } else {
         res.render('login')
     }
@@ -198,6 +239,74 @@ myApp.get('/delete/:type/:id', function (req, res) {
     }
 
 });
+
+myApp.get('/edit-property/:id',function(req, res){
+    if(req.session.userLoggedIn)
+    {
+        var id=req.params.id;
+        Property.findOne({_id:id}).exec(function(err, property){
+                res.render('edit-property',{property : property})
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+});
+myApp.get('/delete/:id',function(req, res){
+    var id=req.params.id;
+   
+        Property.findByIdAndDelete({_id:id}).exec(function(err1, property){
+            if(req.session.role==='owner'){
+                res.redirect('/owner-dashboard');
+            }
+            else{
+                res.redirect('/admin-dashboard');
+            }   
+        });
+});
+myApp.post('/edit-property',function(req, res){
+    let rentalname = req.body.rentalname;
+    let description = req.body.description;
+    let price = req.body.price;
+    let address = req.body.address;
+    let city = req.body.city;
+    let state = req.body.state;
+    let country = req.body.country;
+    let area = req.body.area;
+    let rooms = req.body.rooms;
+    let baths = req.body.baths;
+    let beds = req.body.beds;
+    let amenities = req.body.amenities;
+    let rules = req.body.rules;
+    let id=req.body.property_id;
+    Property.findOne({_id:id}).exec(function(err,property){
+        property.rentalname=rentalname;
+        property.description=description;
+        property.price=price;
+        property.address=address;
+        property.city=city;
+        property.state=state;
+        property.country=country;
+        property.area= area;
+        property.rooms=rooms;
+        property.baths=baths;
+        property.beds=beds;
+        property.amenities=amenities;
+        property.rules=rules;
+        property.createdOn= new Date(Date.now()).toISOString();
+        property.save().then( ()=>{
+            console.log("property updated successfully");
+        });
+    });
+        if(req.session.role=='owner'){
+           res.redirect('/owner-dashboard');
+        }
+        else{
+            res.redirect('/admin-dashboard');
+        }
+});
+
 myApp.post('/add-property', function (req, res) {
     console.log(req.session.userid);
     createProperty(req, res, Property)
@@ -231,8 +340,10 @@ myApp.post('/property-list', function (req, res) {
     var checkinDate = new Date(Date.parse(dates[0]));
     var checkoutDate = new Date(Date.parse(dates[1]));
     //Jul 1 / 2020", "Aug 25 / 2020
-    var dispDate = "\""+dates[0].substring(0,3)+" "+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
-    dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
+    //"10-May-2020", "20-May-2020"
+    
+    var dispDate = '"'+dateFormat(new Date(Date.parse(checkinDate)),"dd mmm yyyy")+'","'+dateFormat(new Date(Date.parse(checkoutDate)),"dd mmm yyyy")+'"'; //"\""+dates[0].substring(0,3)+"-"+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
+   // dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
 
 
     console.log("Searching Properties for location/hotel :" +location);

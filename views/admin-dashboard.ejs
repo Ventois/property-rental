@@ -12,7 +12,7 @@
         <div class="tabs-block tabs-v1">
             <div class="container space-1">
                 <div class="w-md-80 w-lg-50 text-center mx-md-auto my-3">
-                    <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello Administrator, Welcome
+                    <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello <%= login_user.firstname%>, Welcome
                         to your Dashboard</h2>
                 </div>
                 <!-- Nav Classic -->
@@ -139,7 +139,60 @@
                     </div>
                     <div class="tab-pane fade" id="upcoming" role="tabpanel" aria-labelledby="pills-two-example-t1-tab">
                         <div class="row">
-                            <h1>All Properties</h1>
+                            <% if(properties.length > 0) { %>
+                            <div class="container d-flex justify-content-between">    
+                                <h1>All Properties</h1>
+                                <a href="/add-property" class="link">
+                                    <span class="link__icon ml-1">
+                                        <span class="link__icon-inner">+</span>
+                                        </span>
+                                        Add property</a>
+                            </div>
+                           <table class="table table-light">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Property Title</th>
+                                    <th scope="col"><span class="fas fa-mail-bulk mr-2"></span>Address</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>City</th>
+                                    <th scope="col"><span class="fas fa-calendar mr-2"></span>Date Created</th>
+                                    <th scope="col"><span class="fas fa-cogs mr-2"></span>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% properties.forEach(function(property){ %>  
+                                <tr>
+                                    <th scope="row" class="align-middle">
+                                        <div class="d-flex align-items-center text-primary font-weight-medium">
+                                        <label><a href="/property-details/<%= property._id%>"><%= property.rentalname%></a> </label>
+                                        </div>
+                                    </th>
+                                    <td class="align-middle text-secondary">
+                                        <small class="d-block"><%= property.address%></small>
+                                    </td>
+                                    <td class="align-middle text-secondary">
+                                        <small class="d-block"><%= property.city%></small>
+                                    </td>
+                                    <td class="align-middle text-secondary">
+                                        <small class="d-block"><%= property.createdOn.toDateString()%></small>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/edit-property/<%= property._id%>" data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <span class="fas fa-pen btn-icon__inner"></span>
+                                        </a>
+                                        <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete/<%= property._id%>" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <span class="fas fa-trash btn-icon__inner"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                </tbody>
+                            </table>
+                                <% } else {%>
+                                    <div class="alert alert-warning m-auto" role="alert">
+                                        <h4 class="alert-heading">No property!</h4>
+                                        <p class="alert-text">There is no property added by any owner yet.</p>
+                                    </div>
+                                <% }%>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="allstays" role="tabpanel"
@@ -282,166 +335,6 @@
                                             <td class="align-middle text-secondary">16 Apr</td>
                                             <td class="align-middle text-danger">Rejected</td>
                                         </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR009</td>
-                                            <td>
-                                                <span>Dropbox</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$12.31</td>
-                                            <td class="align-middle text-secondary">12 Apr</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0010</td>
-                                            <td>
-                                                <span>Google</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$891.00</td>
-                                            <td class="align-middle text-secondary">29 Apr</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0011</td>
-                                            <td>
-                                                <span>Atlassian</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$321.11</td>
-                                            <td class="align-middle text-secondary">30 Apr</td>
-                                            <td class="align-middle text-warning">Pending</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0012</td>
-                                            <td>
-                                                <span>Slack</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$16.29</td>
-                                            <td class="align-middle text-secondary">02 Mar</td>
-                                            <td class="align-middle text-danger">Rejected</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0013</td>
-                                            <td>
-                                                <span>Spotify</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$4.00</td>
-                                            <td class="align-middle text-secondary">01 Mar</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0014</td>
-                                            <td>
-                                                <span>Htmlstream</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$3,462.00</td>
-                                            <td class="align-middle text-secondary">23 Mar</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0015</td>
-                                            <td>
-                                                <span>Spotify</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$9.00</td>
-                                            <td class="align-middle text-secondary">27 Mar</td>
-                                            <td class="align-middle text-danger">Rejected</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0016</td>
-                                            <td>
-                                                <span>Dropbox</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$196.73</td>
-                                            <td class="align-middle text-secondary">04 Feb</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0017</td>
-                                            <td>
-                                                <span>Google</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$235.99</td>
-                                            <td class="align-middle text-secondary">18 Feb</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0018</td>
-                                            <td>
-                                                <span>MyTravelApp</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$34.00</td>
-                                            <td class="align-middle text-secondary">21 Feb</td>
-                                            <td class="align-middle text-warning">Pending</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0019</td>
-                                            <td>
-                                                <span>Slack</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$72.89</td>
-                                            <td class="align-middle text-secondary">28 Feb</td>
-                                            <td class="align-middle text-danger">Rejected</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0020</td>
-                                            <td>
-                                                <span>Spotify</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$9.00</td>
-                                            <td class="align-middle text-secondary">05 Jan</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0021</td>
-                                            <td>
-                                                <span>Htmlstream</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$7,485.00</td>
-                                            <td class="align-middle text-secondary">15 Jan</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0022</td>
-                                            <td>
-                                                <span>Slack</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$76.00</td>
-                                            <td class="align-middle text-secondary">22 Jan</td>
-                                            <td class="align-middle text-danger">Rejected</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0023</td>
-                                            <td>
-                                                <span>Spotify</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$12.00</td>
-                                            <td class="align-middle text-secondary">18 Jan</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="align-middle text-secondary font-weight-normal">FR0024</td>
-                                            <td>
-                                                <span>Htmlstream</span>
-                                            </td>
-                                            <td class="align-middle text-primary">$87.43</td>
-                                            <td class="align-middle text-secondary">30 Jan</td>
-                                            <td class="align-middle text-success">Completed</td>
-                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -457,8 +350,98 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="pills-four-example-t1-tab">
-                        <div class="row">
-                            <h1>Account Information</h1>
+                        <div class="row container flex justify-content-between ">
+                            <div>
+                                <h1>Account Information</h1>  
+                            </div>
+                            <div >
+                                <a class="link font-weight-bold" href="/edit-user-profile/<%= login_user._id%>"
+                                            data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <span class="link__icon ml-5">
+                                                    <span class="fas fa-pen btn-icon__inner"></span>
+                                            </span>
+                                Edit Profile</a>
+                            </div>  
+                        </div>
+                        <div class="max-width-810">
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state">
+                                    <label class="font-weight-bold" for="firstname">First Name</label>
+                                    <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                        <input type="text" disabled class="form-control" value="<%= login_user.firstname%>" name="firstname" id="firstname" placeholder="First Name" aria-label="First Name" aria-describedby="firstname" required data-msg="Please enter a valid first name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="username">
+                                                <span class="flaticon-user font-size-20"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                    <label class="font-weight-bold" for="lastname">Last Name</label>
+                                    <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                        <input type="text" disabled class="form-control"  value="<%= login_user.lastname%>" name="lastname" id="lastname" placeholder="Last Name" aria-label="Last Name" aria-describedby="normalname" required data-msg="Please enter a valid last name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="username">
+                                                <span class="flaticon-user font-size-20"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                    <label class="font-weight-bold" for="email">Email</label>
+                                    <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                        <input type="email" disabled class="form-control"  value="<%= login_user.email%>" name="email" id="email" placeholder="Email" aria-label="Email" aria-describedby="signupEmail" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="signupEmail">
+                                                <span class="far fa-envelope font-size-20"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                    <label class="font-weight-bold" for="phone">Phone Number</label>
+                                    <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                        <input type="text" disabled class="form-control"  value="<%= login_user.phone%>" name="phone" id="phone" placeholder="Phone Number" aria-label="phone" aria-describedby="phone" required data-msg="Please enter a valid phone number." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="phone">
+                                                <span class="flaticon-phone-call font-size-20"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Form Group -->
+                            <div class="form-group pb-1">
+                                <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                    <label class="font-weight-bold" for="signupSrPassword">Password</label>
+                                    <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                        <input type="password" disabled class="form-control" name="password" value="<%= login_user.phone%>" id="signupSrPassword" placeholder="Password" aria-label="Password" aria-describedby="signupPassword" required data-msg="Please enter a valid password" data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="signupPassword">
+                                                <span class="flaticon-password font-size-20"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
                         </div>
                     </div>
                 </div>

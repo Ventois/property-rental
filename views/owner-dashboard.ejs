@@ -11,7 +11,7 @@
     <div class="tabs-block tabs-v1">
         <div class="container space-1">
             <div class="w-md-80 w-lg-50 text-center mx-md-auto my-3">
-                <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello John, Welcome to your Dashboard</h2>
+                <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello <%= login_user.firstname%>, Welcome to your Dashboard</h2>
             </div>
             <!-- Nav Classic -->
             <ul class="nav tab-nav-pill flex-nowrap pb-4 pb-lg-5 tab-nav justify-content-lg-center" role="tablist">
@@ -104,10 +104,10 @@
                                     <small class="d-block"><%= property.createdOn%></small>
                                 </td>
                                 <td class="align-middle">
-                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/add-property" data-toggle="tooltip" data-placement="top" title="Edit">
+                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/edit-property/<%= property._id%>" data-toggle="tooltip" data-placement="top" title="Edit">
                                         <span class="fas fa-pen btn-icon__inner"></span>
                                     </a>
-                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete/property/<%= property._id %>" data-toggle="tooltip" data-placement="top" title="Delete"  onclick="return confirm('Are you sure?')">
+                                    <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover" href="/delete/<%= property._id %>" data-toggle="tooltip" data-placement="top" title="Delete"  onclick="return confirm('Are you sure?')">
                                         <span class="fas fa-trash btn-icon__inner"></span>
                                     </a>
                                 </td>
@@ -757,8 +757,98 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="pills-four-example-t1-tab">
-                    <div class="row">
-                        <h1>Account Information</h1>
+                    <div class="row container flex justify-content-between ">
+                        <div>
+                            <h1>Account Information</h1>  
+                        </div>
+                        <div >
+                            <a class="link font-weight-bold" href="/edit-user-profile/<%= login_user._id%>"
+                                        data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <span class="link__icon ml-5">
+                                                <span class="fas fa-pen btn-icon__inner"></span>
+                                        </span>
+                            Edit Profile</a>
+                        </div>  
+                    </div>
+                    <div class="max-width-810">
+                        <div class="form-group pb-1">
+                            <div class="js-form-message js-focus-state">
+                                <label class="font-weight-bold" for="firstname">First Name</label>
+                                <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                    <input type="text" disabled class="form-control" value="<%= login_user.firstname%>" name="firstname" id="firstname" placeholder="First Name" aria-label="First Name" aria-describedby="firstname" required data-msg="Please enter a valid first name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="username">
+                                            <span class="flaticon-user font-size-20"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- Form Group -->
+                        <div class="form-group pb-1">
+                            <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                <label class="font-weight-bold" for="lastname">Last Name</label>
+                                <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                    <input type="text" disabled class="form-control"  value="<%= login_user.lastname%>" name="lastname" id="lastname" placeholder="Last Name" aria-label="Last Name" aria-describedby="normalname" required data-msg="Please enter a valid last name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="username">
+                                            <span class="flaticon-user font-size-20"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- Form Group -->
+                        <div class="form-group pb-1">
+                            <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                <label class="font-weight-bold" for="email">Email</label>
+                                <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                    <input type="email" disabled class="form-control"  value="<%= login_user.email%>" name="email" id="email" placeholder="Email" aria-label="Email" aria-describedby="signupEmail" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="signupEmail">
+                                            <span class="far fa-envelope font-size-20"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- Form Group -->
+                        <div class="form-group pb-1">
+                            <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                <label class="font-weight-bold" for="phone">Phone Number</label>
+                                <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                    <input type="text" disabled class="form-control"  value="<%= login_user.phone%>" name="phone" id="phone" placeholder="Phone Number" aria-label="phone" aria-describedby="phone" required data-msg="Please enter a valid phone number." data-error-class="u-has-error" data-success-class="u-has-success">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="phone">
+                                            <span class="flaticon-phone-call font-size-20"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- Form Group -->
+                        <div class="form-group pb-1">
+                            <div class="js-form-message js-focus-state  border-width-2 border-color-8 rounded-sm">
+                                <label class="font-weight-bold" for="signupSrPassword">Password</label>
+                                <div class="input-group input-group-tranparent border input-group-borderless input-group-radiusless">
+                                    <input type="password" disabled class="form-control" name="password" value="<%= login_user.phone%>" id="signupSrPassword" placeholder="Password" aria-label="Password" aria-describedby="signupPassword" required data-msg="Please enter a valid password" data-error-class="u-has-error" data-success-class="u-has-success">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="signupPassword">
+                                            <span class="flaticon-password font-size-20"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Form Group -->
                     </div>
                 </div>
             </div>

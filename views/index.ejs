@@ -3,6 +3,7 @@
     <head>
         <%- include('_layouts/head') -%>
         <%- include('_layouts/scripts') -%>
+        
         <script language="javascript" type="text/javascript">
           
         function updateBookingInfo()
@@ -13,17 +14,14 @@
             var msg = adultsCount+" Guests - "+roomsCount+" Rooms";
            element.innerHTML = msg;
             $('#GuestsAndRooms').val(msg);
-            //$('#GuestsAndRooms').text = msg;
-           // window.location = "#";
-            //document.getElementById('#').scrollIntoView();
-            //$('#basicDropdownClick').hide();
-            //$('#basicDropdownClick').show();
+            
         }
-       
-            $(function(){
-                var dtToday = new Date();
+
+        function getMaxDate()
+        {
+            var dtToday = new Date();
                 
-                var month = dtToday.getMonth() + 1;
+                var month = dtToday.getMonth() + 2;
                 var day = dtToday.getDate();
                 var year = dtToday.getFullYear();
                 if(month < 10)
@@ -32,8 +30,64 @@
                     day = '0' + day.toString();
                 
                 var maxDate = year + '-' + month + '-' + day;
+                console.log('max date :'+maxDate);
+                return maxDate;
+        }
+       
+            $(function(){
+                window.setTimeout(function () {
+        // your stuff here
+        //var picker = flatpickr('#checkin_checkout_dates');
+        const myInput = document.getElementById("checkin_checkout_dates");
+        myInput._flatpickr.config.minDate='today';
+        myInput._flatpickr.config.dateFormat = 'd M yy';
+        var mxdate = getMaxDate();
+        //var mydate = mxdate.getDate()+'-May-'+mxdate.getFullYear();
+        myInput._flatpickr.config.maxDate= mydate ;
+console.log('input :'+myInput._flatpickr.config);
+       // myInput.config['minDate']='today';
+    }, 0);
+                var today =new Date();
+                
+                             //  document.getElementById('checkin_checkout_dates').style.display = 'none';
+//document.getElementById('checkin_checkout_dates').style.display = 'block';
+                //picker.config.minDate=new Date();
+               // console.log('getting picker :) '+picker.config);
+               var from1 = flatpickr('#dates', {
+                   minDate:"today",
+              // "plugins": [new rangePlugin()],
+               maxDate : getMaxDate(),
+               dateFormat:"d-M-Y",
+               mode:"range",
+              
+               disable: [new Date(), new Date(2020, 3, 13), new Date(2020, 3, 15),new Date(2020, 3, 17)]
+            });
+
+       
+                // $("#checkin_checkout_dates").flatpickr({
+                //     minDate:new Date()
+                // });
+                //document.getElementById('checkin_checkout_dates').setAttribute("minDate", "today");
+                // $('#checkin_checkout_dates').prop('readonly', false);
+                // $('#checkin_checkout_dates').attr('readonly', false);
+                // $('#checkin_checkout_dates').attr('minDate','2020-03');
+                
+               // var $j = jQuery.noConflict();
+//$j("#datepicker").datepicker();
+             //   $("#txtDate").datepicker();
+                $('#txtGuestsCount').val('2');
+                console.log($('#txtGuestsCount').val());
+                
+                
                 //alert(maxDate);
-                $('#checkin_checkout_dates').attr('min', maxDate);
+                //$('#checkin_checkout_dates').attr('min', maxDate);
+               
+    
+//var control = $('input[name="checkin_checkout_dates"]')
+    //             $('input[id="checkin_checkout_dates"]').daterangepicker({
+    //                 timePicker: true,
+    //                 minDate=dtToday
+    //   });
             });
         </script>
     </head>
@@ -41,6 +95,10 @@
     <%- include('_layouts/header') -%>
         <!-- ========== MAIN CONTENT ========== -->
         <main id="content">
+           
+
+            <!-- <input id="dates" type="text"> -->
+           
             <!-- ========== HERO ========== -->
             <div class="hero-block hero-v6 bg-img-hero-bottom gradient-overlay-half-bg-charcoal-gray text-center z-index-2" style="background-image: url(assets/img/1920x750/img3.jpg);">
                 <div class="container space-2 space-top-xl-6">
@@ -81,14 +139,14 @@
                                                       <i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
                                                     </span>
                                                 </div>
-                                                 <input class="js-range-datepicker font-size-lg-16 shadow-none font-weight-bold form-control hero-form bg-transparent  border-0" type="date"
+                                                 <input class="js-range-datepicker font-size-lg-16 shadow-none font-weight-bold form-control hero-form bg-transparent  border-0" type="text"
                                                      data-rp-wrapper="#datepickerWrapperFromOne"
-                                                     data-rp-type="range"
-                                                     data-rp-date-format="M d / y"
-                                                     data-rp-default-date='["Jul 7 / 2020", "Aug 25 / 2020"]'
-                                                        id =  "checkin_checkout_dates"                 
-                                                     name= "checkin_checkout_dates">
+                                                     name= "checkin_checkout_dates"
+                                                     data-rp-type="range"                                                     
+                                                        id =  "checkin_checkout_dates"
+                                                        data-rp-default-date='["15-Apr-2020", "18-Apr-2020"]'>
                                             </div>
+                                          
                                              <!-- End Datepicker -->
                                         </div>
                                         <!-- End Input -->
@@ -152,16 +210,21 @@
                                     <div id="searchLocation" class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
                                         <button type="submit" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"><i class="flaticon-magnifying-glass font-size-20 mr-2"></i>Search</button>
                                     </div>
+                                   
                                   </div>
+
+                                  
                                   <!-- End Checkbox -->
                                 </form>
+                                       
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+                 
             <!-- ========== END HERO ========== -->
-
+           
             <!-- Testimonials v2 -->
             <div class="testimonial-block testimonial-v2 border-bottom border-color-8 mt-8">
                 <div class="container">
@@ -283,5 +346,7 @@
         </a>
         <!-- End Go to Top -->
     <%- include('_layouts/scripts') -%>
+    
+    
     </body>
 </html>
