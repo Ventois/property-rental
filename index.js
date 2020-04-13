@@ -49,7 +49,7 @@ myApp.set('view engine', 'ejs');
 
 //---------------- Routes ------------------
 
-myApp.get('/', function (req, res) {
+myApp.get('/', function (req, res) {   
     renderIndex(req, res, Users)
 });
 
@@ -73,18 +73,51 @@ myApp.get('/property-details/:id', function (req, res) {
     
 });
 
-function getPropertyDetails(id,req, res)
-{
-    console.log("id="+id);
-    Property.find({_id: id}).exec(function (err, property_details) {
+function getPropertyDetails(id, req, res) {
+    var disabledDates = [];
+    console.log("id=" + id);
+    Property.findOne({ _id: id }).exec(function (err, property_details) {
         // console.log("found properyid : "+property_details);
-        if(property_details.length > 0)
-        {
-            //console.log("rendering properyid : "+property_details.length);
-            res.render('property-details', {
-                PropertyDetails: property_details[0],
-                UserPreference : req.session.UserPreference
+        if (property_details) {
+            //Check if property available for the selected dates or already Booked.
+            var isPropertyAvailable = true;
+            Booking.find({ property_id: property_details._id }).exec(function (err, bookings) {
+                if (err) {
+                    console.log('error boss : ' + err);
+                }
+               
+                if (bookings && bookings.length > 0) {
+                    var userCheckInDate = new Date(Date.parse(req.session.UserPreference.CheckInDate));
+                    var userCheckOutDate = new Date(Date.parse(req.session.UserPreference.CheckOutDate));
+                    for (let bookedProperty of bookings)// bookings.forEach(bookedProperty => 
+                    {
+                        disabledDates.push(
+                            {
+                                from : dateFormat(new Date(Date.parse(bookedProperty.checkinDate)),"dd mmm yyyy"),
+                                to : dateFormat(new Date(Date.parse(bookedProperty.checkoutDate)),"dd mmm yyyy")
+                            }
+                        );
+                        
+                        if ((userCheckInDate >= bookedProperty.checkinDate &&
+                            userCheckInDate <= bookedProperty.checkoutDate) ||
+                            (userCheckOutDate >= bookedProperty.checkinDate &&
+                                userCheckOutDate <= bookedProperty.checkoutDate) ||
+                            (bookedProperty.checkinDate >= userCheckInDate &&
+                                bookedProperty.checkoutDate <= userCheckOutDate)) {
+                            isPropertyAvailable = false;
+                        }
+                    }
+
+                }
+                //console.log("rendering properyid : "+property_details.length);
+                res.render('property-details', {
+                    PropertyDetails: property_details,
+                    UserPreference: req.session.UserPreference,
+                    IsPropertyAvailable: isPropertyAvailable,
+                    DisabledDates: disabledDates
+                });
             });
+
         }
     });
 }
@@ -307,8 +340,10 @@ myApp.post('/property-list', function (req, res) {
     var checkinDate = new Date(Date.parse(dates[0]));
     var checkoutDate = new Date(Date.parse(dates[1]));
     //Jul 1 / 2020", "Aug 25 / 2020
-    var dispDate = "\""+dates[0].substring(0,3)+" "+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
-    dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
+    //"10-May-2020", "20-May-2020"
+    
+    var dispDate = '"'+dateFormat(new Date(Date.parse(checkinDate)),"dd mmm yyyy")+'","'+dateFormat(new Date(Date.parse(checkoutDate)),"dd mmm yyyy")+'"'; //"\""+dates[0].substring(0,3)+"-"+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
+   // dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
 
 
     console.log("Searching Properties for location/hotel :" +location);
