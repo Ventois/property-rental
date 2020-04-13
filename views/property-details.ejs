@@ -4,8 +4,131 @@
     <%- include('_layouts/head') -%>
     <%- include('_layouts/scripts') -%>
     <script language="javascript" type="text/javascript">
-		
-	//	$(document).ready(function () {
+    function getMaxDate()
+        {
+            var dtToday = new Date();
+                
+                var month = dtToday.getMonth() + 3;
+                var day = dtToday.getDate();
+                var year = dtToday.getFullYear();
+                if(month < 10)
+                    month = '0' + month.toString();
+                if(day < 10)
+                    day = '0' + day.toString();
+                
+                var maxDate = year + '-' + month + '-' + day;
+                console.log('max date :'+maxDate);
+                return new Date(year,month,day);
+        }
+        function display()
+         {
+           //  alert('calendar closed!!!');
+    //          console.log('picketr closed!');
+    //          const myInput = document.getElementById("checkin_checkout_dates");
+    //     //myInput.className = 'active';
+    //   //  myInput._flatpickr.config.minDate='today';
+    //     myInput._flatpickr.config._disable = ["14 Apr 2020"];
+    //     $("#checkin_checkout_dates").datepicker("refresh");
+         }
+        
+         function updateBookingInfo()
+        {
+            var element = document.getElementById("spanGuestsAndRooms");
+            var adultsCount = $('#txtGuestsCount').val();
+            var roomsCount = $('#txtRoomsCount').val();
+            var msg = adultsCount+" Guests - "+roomsCount+" Rooms";
+           element.innerHTML = msg;
+            $('#txtRoomsAndGuests').val(msg);
+            window.location = "#";
+            //document.getElementById('#').scrollIntoView();
+            //$('#basicDropdownClick').hide();
+            //$('#basicDropdownClick').show();
+        }
+        function dispData(){
+       alert('picker!');
+            }
+		$(document).ready(function () {
+            console.log('dispdate : <%=UserPreference.DisplayDate%>');
+            console.log('CheckInDate : <%=UserPreference.CheckInDate%>');
+            console.log('CheckOutDate : <%=UserPreference.CheckOutDate%>');
+            var btnbooknow = document.getElementById("btnBookNow");
+            var btnsoldout = document.getElementById("btnSoldOut");
+            var msg = document.getElementById("txtMessage");
+            <%if(!IsPropertyAvailable)
+            {%>
+               
+            btnbooknow.style.display = "none";
+            btnsoldout.style.display = "block";
+            msg.style.display = "block";
+                <%}
+                else{
+                    %>
+                    btnbooknow.style.display = "block";
+            btnsoldout.style.display = "none";
+            msg.style.display = "none";
+                    <%}%>
+            //const myInput1 = document.getElementById("checkin_checkout_dates");
+           // myInput1._flatpickr.config.onClose=display;
+            window.setTimeout(function () {
+        // your stuff here
+        //var picker = flatpickr('#checkin_checkout_dates');
+
+        const myInput = document.getElementById("checkin_checkout_dates");
+        //myInput.className = 'active';
+        myInput._flatpickr.config.minDate='today';
+        //myInput._flatpickr.config.disable = ["27 Apr 2020"];
+        //console.log('<%=DisabledDates[0].from%>');
+        var items = [];
+        <%
+        for(let daterange of DisabledDates)
+        {%>
+            items.push(
+                {
+                    from : '<%=daterange.from%>',
+                    to :  '<%=daterange.to%>'
+                });
+        <%}
+        %>
+        //myInput._flatpickr.set('defaultDate','<%=UserPreference.CheckInDate%>,<%=UserPreference.CheckInDate%>');
+        myInput._flatpickr.set('disable', items); 
+        
+        //myInput._flatpickr.config.set('onClose', dispData()); 
+        //console.log('len : '+myInput._flatpickr.config.onClose.length);
+        myInput._flatpickr.config.onClose.push(function(selectedDates, dateStr, instance){
+            
+            btnbooknow.style.display = "block";
+            btnsoldout.style.display = "none";
+            msg.style.display = "none";
+            //btnsoldout.style.display = "none";
+        }); 
+        myInput._flatpickr.set('maxDate',getMaxDate());
+        console.log('[\"<%=UserPreference.CheckInDate%>\" , \"<%=UserPreference.CheckOutDate%>\"]');
+        
+        //myInput._flatpickr("refresh");
+        //
+//         myInput._flatpickr = {
+//  minDate:'today'
+//         onClose:function(selectedDates, dateStr, instance)
+//           {
+//             console.log(selectedDates+'\n'+ dateStr+'\n'+ instance);
+//           }
+//        }
+        myInput._flatpickr.config.dateFormat = 'd M yy';
+     //   myInput._flatpickr.set("onValueUpdate",dispData); 
+        //var mxdate = getMaxDate();
+        //var mydate = mxdate.getDate()+'-May-'+mxdate.getFullYear();
+       // myInput._flatpickr.config.maxDate= mydate ;
+//console.log('input :'+myInput._flatpickr.config);
+       // myInput.config['minDate']='today';
+      // $("#checkin_checkout_dates").load(location.href + " #checkin_checkout_dates");
+    }, 0);
+            //if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+    $('#txtGuestsCount').val('<%= UserPreference.Guests%>');      
+
+        //      const myInput = document.getElementById("checkin_checkout_dates");
+        // myInput._flatpickr.config.minDate='today';
+        // myInput._flatpickr.config._disable = ["27 Apr 2020"];     
+        });
 
 	// 		$('#btnBookNow').click(function () {
     //             var dates= $('#checkin_checkout_dates').val().split(" - ");
@@ -56,6 +179,16 @@
 
         <!-- ========== MAIN CONTENT ========== -->
         <main id="content">
+            <!-- Breadcrumb -->
+            <div class="border-bottom mb-7">
+                <div class="container">
+                    <nav class="py-3" aria-label="breadcrumb">
+                        <br>
+                    </nav>
+                </div>
+            </div>
+            <!-- End Breadcrumb -->
+
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-xl-9">
@@ -70,6 +203,9 @@
                                     <a href="#" class="ml-1 d-block d-md-inline"></a>
                                 </div>
                             </div>
+                            <a href="javascript:history.go(-1);">
+                                Backto Search List 
+                              </a>
                         </div>
                         <div class="py-4 border-top mb-4">
                             <ul class="mb-4 list-group list-group-borderless list-group-horizontal flex-center-between text-center flex-wrap">
@@ -327,30 +463,29 @@
                     </div>
                     
                     <div class="col-lg-4 col-xl-3">
-                        <form action="/BookingConfirmation" name="frmBookingConfirmation" method="POST" >
+                        <form action="/BookingConfirmation" name="frmBookingConfirmation" id = "frmBookingConfirmation" method="POST" >
                             <input type="hidden" value="<%=PropertyDetails._id%>" name="property_id" id="property_id" />
                         <div class="mb-4">
                             <div class="border border-color-7 rounded mb-5">
                                 <div class="border-bottom">
-                                    <div>
-                                        
-                                        <span class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=PropertyDetails.rentalname%></span>
-                                    </div>
+                                 
+                                        <span style='font-family:"Rubik", Helvetica, Arial, sans-serif;'  class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=PropertyDetails.rentalname%></span>
+                                    
                                 </div>
                                 <div class="p-4">
                                     <!-- Input -->
                                     <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Price / Night</span>
                                     <div class="mb-4">
                                         <div class="input-group border-bottom border-width-2 border-color-1" disabled="disabled">
-                                            <i class="icon-dollar d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22">$</i>
-                                          <input disabled type="text" value="<%=PropertyDetails.price%> CAD" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Price / Night" aria-label="Price / Night" aria-describedby="keywordInputAddon">
+                                            <i class="flaticon-price-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
+                                          <input  type="text" value="$<%=PropertyDetails.price%>" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Where are you going?" aria-label="Where are you going?" aria-describedby="keywordInputAddon">
                                         </div>
                                     </div>
                                     <!-- End Input -->
 
                                     <!-- Input -->
                                     <span class="d-block text-gray-1 font-weight-normal mb-0 text-left">First Available Dates</span>
-                                    <div class="mb-4">
+                                    <div class="mb-4" id="datepickrControl">
                                         <div class="border-bottom border-width-2 border-color-1">
                                             <div id="datepickerWrapperPick" class="u-datepicker input-group">
                                                 <div class="input-group-prepend">
@@ -358,13 +493,15 @@
                                                       <i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
                                                     </span>
                                                 </div>
-                                                <input class="js-range-datepicker w-auto font-size-16 ml-1 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0" type="text" placeholder="July 7/2019" aria-label="July 7/2019"
+                                                <input class="js-range-datepicker w-auto font-size-16 ml-1 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0"  type="text"  aria-label="July 7/2019"
                                                 data-rp-wrapper="#datepickerWrapperPick"
                                                 data-rp-type="range"
-                                                data-rp-date-format="M d / y"
+                                                placeholder="<%=UserPreference.CheckInDate%> - <%=UserPreference.CheckOutDate%>"
+                                                data-rp-default-date="[<%= UserPreference.DisplayDate%>]"
                                                 name = "checkin_checkout_dates"
-                                                id="checkin_checkout_dates"
-                                                data-rp-default-date="[<%= UserPreference.DisplayDate%>]">
+                                                id="checkin_checkout_dates"                                                
+                                               
+                                                >
                                                
                                             </div>
                                             <!-- End Datepicker '["Jul 7 / 2020", "Aug 25 / 2020"]'-->
@@ -389,10 +526,25 @@
                                                 data-unfold-animation-in="slideInUp"
                                                 data-unfold-animation-out="fadeOut">
                                                 <i class="flaticon-add-group d-flex align-items-center mr-3 font-size-20 text-primary font-weight-semi-bold"></i>
+                                                <span class="text-black font-size-16 font-weight-semi-bold" id="spanGuestsAndRooms" name="spanGuestsAndRooms"><%= UserPreference.Guests%> Guests - <%= UserPreference.Rooms%> Rooms</span>
                                                 <input type="hidden" name="txtRoomsAndGuests" id="txtRoomsAndGuests" class="text-black font-size-16 font-weight-semi-bold mr-auto"
-                                                value="1 Rooms - 2 Guests"></span>
+                                                value="<%= UserPreference.Guests%> Guests - <%= UserPreference.Rooms%> Rooms"></span>
                                             </a>
                                             <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col m-0" aria-labelledby="basicDropdownClickInvoker">
+                                                <div class="w-100 py-2 px-3 mb-3">
+                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Guests</span>
+                                                        <div class="d-flex">
+                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                                <small class="fas fa-minus btn-icon__inner"></small>
+                                                            </a>
+                                                            <input  id="txtGuestsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="<%= UserPreference.Guests%>">
+                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                                <small class="fas fa-plus btn-icon__inner"></small>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="w-100 py-2 px-3 mb-3">
                                                     <div class="js-quantity mx-3 row align-items-center justify-content-between">
                                                         <span class="d-block font-size-16 text-secondary font-weight-medium">Rooms</span>
@@ -400,56 +552,48 @@
                                                             <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                                 <small class="fas fa-minus btn-icon__inner"></small>
                                                             </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                            <input id="txtRoomsCount" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="<%= UserPreference.Rooms%>">
                                                             <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                                 <small class="fas fa-plus btn-icon__inner"></small>
                                                             </a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="w-100 py-2 px-3 mb-3">
-                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Adults</span>
-                                                        <div class="d-flex">
-                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
-                                                                <small class="fas fa-minus btn-icon__inner"></small>
-                                                            </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
-                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
-                                                                <small class="fas fa-plus btn-icon__inner"></small>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="w-100 py-2 px-3">
-                                                    <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                        <span class="d-block font-size-16 text-secondary font-weight-medium">Child</span>
-                                                        <div class="d-flex">
-                                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/reservation">
-                                                                <small class="fas fa-minus btn-icon__inner"></small>
-                                                            </a>
-                                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
-                                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="/reservation">
-                                                                <small class="fas fa-plus btn-icon__inner"></small>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              
                                                 <div class="w-100 text-right py-1 pr-5">
-                                                    <a class="text-primary font-weight-semi-bold font-size-16" href="#">Done</a>
+                                                    <a class="text-primary font-weight-semi-bold font-size-16" href="javascript:updateBookingInfo();">Done</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- End Input -->
 
-                                    <!-- <div class="text-center">
-                                        <a href="reservation" class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold">Book Now</a>
+                                 <!-- <div class="text-center"> -->
+                                     <div id="btnBookNow">
+                                  
+                                        <a id="propertyBookingControl" href="javascript:;" 
+                                        onclick="document.getElementById('frmBookingConfirmation').submit(); return false;"
+                                        class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold"
+                                        >
+                                        Book Now
+                                    </a>
+                                </div>
+                                <div id="btnSoldOut">
+                                        <a id="propertyBookingControl1"
+                                        style="background-color: gray;color: whitesmoke;border-color: gray;"
+                                        class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1  font-weight-bold"
+                                        >
+                                        Sold Out!
+                                    </a>
+                                </div>
+                                    <!-- </div>  -->
+                                    <!-- <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right" style="margin: 0 auto;">
+                                        <input  type="submit" value="Book Now" id= "btnBookNow"  class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold"/>
                                     </div> -->
-                                    <div class="col-sm-12 col-lg-1dot8 align-self-lg-end text-md-right">
-                                        <input type="submit" value="Book Now" id= "btnBookNow" class="btn btn-primary btn-md border-radius-3 mb-xl-0 mb-lg-1 transition-3d-hover"/>
-                                    </div>
-                                    <div align="center"><label id="txtMessage"></label></div>
+                                 
+                                        <br/>
+                                    <span id="txtMessage" style="font-size: 15px; color: red;font-family: 'Rubik', Helvetica, Arial, sans-serif;">Select other available dates from the calendar</span>
+                                   
                                 </div>
                             </div>
                         </div>

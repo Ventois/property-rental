@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const {check, validationResult} = require('express-validator');
 const mongoose = require('mongoose');
+const dateFormat = require('dateformat');
 mongoose.connect('mongodb://localhost:27017/spm', {
     useNewUrlParser: true
 });
@@ -49,7 +50,7 @@ myApp.set('view engine', 'ejs');
 
 //---------------- Routes ------------------
 
-myApp.get('/', function (req, res) {
+myApp.get('/', function (req, res) {   
     renderIndex(req, res, Users)
 });
 
@@ -67,37 +68,82 @@ myApp.get('/property-list', function (req, res) {
 });
 
 myApp.get('/property-details/:id', function (req, res) {
-console.log("user pref : "+req.session.UserPreference.Location);
-    //console.log("dproperty :"+PropertyList);
-    //console.log("inside  properyid : "+req.params.id);
-    // if (req.session.userLoggedIn) {
-    var id = req.params.id;
-    console.log("id="+id);
-    Property.find({_id: id}).exec(function (err, property_details) {
+    console.log("user pref : "+req.session.UserPreference.Location);
+    req.session.BookingID = req.params.id;
+    getPropertyDetails(req.params.id, req, res);
+    
+});
+
+function getPropertyDetails(id, req, res) {
+    var disabledDates = [];
+    console.log("id=" + id);
+    Property.findOne({ _id: id }).exec(function (err, property_details) {
         // console.log("found properyid : "+property_details);
-        if(property_details.length > 0)
-        {
-            //console.log("rendering properyid : "+property_details.length);
-            res.render('property-details', {
-                PropertyDetails: property_details[0],
-                UserPreference : req.session.UserPreference
+        if (property_details) {
+            //Check if property available for the selected dates or already Booked.
+            var isPropertyAvailable = true;
+            Booking.find({ property_id: property_details._id }).exec(function (err, bookings) {
+                if (err) {
+                    console.log('error boss : ' + err);
+                }
+               
+                if (bookings && bookings.length > 0) {
+                    var userCheckInDate = new Date(Date.parse(req.session.UserPreference.CheckInDate));
+                    var userCheckOutDate = new Date(Date.parse(req.session.UserPreference.CheckOutDate));
+                    for (let bookedProperty of bookings)// bookings.forEach(bookedProperty => 
+                    {
+                        disabledDates.push(
+                            {
+                                from : dateFormat(new Date(Date.parse(bookedProperty.checkinDate)),"dd mmm yyyy"),
+                                to : dateFormat(new Date(Date.parse(bookedProperty.checkoutDate)),"dd mmm yyyy")
+                            }
+                        );
+                        
+                        if ((userCheckInDate >= bookedProperty.checkinDate &&
+                            userCheckInDate <= bookedProperty.checkoutDate) ||
+                            (userCheckOutDate >= bookedProperty.checkinDate &&
+                                userCheckOutDate <= bookedProperty.checkoutDate) ||
+                            (bookedProperty.checkinDate >= userCheckInDate &&
+                                bookedProperty.checkoutDate <= userCheckOutDate)) {
+                            isPropertyAvailable = false;
+                        }
+                    }
+
+                }
+                //console.log("rendering properyid : "+property_details.length);
+                res.render('property-details', {
+                    PropertyDetails: property_details,
+                    UserPreference: req.session.UserPreference,
+                    IsPropertyAvailable: isPropertyAvailable,
+                    DisabledDates: disabledDates
+                });
             });
+
         }
     });
-    // } else {
-    //     res.redirect('/login');
-    // }
-});
+}
 
 myApp.get('/reservation', function (req, res) {
     res.render('booking');
 });
-myApp.get('/payment', function (req, res) {
-    res.render('payment');
+myApp.post('/payment', function (req, res) {
+    req.session.UserInfo["City"] = req.body.city;
+    req.session.UserInfo["Country"] = req.body.country;
+    req.session.BookingInfo["ReservationEmailID"] = req.body.email;
+    res.render('payment',{
+        BookingInfo : req.session.BookingInfo,
+        UserInfo : req.session.UserInfo,
+        BookingEmailID : req.body.email
+
+    });
 });
-myApp.get('/confirmation', function (req, res) {
-    res.render('confirmation');
-});
+// myApp.post('/confirmation', function (req, res) {
+//     res.render('confirmation',{
+//         BookingInfo : req.session.BookingInfo,
+//         UserInfo : req.session.UserInfo
+       
+//     });
+// });
 myApp.get('/signup', function (req, res) {
     res.render('SignUp', {
         successMsg: req.flash('successMsg'),
@@ -441,8 +487,10 @@ myApp.post('/property-list', function (req, res) {
     var checkinDate = new Date(Date.parse(dates[0]));
     var checkoutDate = new Date(Date.parse(dates[1]));
     //Jul 1 / 2020", "Aug 25 / 2020
-    var dispDate = "\""+dates[0].substring(0,3)+" "+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
-    dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
+    //"10-May-2020", "20-May-2020"
+    
+    var dispDate = '"'+dateFormat(new Date(Date.parse(checkinDate)),"dd mmm yyyy")+'","'+dateFormat(new Date(Date.parse(checkoutDate)),"dd mmm yyyy")+'"'; //"\""+dates[0].substring(0,3)+"-"+checkinDate.getDate()+" / "+checkinDate.getFullYear()+"\"";
+   // dispDate += ", \""+  dates[1].substring(0,3)+" "+checkoutDate.getDate()+" / "+checkoutDate.getFullYear()+"\"";
 
 
     console.log("Searching Properties for location/hotel :" +location);
@@ -456,8 +504,9 @@ myApp.post('/property-list', function (req, res) {
     //     });
 
     let GuestsAndRooms = req.body.GuestsAndRooms;
-    GuestsAndRooms = GuestsAndRooms.replace("Adult","");
+    GuestsAndRooms = GuestsAndRooms.replace("Guests","");
     GuestsAndRooms = GuestsAndRooms.replace("Rooms","");
+    GuestsAndRooms = GuestsAndRooms.replace("Room","");
     GuestsAndRooms = GuestsAndRooms.trim();
     GuestsAndRooms = GuestsAndRooms.split(" - ");
     var guests = GuestsAndRooms[0];
@@ -504,7 +553,8 @@ myApp.post('/property-list', function (req, res) {
                 DisplayDate : dispDate// req.body.checkin_checkout_dates//'["Jul 1 / 2020", "Aug 25 / 2020"]'//
             };
             res.render('property-list',{
-                PropertyList : result
+                PropertyList : result,
+                SearchTerm : req.body.location
             });
 
             //console.log(items.model.Property);
@@ -517,7 +567,8 @@ myApp.post('/property-list', function (req, res) {
         })
 });
 //console.log(items);
-myApp.post('/BookProperty', function (req, res) {
+myApp.post('/Confirmation', function (req, res) {   
+
     console.log('Book Property called with data: ');
     bookProperty(req, res, Booking)
 });
@@ -528,6 +579,7 @@ myApp.post('/BookProperty', function (req, res) {
 
 myApp.post('/BookingConfirmation', function (req, res) {
     if(!req.session.userLoggedIn || req.session.role !== "user") {
+            req.session.isBookingPending = true;
             res.render("login");
     };
 
@@ -538,10 +590,11 @@ myApp.post('/BookingConfirmation', function (req, res) {
     var GuestsAndRooms = req.body.txtRoomsAndGuests;
     GuestsAndRooms = GuestsAndRooms.replace("Guests","");
     GuestsAndRooms = GuestsAndRooms.replace("Rooms","");
+    GuestsAndRooms = GuestsAndRooms.replace("Room","");
     GuestsAndRooms = GuestsAndRooms.trim();
     GuestsAndRooms = GuestsAndRooms.split(" - ");
-    var guests = GuestsAndRooms[1].trim();
-    var rooms = GuestsAndRooms[0].trim();
+    var guests = GuestsAndRooms[0].trim();
+    var rooms = GuestsAndRooms[1].trim();
     var bookingInfo = {
         PropertyID: req.body.property_id,
         //customer_id:  "501",//Later change to some session userid
@@ -571,13 +624,20 @@ myApp.post('/BookingConfirmation', function (req, res) {
             bookingInfo['TotalNights'] = totalNights;
             bookingInfo['TotalPrice'] = totalNights * Number(propertyInfo.price) * Number(rooms);
             bookingInfo['CustomerEmailID'] = req.session.email;
-            bookingInfo['DisplayCheckInDate'] = dates[0].replace("[","");
-            bookingInfo['DisplayCheckOutDate'] = dates[1].replace("]","");
+            bookingInfo['DisplayCheckInDate'] = dateFormat(new Date(checkinDate),"dd mmm yyyy");
+            bookingInfo['DisplayCheckOutDate'] = dateFormat(new Date(checkoutDate),"dd mmm yyyy");
             bookingInfo['CustomerID'] = req.session.userid;
-            res.render('BookingConfirmation', {
-                BookingInfo: bookingInfo
+            bookingInfo['CustomerFirstName'] = req.session.userid;
+            Users.findOne({_id: req.session.userid},function (err, user) {
+            req.session.BookingInfo = bookingInfo;
+            req.session.UserInfo = user;
+            
+            res.render('Booking', {
+                BookingInfo: bookingInfo,
+                UserInfo : user
             });
-        }
+        });
+    }
     });
 });
 
@@ -604,6 +664,8 @@ myApp.get('/user-dashboard', function (req, res) {
                     var tempDocsCount =0;
                     bookings.forEach(booking => {
                         Property.findOne({_id: booking.property_id}).exec(function (err, property) {
+                            if(property)
+                            {
                                 tempDocsCount++;
                                 var stay = {
                                     PropertyID : property._id,
@@ -638,6 +700,7 @@ myApp.get('/user-dashboard', function (req, res) {
                                         errorMsg: req.flash('errorMsg'),
                                     });
                                 }
+                            }
                             }
                         )
                     });
@@ -733,3 +796,6 @@ myApp.post('/edit-user-profile', function (req, res) {
 
 myApp.listen(8080);
 console.log('Server started at 8080 for mywebsite...');
+
+
+module.exports.GetPropertyDetails = getPropertyDetails;

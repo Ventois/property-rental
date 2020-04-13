@@ -36,10 +36,10 @@
                             </div>
                             <div class="pt-4 pb-5 px-5">
                                 <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-4">
-                                    Let us know who you are
+                                    Your Contact Details :
                                 </h5>
                                 <!-- Contacts Form -->
-                                <form class="js-validate" action="/payment">
+                                <form class="js-validate" action="/payment" method="POST">
                                     <div class="row">
                                         <!-- Input -->
                                         <div class="col-sm-6 mb-4">
@@ -47,10 +47,11 @@
                                                 <label class="form-label">
                                                     First Name
                                                 </label>
-                                                <input type="text" class="form-control" name="firstName" placeholder="Ali" aria-label="Ali" required
+                                                <input type="text" class="form-control" name="firstName" placeholder="First Name" aria-label="Ali" required
                                                 data-msg="Please enter your first name."
                                                 data-error-class="u-has-error"
-                                                data-success-class="u-has-success">
+                                                data-success-class="u-has-success"
+                                                value="<%= UserInfo.firstname%>" readonly>
                                             </div>
                                         </div>
                                         <!-- End Input -->
@@ -62,10 +63,10 @@
                                                     Last name
                                                 </label>
 
-                                                <input type="text" class="form-control" name="lasstName" placeholder="TUFAN" aria-label="TUFAN" required
+                                                <input type="text" class="form-control" name="lasstName" placeholder="Last Name" aria-label="TUFAN" required
                                                 data-msg="Please enter your last name."
                                                 data-error-class="u-has-error"
-                                                data-success-class="u-has-success">
+                                                data-success-class="u-has-success" value="<%= UserInfo.lastname%>" readonly>
                                             </div>
                                         </div>
                                         <!-- End Input -->
@@ -75,12 +76,15 @@
                                             <div class="js-form-message">
                                                 <label class="form-label">
                                                     Email
+                                                     <label><span style="font-size: 12.5px;color: slateblue;">[Note : Your Booking Details will be sent to this mailid]
+                                                    </span></label>
+                                                        
                                                 </label>
 
-                                                <input type="email" class="form-control" name="email" placeholder="creativelayers088@gmail.com" aria-label="creativelayers088@gmail.com" required
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email ID" aria-label="creativelayers088@gmail.com" required
                                                 data-msg="Please enter a valid email address."
                                                 data-error-class="u-has-error"
-                                                data-success-class="u-has-success">
+                                                data-success-class="u-has-success" value="<%= UserInfo.email%>">
                                             </div>
                                         </div>
                                         <!-- End Input -->
@@ -92,10 +96,10 @@
                                                     Phone
                                                 </label>
 
-                                                <input type="number" class="form-control" name="phone" placeholder="+90 (254) 458 96 32" aria-label="+90 (254) 458 96 32" required
+                                                <input type="number" class="form-control" name="phone" placeholder="Mobile" aria-label="+90 (254) 458 96 32" required
                                                 data-msg="Please enter a valid phone number."
                                                 data-error-class="u-has-error"
-                                                data-success-class="u-has-success">
+                                                data-success-class="u-has-success" value="<%= UserInfo.phone%>" readonly>
                                             </div>
                                         </div>
                                         <!-- End Input -->
@@ -158,12 +162,12 @@
                     <div class="col-lg-4 col-xl-3">
                         <div class="shadow-soft bg-white rounded-sm">
                             <div class="pt-5 pb-3 px-5 border-bottom">
-                                <a href="#" class="d-block mb-3">
-                                    <img class="img-fluid rounded-xs" src="assets/img/240x160/img3.jpg" alt="Image-Description">
+                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="d-block mb-3">
+                                    <img class="img-fluid rounded-xs" src="/images/<%= BookingInfo.PropertyID%>/1.jpg" alt="Image-Description">
                                 </a>
-                                <a href="#" class="text-dark font-weight-bold pr-xl-1">Park Avenue Baker Street London</a>
+                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="text-dark font-weight-bold pr-xl-1"><%= BookingInfo.PropertyName%></a>
                                 <div class="my-1 flex-horizontal-center text-gray-1">
-                                    <i class="icon flaticon-pin-1 mr-2 font-size-15"></i> United Kingdom
+                                    <i class="icon flaticon-pin-1 mr-2 font-size-15"></i> <%= BookingInfo.PropertyAddress%>
                                 </div>
                             </div>
                             <!-- Basics Accordion -->
@@ -192,24 +196,27 @@
                                             <!-- Fact List -->
                                             <ul class="list-unstyled font-size-1 mb-0 font-size-16">
                                                 <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">22 Sep 2019 - 23 Sep 2019 <br>
-                                                        <span class="text-gray-1 font-weight-normal">1 x Comfort Room</span>
+                                                    <span class="font-weight-medium"><%=BookingInfo.DisplayCheckInDate%> - <%=BookingInfo.DisplayCheckOutDate%><br>
                                                     </span>
-                                                    <span class="text-secondary"><a href="#" class="text-underline">Edit</a></span>
+                                                   
+                                                </li>
+                                                <li class="d-flex justify-content-between py-2">
+                                                    <span class="font-weight-medium">Price/Night</span>
+                                                    <span class="text-secondary">$<%=BookingInfo.PricePerNight%></span>
                                                 </li>
                                                 <li class="d-flex justify-content-between py-2">
                                                     <span class="font-weight-medium">Stay</span>
-                                                    <span class="text-secondary">7 Night</span>
+                                                    <span class="text-secondary"><%=BookingInfo.TotalNights%> Nights</span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Room</span>
-                                                    <span class="text-secondary">2 Room</span>
+                                                    <span class="font-weight-medium">Rooms</span>
+                                                    <span class="text-secondary"><%=BookingInfo.Rooms%></span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Adult</span>
-                                                    <span class="text-secondary">4</span>
+                                                    <span class="font-weight-medium">Guests</span>
+                                                    <span class="text-secondary"><%=BookingInfo.Guests%></span>
                                                 </li>
                                             </ul>
                                             <!-- End Fact List -->
@@ -218,69 +225,7 @@
                                 </div>
                                 <!-- End Card -->
 
-                                <!-- Card -->
-                                <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
-                                    <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingTwo">
-                                        <h5 class="mb-0">
-                                            <button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
-                                                data-toggle="collapse"
-                                                data-target="#basicsCollapseTwo"
-                                                aria-expanded="true"
-                                                aria-controls="basicsCollapseTwo">
-                                                Extra
-
-                                                <span class="card-btn-arrow font-size-14 text-dark">
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </span>
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="basicsCollapseTwo" class="collapse"
-                                        aria-labelledby="basicsHeadingTwo"
-                                        data-parent="#basicsAccordion">
-                                        <div class="card-body px-4 pt-0">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Card -->
-
-                                <!-- Card -->
-                                <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
-                                    <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingThree">
-                                        <h5 class="mb-0">
-                                            <button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
-                                                data-toggle="collapse"
-                                                data-target="#basicsCollapseThree"
-                                                aria-expanded="false"
-                                                aria-controls="basicsCollapseThree">
-                                                Coupon Code
-
-                                                <span class="card-btn-arrow font-size-14 text-dark">
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </span>
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="basicsCollapseThree" class="collapse show"
-                                        aria-labelledby="basicsHeadingThree"
-                                        data-parent="#basicsAccordion">
-                                        <div class="card-body px-4 pt-0 pb-4">
-                                            <!-- Subscribe Form -->
-                                            <form class="js-focus-state">
-                                                <label class="sr-only" for="CouponCodeExample1">Coupon Code</label>
-                                                <div class="input-group custom__input-group">
-                                                    <input type="number" class="form-control" name="email" id="CouponCodeExample1" placeholder="" aria-label="" aria-describedby="CouponCodeExample2" required>
-                                                    <div class="input-group-append ml-3">
-                                                        <button class="btn btn-primary py-2" type="button" id="CouponCodeExample2">Apply</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <!-- End Subscribe Form -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Card -->
+                              
 
                                 <!-- Card -->
                                 <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
@@ -307,12 +252,12 @@
                                             <ul class="list-unstyled font-size-1 mb-0 font-size-16">
                                                 <li class="d-flex justify-content-between py-2">
                                                     <span class="font-weight-medium">Subtotal</span>
-                                                    <span class="text-secondary">€580,00</span>
+                                                    <span class="text-secondary">$<%= BookingInfo.TotalPrice%></span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2">
                                                     <span class="font-weight-medium">Extra Price</span>
-                                                    <span class="text-secondary">€0,00</span>
+                                                    <span class="text-secondary">$0,00</span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2">
@@ -322,10 +267,17 @@
 
                                                 <li class="d-flex justify-content-between py-2 font-size-17 font-weight-bold">
                                                     <span class="font-weight-bold">Pay Amount</span>
-                                                    <span class="">€580,00</span>
+                                                    <span class="">$<%= BookingInfo.TotalPrice%></span>
+
+                                                    <input type="hidden" id="bookingInfo" name="bookingInfo" value="<%= BookingInfo%>">
                                                 </li>
                                             </ul>
-                                            <!-- End Fact List -->
+
+                                            <!-- 
+                                            Format : UserID,PropertyID,PropertyImgPath,CheckInDate,CheckoutDate,Rooms,Guests,TotalNights,TotalPrice
+
+                                             -->
+                                            <!-- End Fact List, format : -->
                                         </div>
                                     </div>
                                 </div>

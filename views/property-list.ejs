@@ -13,25 +13,8 @@
                     <div class="d-block d-md-flex flex-horizontal-center">
                         <div class="text-center mr-4 mb-4 mb-md-0">
                             <!-- Account Sidebar Toggle Button -->
-                            <a id="sidebarNavToggler" class="btn btn-sm btn-primary height-50 font-size-16 px-4 px-md-3 px-wd-4 d-flex align-items-center justify-content-center" href="javascript:;" role="button"
-                               aria-controls="sidebarContent"
-                               aria-haspopup="true"
-                               aria-expanded="false"
-                               data-unfold-event="click"
-                               data-unfold-hide-on-scroll="false"
-                               data-unfold-target="#sidebarContent"
-                               data-unfold-type="css-animation"
-                               data-unfold-overlay='{
-                               "className": "u-search-slide-down-bg-overlay",
-                               "background": "rgba(59, 68, 79, .851)",
-                               "animationSpeed": 400
-                               }'
-                               data-unfold-animation-in="fadeInRight"
-                               data-unfold-animation-out="fadeOutRight"
-                               data-unfold-duration="500">
-                               <i class="flaticon-filter font-size-20"></i>
-                                <span class="d-md-none d-wd-inline ml-2">Show Filters</span>
-                            </a>
+                           Showing Search Results for <b>'<%=SearchTerm%>' </b>
+                           &nbsp;&nbsp;&nbsp;<a href="javascript:history.back();">Search again...</a>
                             <!-- End Account Sidebar Toggle Button -->
 
                             <!-- Sidebar Navigation -->
@@ -128,7 +111,7 @@
                                                                             </div>
                                                                             <div class="w-100 py-2 px-3 mb-3">
                                                                                 <div class="js-quantity mx-3 row align-items-center justify-content-between">
-                                                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Adults</span>
+                                                                                    <span class="d-block font-size-16 text-secondary font-weight-medium">Guests</span>
                                                                                     <div class="d-flex">
                                                                                         <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
                                                                                             <small class="fas fa-minus btn-icon__inner"></small>
@@ -307,25 +290,8 @@
                                 </div>
                             </aside>
                             <!-- End Sidebar Navigation -->
-                        </div><!-- Nav Links -->
-                        <ul class="nav flex-nowrap tab-nav align-items-center py-2 px-0 mb-3 mb-md-0" role="tablist">
-                            <li class="nav-item d-flex align-items-center flex-shrink-0 flex-xl-shrink-1">
-                                <a href="#" class="nav-link font-weight-normal text-gray-1 text-lh-1dot6 py-1 px-4 px-xl-3 px-wd-5">Recommended
-                                </a>
-                            </li>
-                            <li class="nav-item d-flex align-items-center flex-shrink-0 flex-xl-shrink-1 border-left">
-                                <select class="js-select selectpicker dropdown-select bootstrap-select__custom-nav w-auto" data-style="btn-sm py-1 px-4 px-xl-3 px-wd-5 font-size-16 text-gray-1 d-flex align-items-center">
-                                    <option value="one" selected>Stars</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
-                                </select>
-                            </li>
-                            <li class="nav-item d-flex align-items-center flex-shrink-0 flex-xl-shrink-1 border-left">
-                                <a href="#" class="nav-link font-weight-normal text-gray-1 text-lh-1dot6 py-1 px-4 px-xl-3 px-wd-5">Guest Rating
-                                </a>
-                            </li>
-                        </ul>
+                        </div>
+                        
                         <!-- End Nav Links -->
                     </div>
                 </div>
@@ -335,8 +301,10 @@
                     <div class="row">
                        
                         <%
+                        if(PropertyList && PropertyList.length > 0)
+                        {
                                     for(var i=0;i<PropertyList.length;i++)
-                                    {
+                                        {
                                         %>
                         <div class="mb-4 col-md-4 col-lg-3 col-xl-2dot4">
                             <div class="card transition-3d-hover shadow-hover-2 h-100 w-100">
@@ -363,18 +331,27 @@
                                     </div>
                                 </div>
                                 <div class="card-body px-4 pt-2 pb-3">
-                                    <a href="/property-details" class="card-title font-size-17 font-weight-medium text-dark">
+                                    <a href="/property-details/<%= PropertyList[i]._id%>" class="card-title font-size-17 font-weight-medium text-dark">
                                         <%= PropertyList[i].rentalname%>  </a>
                                     <div class="mb-0">
                                         <span class="mr-1 font-size-14 text-gray-1">From</span>
-                                        <span class="font-weight-bold">CAD <%= PropertyList[i].price%></span>
+                                        <span class="font-weight-bold">$<%= PropertyList[i].price%></span>
                                         <span class="font-size-14 text-gray-1"> / night</span>
                                     </div>
                                
                                 </div>
                             </div>
                         </div>
-                        <% }%>
+                        <% }
+                    }
+                    else{%>
+                        <div class="alert alert-warning m-auto" role="alert">
+                            <h4 class="alert-heading">No Properties !</h4>
+                            <p class="alert-text">Aww yeah, No Properties to show.Go back to <a href="javascript:history.back();">Search again...</a></p>
+                        </div>
+                   <% }%>
+                        
+                        %>
                     </div>
                 </div>
             </div>
