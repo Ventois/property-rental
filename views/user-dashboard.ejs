@@ -34,7 +34,7 @@
     <div class="tabs-block tabs-v1">
         <div class="container space-1">
             <div class="w-md-80 w-lg-50 text-center mx-md-auto my-3">
-                <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello <%= firstname %>, Welcome to your Dashboard</h2>
+                <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Hello <%= userInfo.firstname %>, Welcome to your Dashboard</h2>
             </div>
             <!-- Nav Classic -->
             <ul class="nav tab-nav-pill flex-nowrap pb-4 pb-lg-5 tab-nav justify-content-lg-center" role="tablist">
@@ -71,8 +71,6 @@
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="properties" role="tabpanel" aria-labelledby="pills-one-example-t1-tab">
                     <div class="row">
-
-
                         <% if(stays.length > 0) { %>
                             <!--displaying status message-->
                             <div class="container d-block">
@@ -97,7 +95,7 @@
                                 <tr>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rental Name</th>
                                     <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckIn</th>
-                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>ChekOut</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckOut</th>
 
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rooms</th>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Guests</th>
@@ -115,7 +113,7 @@
                                     <tr id="rowid_<%= count%>">
                                         <th scope="row" class="align-middle">
                                             <div class="d-flex align-items-center text-primary font-weight-medium">
-                                                <label><a href="/BookedPropertyDetails/<%= stay.PropertyID%>"><%= stay.PropertyName%></a> </label>
+                                                <label><a href="/LookPropertyDetails/<%= stay.PropertyID%>"><%= stay.PropertyName%></a> </label>
                                             </div>
                                         </th>
                                         <td class="align-middle text-secondary">
@@ -199,7 +197,7 @@
                                 <tr>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rental Name</th>
                                     <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckIn</th>
-                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>ChekOut</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckOut</th>
 
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rooms</th>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Guests</th>
@@ -302,7 +300,7 @@
                                 <tr>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rental Name</th>
                                     <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckIn</th>
-                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>ChekOut</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckOut</th>
 
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Rooms</th>
                                     <th scope="col"><span class="fas fa-user mr-2"></span>Guests</th>

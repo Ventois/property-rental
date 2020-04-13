@@ -54,14 +54,17 @@
                                 <div class="col-sm-6 mb-4">
                                     <div class="js-form-message">
                                         <label class="form-label">
-                                            Price
+                                            Price (per night)
                                         </label>
 
-                                        <input type="text" class="form-control" name="price" placeholder="Price" aria-label="price" required
-                                               data-msg="Please enter price per night."
-                                               data-error-class="u-has-error"
-                                               data-success-class="u-has-success"
-                                               value="<%= property.price%>">
+                                        <div class="input-group">
+                                            <span class="input-group-addon mr-1 mt-3 ">$</span>
+                                            <input type="text" class="form-control" name="price" placeholder="Price per night" aria-label="price" required
+                                                data-msg="Please enter price per night."
+                                                data-error-class="u-has-error"
+                                                data-success-class="u-has-success"
+                                                value="<%= property.price%>">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- End Input -->
@@ -131,7 +134,7 @@
                                 <div class="col-sm-6 mb-4">
                                     <div class="js-form-message">
                                         <label class="form-label">
-                                           Area (Sft)
+                                           Area (Sqft)
                                         </label>
 
                                         <input type="text" class="form-control" name="area" placeholder="Sqft" aria-label="area" required
@@ -201,77 +204,137 @@
                                             <ul class="checkbox-list">
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="wifi"/>
+                                                        <% if (property.amenities.indexOf('wifi') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="wifi"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="wifi"/>
+                                                              <%}%>
                                                         <span>wifi</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="wake-up-call"/>
+                                                        <% if (property.amenities.indexOf('wake-up-call') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="wake-up-call"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="wake-up-call"/>
+                                                              <%}%>
                                                         <span>wake-up-call</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Bathrobes"/>
+                                                        <% if (property.amenities.indexOf('Bathrobes') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Bathrobes"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Bathrobes"/>
+                                                              <%}%>
                                                         <span>Bathrobes</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Fitness center"/>
+                                                        <% if (property.amenities.indexOf('Fitness center') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Fitness center"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Fitness center"/>
+                                                              <%}%>
                                                         <span>Fitness center</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Telephone"/>
+                                                        <% if (property.amenities.indexOf('Telephone') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Telephone"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Telephone"/>
+                                                              <%}%>
                                                         <span>Telephone</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Dry cleaning"/>
+                                                        <% if (property.amenities.indexOf('Dry cleaning') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Dry cleaning"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Dry cleaning"/>
+                                                              <%}%>
                                                         <span>Dry cleaning</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Mini Bar"/>
+                                                        <% if (property.amenities.indexOf('Mini Bar') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Mini Bar"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Mini Bar"/>
+                                                              <%}%>
                                                         <span>Mini Bar</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Hair dryer"/>
+                                                        <% if (property.amenities.indexOf('Hair dryer') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Hair dryer"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Hair dryer"/>
+                                                              <%}%>
                                                         <span>Hair dryer</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="High chair"/>
+                                                        <% if (property.amenities.indexOf('High chair') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="High chair"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="High chair"/>
+                                                              <%}%>
                                                         <span>High chair</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Restaurant"/>
+                                                        <% if (property.amenities.indexOf('Restaurant') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Restaurant"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Restaurant"/>
+                                                              <%}%>
                                                         <span>Restaurant</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Air Conditioning"/>
+                                                        <% if (property.amenities.indexOf('Air Conditioning') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Air Conditioning"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Air Conditioning"/>
+                                                              <%}%>
                                                         <span>Air Conditioning</span>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="amenities" value="Slippers"/>
+                                                        <% if (property.amenities.indexOf('Slippers') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="amenities" value="Slippers"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="amenities" value="Slippers"/>
+                                                              <%}%>
                                                         <span>Slippers</span>
                                                     </label>
                                                 </li>
@@ -291,28 +354,49 @@
                                             <ul class="checkbox-list">
                                                 <li>
                                                     <label>
+                                                        <% if (property.rules.indexOf('Children Allowed') !== -1)
+                                                    {%>
+                                                        <input type="checkbox" checked name="rules" value="Children Allowed"/>
+                                                        <%} else {%>  
                                                         <input type="checkbox" name="rules" value="Children Allowed"/>
+                                                          <%}%>
                                                         <span>Children Allowed</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="rules" value="Pets Allowed"/>
+                                                        <% if (property.rules.indexOf('Pets Allowed') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="rules" value="Pets Allowed"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="rules" value="Pets Allowed"/>
+                                                              <%}%>
                                                         <span>Pets Allowed</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="rules" value="Smoking allowed"/>
+                                                       
+                                                        <% if (property.rules.indexOf('Smoking Allowed') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="rules" value="Smoking Allowed"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="rules" value="Smoking Allowed"/>
+                                                              <%}%>
                                                         <span>Smoking allowed</span>
                                                     </label>
                                                 </li>
 
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="rules" value="Party Allowed"/>
+                                                        <% if (property.rules.indexOf('Party Allowed') !== -1)
+                                                        {%>
+                                                            <input type="checkbox" checked name="rules" value="Party Allowed"/>
+                                                            <%} else {%>  
+                                                            <input type="checkbox" name="rules" value="Party Allowed"/>
+                                                              <%}%>
                                                         <span>Party Allowed</span>
                                                     </label>
                                                 </li>
@@ -331,15 +415,18 @@
                                 <label class="file-attachment-input w" for="Images">
                                     <span class="d-block mb-2">Upload Images</span>
                                     <small class="d-block text-muted">Maximum file size is 2MB</small>
-                                    <input id="images" name="images-attachment" type="file" class="js-custom-file-attach file-attachment-input__label"
-                                           data-result-text-target="#imageFileUploadText">
-                                    <span id="imageFileUploadText"></span>
+                                    <input id="images" name="images" type="file" multiple class="js-custom-file-attach file-attachment-input__label"
+                                           data-result-text-target="#imageFileUploadText" value="<%= property.images %>">
+                                    <% property.images.forEach(function(image){ %>
+                                    <span id="imageFileUploadText"><%= image%></span>
+                                    <%
+                                    });%>
                                 </label>
                                 </div>
                                 <!-- End File Attachment Input -->
                                 <div class="w-100"></div>
                                 <a href="/admin-dashboard" class="btn btn-secondary w-30 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto mt-7">Cancel</a>
-                                <button type="submit" class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">Edit Property</button>
+                                <button type="submit" class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">Save Property</button>
                             </div>
                         </form>
                         <!-- End Contacts Form -->
@@ -360,6 +447,7 @@
 
 <!-- JS Global Compulsory -->
 <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
 <script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
 <script src="assets/vendor/bootstrap/bootstrap.min.js"></script>
@@ -396,7 +484,8 @@
 <script src="assets/js/components/hs.file-attach.js"></script>
 
 <!-- JS Plugins Init. -->
-<script>
+<script type="text/javascript">
+    
     $(window).on('load', function () {
         // initialization of HSMegaMenu component
         $('.js-mega-menu').HSMegaMenu({
@@ -478,6 +567,10 @@
 </script>
 
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+    $("#country").val("<%= property.country%>");
+});
+</script>
 </body>
 </html>

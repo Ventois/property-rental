@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+var fs = require('fs');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const {check, validationResult} = require('express-validator');
@@ -185,43 +186,135 @@ myApp.post('/login', function (req, res) {
 // });
 
 myApp.get('/owner-dashboard', function (req, res) {
+    var staysList = [];
+    var upcomingStaysList = [];
+    var today = new Date();
     if (req.session.userLoggedIn && req.session.role === 'owner') {
         Property.find({owner: req.session.userid}).exec(function (err, properties) {
             Users.findOne({_id: req.session.userid}).exec(function (err, login_user) {
-                res.render('owner-dashboard', {
-                    successMsg: req.flash('successMsg'),
-                    errorMsg: req.flash('errorMsg'),
-                    properties: properties,
-                    login_user: login_user,
-                    session: req.session
+                Booking.find({}).exec(function (err,bookings){
+                    if(bookings.length > 0){
+                        bookings.forEach(booking => {
+                                properties.forEach(property=>{
+                                    if(booking.property_id==property._id){
+
+                                        var stay = {
+                                            PropertyID : property._id,
+                                            PropertyAddress : property.address,
+                                            BookingID : booking._id,
+                                            PropertyName : property.rentalname,
+                                            CheckInDate : getFormattedDate(Date.parse(booking.checkinDate)),
+                                            CheckOutDate : getFormattedDate(Date.parse(booking.checkoutDate)),
+                                            Guests : booking.guests,
+                                            Rooms : booking.rooms,
+                                            TotalPrice : booking.totalPrice,
+                                            TotalNights : booking.totalNights,
+                                            BookingDate : getFormattedDate(Date.parse(booking.bookingDate)) + " "+getFormattedTime(Date.parse(booking.bookingDate))
+                                        };
+                                        staysList.push(stay);
+                                        if(new Date(Date.parse(booking.checkinDate)) > today)
+                                        {
+                                            upcomingStaysList.push(stay);
+                                        }
+                                    }
+                                        
+                                });       
+                        });
+                    }
+
+                    if(staysList.length>0)
+                    {
+                         res.render('owner-dashboard', {
+                        successMsg: req.flash('successMsg'),
+                        errorMsg: req.flash('errorMsg'),
+                        login_user: login_user,
+                        properties:properties,
+                        bookings:staysList,
+                        upcoming_bookings:upcomingStaysList,
+                        session: req.session
+                         });  
+                    }
+                    else{
+                        res.render('owner-dashboard', {
+                            successMsg: req.flash('successMsg'),
+                            errorMsg: req.flash('errorMsg'),
+                            login_user: login_user,
+                            properties:properties,
+                            bookings:{},
+                            upcoming_bookings:{},
+                            session: req.session
+                             });  
+                    }
                 });
             });
-        });
+        });   
     } else {
         res.redirect('/login');
     }
 });
 
 myApp.get('/admin-dashboard', function (req, res) {
+    var staysList = [];
     if (req.session.userLoggedIn) {
         Property.find({}).exec(function (err, properties) {
             Users.find({}).exec(function (err, users) {
-                Users.findOne({_id: req.session.userid}).exec(function (err, login_user) {
-                    res.render('admin-dashboard',
+                Users.findOne({_id:req.session.userid }).exec(function (err, login_user) {
+                    Booking.find({}).exec(function (err,bookings){
+                        if(bookings.length > 0){
+                            bookings.forEach(booking => {
+                                properties.forEach(property=>{
+                                    if(booking.property_id==property._id){
+
+                                        var stay = {
+                                            PropertyID : property._id,
+                                            PropertyAddress : property.address,
+                                            BookingID : booking._id,
+                                            PropertyName : property.rentalname,
+                                            CheckInDate : getFormattedDate(Date.parse(booking.checkinDate)),
+                                            CheckOutDate : getFormattedDate(Date.parse(booking.checkoutDate)),
+                                            Guests : booking.guests,
+                                            Rooms : booking.rooms,
+                                            TotalPrice : booking.totalPrice,
+                                            TotalNights : booking.totalNights,
+                                            BookingDate : getFormattedDate(Date.parse(booking.bookingDate)) + " "+getFormattedTime(Date.parse(booking.bookingDate))
+                                        };
+                                        staysList.push(stay);
+                                    }
+                                        
+                                });       
+                        });
+                        }
+                        if(staysList.length > 0)
                         {
-                            successMsg: req.flash('successMsg'),
-                            errorMsg: req.flash('errorMsg'),
-                            users: users,
-                            login_user: login_user,
-                            properties:properties,
-                            session: req.session
-                        })
-            
+                            res.render('admin-dashboard', {
+                                successMsg: req.flash('successMsg'),
+                                errorMsg: req.flash('errorMsg'),
+                                users: users,
+                                login_user: login_user,
+                                properties:properties,
+                                bookings:staysList,
+                                session: req.session
+                            });
+                        }
+                        else
+                        {
+                            res.render('admin-dashboard', {
+                                successMsg: req.flash('successMsg'),
+                                errorMsg: req.flash('errorMsg'),
+                                users: users,
+                                login_user: login_user,
+                                properties:properties,
+                                bookings:{},
+                                session: req.session
+                            });
+                        }
+                    });    
                 });
             });
         });
-
-    } else {
+    } 
+    else 
+    {
         res.render('login')
     }
 });
@@ -258,6 +351,7 @@ myApp.get('/delete/:id',function(req, res){
    
         Property.findByIdAndDelete({_id:id}).exec(function(err1, property){
             if(req.session.role==='owner'){
+                
                 res.redirect('/owner-dashboard');
             }
             else{
@@ -280,6 +374,13 @@ myApp.post('/edit-property',function(req, res){
     let amenities = req.body.amenities;
     let rules = req.body.rules;
     let id=req.body.property_id;
+    var imagesNames = [];
+    const file = req.files.images;
+    for(let i = 0 ; i < file.length; i++)
+    {
+        let ext ="."+file[i].name.split('.').pop();
+        imagesNames[i] = (i+1)+ext;//file[i].name;
+    }
     Property.findOne({_id:id}).exec(function(err,property){
         property.rentalname=rentalname;
         property.description=description;
@@ -295,21 +396,67 @@ myApp.post('/edit-property',function(req, res){
         property.amenities=amenities;
         property.rules=rules;
         property.createdOn= new Date(Date.now()).toISOString();
-        property.save().then( ()=>{
-            console.log("property updated successfully");
-        });
-    });
-        if(req.session.role=='owner'){
-           res.redirect('/owner-dashboard');
+        if(imagesNames==null){
+            property.images=property.images;
         }
         else{
-            res.redirect('/admin-dashboard');
+           property.images=imagesNames;
         }
+        
+        property.save()
+        .then( ()=>{
+            let propertyId = newProperty._id;
+            console.log("Updated Property :"+propertyId+" , Now uploading images for rental");
+            if(file){
+               
+                //const file = req.files.images;
+                for(let i = 0 ; i < file.length; i++){
+                    //imagesNames[i] = file[i].name;
+                    let path = './public/images/'+propertyId+'/';
+                    if (!fs.existsSync(path)){
+                        fs.mkdirSync(path);
+                       
+                    }
+                    let ext ="."+file[i].name.split('.').pop();
+                    file[i].mv(path + (i+1)+ext, function (err){
+                        if(err){
+                            res.send(err);
+                            
+                        }
+                    })
+                }
+                console.log("images uploaded successfully");
+            };
+            req.flash('successMsg', 'Property Updated successfully!');
+            if(req.session.role=='owner'){
+            res.redirect('/owner-dashboard');
+            }
+            else{
+                res.redirect('/admin-dashboard');
+            }
+            })
+            .catch(() => {
+                req.flash('errorMsg', 'Something went wrong while updating property!');
+                if(req.session.role==="owner"){
+                    res.redirect('/owner-dashboard');     
+                }
+                else{
+                     res.redirect('/admin-dashboard');
+                }
+            });
+    });
+       
 });
 
 myApp.post('/add-property', function (req, res) {
     console.log(req.session.userid);
     createProperty(req, res, Property)
+});
+
+myApp.get('/payment', function (req, res) {
+    
+        res.redirect('/payment');
+    
 });
 
 // Editing user GET
@@ -602,7 +749,7 @@ function getFormattedTime(d)
 }
 //----------- Start the server -------------------
 
-myApp.get('/BookedPropertyDetails/:id', function (req, res) {
+myApp.get('/LookPropertyDetails/:id', function (req, res) {
     //console.log("user pref : "+req.session.UserPreference.Location);
     //console.log("dproperty :"+PropertyList);
     //console.log("inside  properyid : "+req.params.id);
@@ -614,7 +761,7 @@ myApp.get('/BookedPropertyDetails/:id', function (req, res) {
         if(property_details)
         {
             //console.log("rendering properyid : "+property_details.length);
-            res.render('BookedPropertyDetails', {
+            res.render('LookPropertyDetails', {
                 PropertyDetails: property_details
             });
         }
@@ -632,7 +779,7 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
     if (req.session.userLoggedIn) {
         var id = req.params.id;
         Users.findOne({_id: id}).exec(function (err, user) {
-            res.render('edit-user-profile', {user: user, action: "edit", postAction: "/edit-user-profile"})
+            res.render('edit-user-profile', {user: user, action: "edit", postAction: "/edit-user-profile", role:req.session.role})
         });
     } else {
         res.redirect('/login');
