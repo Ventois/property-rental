@@ -56,21 +56,6 @@
 
         <!-- ========== MAIN CONTENT ========== -->
         <main id="content">
-            <!-- Breadcrumb -->
-            <div class="border-bottom mb-7">
-                <div class="container">
-                    <nav class="py-3" aria-label="breadcrumb">
-                        <ol class="breadcrumb breadcrumb-no-gutter mb-0 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">London Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Park Avenue Baker Street London</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <!-- End Breadcrumb -->
-
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-xl-9">
@@ -82,16 +67,9 @@
                                 <div class="d-block d-md-flex flex-horizontal-center font-size-14 text-gray-1">
                                     <i class="icon flaticon-placeholder mr-2 font-size-20"></i> <%= PropertyDetails.city%>,
                                     <%= PropertyDetails.state%>,<%= PropertyDetails.country%>
-                                    <a href="#" class="ml-1 d-block d-md-inline"> - View on map</a>
+                                    <a href="#" class="ml-1 d-block d-md-inline"></a>
                                 </div>
                             </div>
-                            <ul class="list-group list-group-borderless list-group-horizontal custom-social-share">
-                                <li class="list-group-item px-1">
-                                    <a href="#" class="height-45 width-45 border rounded border-width-2 flex-content-center">
-                                        <i class="flaticon-share font-size-18 text-dark"></i>
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                         <div class="py-4 border-top mb-4">
                             <ul class="mb-4 list-group list-group-borderless list-group-horizontal flex-center-between text-center flex-wrap">
@@ -203,20 +181,6 @@
                                         <a class="nav-link font-weight-medium" href="#scroll-location">
                                             <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
                                                 <span class="tabtext font-weight-semi-bold">Map</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link font-weight-medium" href="#scroll-video">
-                                            <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
-                                                <span class="tabtext font-weight-semi-bold">Video</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link font-weight-medium" href="#scroll-reviews">
-                                            <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
-                                                <span class="tabtext font-weight-semi-bold">Reviews</span>
                                             </div>
                                         </a>
                                     </li>
@@ -368,7 +332,7 @@
                         <div class="mb-4">
                             <div class="border border-color-7 rounded mb-5">
                                 <div class="border-bottom">
-                                    <div align="Center">
+                                    <div>
                                         
                                         <span class="font-size-24 text-gray-6 font-weight-bold ml-4"><%=PropertyDetails.rentalname%></span>
                                     </div>
@@ -378,8 +342,8 @@
                                     <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Price / Night</span>
                                     <div class="mb-4">
                                         <div class="input-group border-bottom border-width-2 border-color-1" disabled="disabled">
-                                            <i class="flaticon-pin-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
-                                          <input  type="text" value="£<%=PropertyDetails.price%>" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Where are you going?" aria-label="Where are you going?" aria-describedby="keywordInputAddon">
+                                            <i class="icon-dollar d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22">$</i>
+                                          <input disabled type="text" value="<%=PropertyDetails.price%> CAD" class="form-control font-size-16 shadow-none hero-form font-weight-bold border-0 p-0" placeholder="Price / Night" aria-label="Price / Night" aria-describedby="keywordInputAddon">
                                         </div>
                                     </div>
                                     <!-- End Input -->

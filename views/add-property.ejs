@@ -27,7 +27,7 @@
                                         <label class="form-label">
                                            Property Title
                                         </label>
-                                        <input type="text" class="form-control" name="rentalname" placeholder="Property Name" aria-label="rentalname" required
+                                        <input type="text" class="form-control" name="rentalname" placeholder="Property Title" aria-label="rentalname" required
                                                data-msg="Please enter your property name"
                                                data-error-class="u-has-error"
                                                data-success-class="u-has-success">
@@ -53,13 +53,16 @@
                                 <div class="col-sm-6 mb-4">
                                     <div class="js-form-message">
                                         <label class="form-label">
-                                            Price
+                                            Price (per night)
                                         </label>
 
-                                        <input type="text" class="form-control" name="price" placeholder="Price" aria-label="price" required
-                                               data-msg="Please enter price per night."
-                                               data-error-class="u-has-error"
-                                               data-success-class="u-has-success">
+                                        <div class="input-group">
+                                            <span class="input-group-addon mr-1 mt-3 ">$</span>
+                                            <input type="text" class="form-control" name="price" placeholder="Price per night" aria-label="price" required
+                                                data-msg="Please enter price per night."
+                                                data-error-class="u-has-error"
+                                                data-success-class="u-has-success">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- End Input -->
@@ -126,7 +129,7 @@
                                 <div class="col-sm-6 mb-4">
                                     <div class="js-form-message">
                                         <label class="form-label">
-                                           Area (Sft)
+                                           Area (Sqft)
                                         </label>
 
                                         <input type="text" class="form-control" name="area" placeholder="Sqft" aria-label="area" required

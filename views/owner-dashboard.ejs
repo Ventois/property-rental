@@ -2,6 +2,26 @@
 <html lang="en">
 <head>
     <%- include('_layouts/head') -%>
+    <script language="javascript" type="text/javascript">
+
+
+        function GetDeleteConfirmation(name,checkin,checkout,guests,rooms,nights,price,bookingdt,rowid) {
+            // document.getElementById(rowid).style.backgroundColor = "red";
+            var msg = "Are you sure you want to delete the following booking?\n"+
+                "Rental Name : "+name+"\n"+
+                "Checkin Date : "+checkin+"\n"+
+                "Checkout Date : "+checkout+"\n"+
+
+                "Rooms : "+rooms+"\n"+
+                "Guests : "+guests+"\n"+
+                "Total Nights : "+nights+"\n"+
+                "Total Price : "+price+"\n"+
+                "Booked On : "+bookingdt;
+
+            return confirm(msg);
+            //document.getElementById(rowid).style.backgroundColor = "white";
+        }
+    </script>
 </head>
 <body>
 <%- include('_layouts/header') -%>
@@ -91,7 +111,7 @@
                             <tr>
                                 <th scope="row" class="align-middle">
                                     <div class="d-flex align-items-center text-primary font-weight-medium">
-                                       <label><a href="/property-details/<%= property._id%>"><%= property.rentalname%></a> </label>
+                                       <label><a href="/LookPropertyDetails/<%= property._id%>"><%= property.rentalname%></a> </label>
                                     </div>
                                 </th>
                                 <td class="align-middle text-secondary">
@@ -124,638 +144,214 @@
                             <% } %>
                     </div>
                 </div>
-
-                
-
+                   
                 <div class="tab-pane fade" id="upcoming" role="tabpanel" aria-labelledby="pills-two-example-t1-tab">
                     <div class="row">
-                        <h1>Upcoming Stays</h1>
-                        <div class="container">
-                            <div class="table-responsive-md u-datatable">
-                                <table class="js-datatable table table-borderless u-datatable__striped u-datatable__content u-datatable__trigger mb-5"
-                                       data-dt-is-responsive="false"
-                                       data-dt-page-length="4"
-                                       data-dt-is-show-paging="false"
-                                       data-dt-is-show-info="false">
-                                    <thead>
-                                    <tr class="text-uppercase font-size-1">
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Order
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Client
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Amount
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Date
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Status
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="font-size-1">
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR001</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 May</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
 
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR002</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$257.93</td>
-                                        <td class="align-middle text-secondary">12 May</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR003</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$441.99</td>
-                                        <td class="align-middle text-secondary">15 May</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR004</td>
-                                        <td>
-                                            <span>MyTravelApp</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$99.00</td>
-                                        <td class="align-middle text-secondary">01 Jun</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR005</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$14.89</td>
-                                        <td class="align-middle text-secondary">02 Jun</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR006</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 Jun</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR007</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$1,579.99</td>
-                                        <td class="align-middle text-secondary">15 Jun</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR008</td>
-                                        <td>
-                                            <span>GitHub</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$235.85</td>
-                                        <td class="align-middle text-secondary">16 Apr</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR009</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$12.31</td>
-                                        <td class="align-middle text-secondary">12 Apr</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0010</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$891.00</td>
-                                        <td class="align-middle text-secondary">29 Apr</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0011</td>
-                                        <td>
-                                            <span>Atlassian</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$321.11</td>
-                                        <td class="align-middle text-secondary">30 Apr</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0012</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$16.29</td>
-                                        <td class="align-middle text-secondary">02 Mar</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0013</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$4.00</td>
-                                        <td class="align-middle text-secondary">01 Mar</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0014</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$3,462.00</td>
-                                        <td class="align-middle text-secondary">23 Mar</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0015</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">27 Mar</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0016</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$196.73</td>
-                                        <td class="align-middle text-secondary">04 Feb</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0017</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$235.99</td>
-                                        <td class="align-middle text-secondary">18 Feb</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0018</td>
-                                        <td>
-                                            <span>MyTravelApp</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$34.00</td>
-                                        <td class="align-middle text-secondary">21 Feb</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0019</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$72.89</td>
-                                        <td class="align-middle text-secondary">28 Feb</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0020</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0021</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$7,485.00</td>
-                                        <td class="align-middle text-secondary">15 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0022</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$76.00</td>
-                                        <td class="align-middle text-secondary">22 Jan</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0023</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$12.00</td>
-                                        <td class="align-middle text-secondary">18 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0024</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$87.43</td>
-                                        <td class="align-middle text-secondary">30 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <h1>Upcoming stays</h1>
+                        <% if(upcoming_bookings.length > 0) { %>
+                            <!--displaying status message-->
+                            <div class="container d-block">
+                                <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <%- errorMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } else if(typeof successMsg != 'undefined' && successMsg) { %>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <%- successMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } %>
                             </div>
-                        </div>
+                            <table class="table table-light">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Rental Name</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckIn</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckOut</th>
 
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <nav id="datatablePaginationExample1" aria-label="Activity pagination"></nav>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Rooms</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Guests</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Total Nights</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Total Price</th>
 
-                            <small id="datatableInfoExample1" class="text-secondary"></small>
-                        </div>
-                        <!-- End Pagination -->
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>Booked On</th>
+                                    <th scope="col"><span class="fas fa-cogs mr-2"></span>Cancel</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                    var count = 0;
+                                    upcoming_bookings.forEach(function(stay){ %>
+                                    <tr id="rowid_<%= count%>">
+                                        <th scope="row" class="align-middle">
+                                            <div class="d-flex align-items-center text-primary font-weight-medium">
+                                                <label><a href="/BookedPropertyDetails/<%= stay.PropertyID%>"><%= stay.PropertyName%></a> </label>
+                                            </div>
+                                        </th>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.CheckInDate%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.CheckOutDate%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.Rooms%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.Guests%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.TotalNights%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.TotalPrice%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.BookingDate%></small>
+                                        </td>
+                                        <td class="align-middle">
+
+                                            <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover"
+                                               href="/delete/booking/<%= stay.BookingID %>" data-toggle="tooltip" data-placement="top" title="Cancel Booking"
+                                               id="btnDelete"
+                                               onclick="return GetDeleteConfirmation('<%= upcoming_bookings[count].PropertyName%>',
+                                                       '<%= upcoming_bookings[count].CheckInDate%>',
+                                                       '<%= upcoming_bookings[count].CheckOutDate%>',
+                                                       '<%= upcoming_bookings[count].Guests%>',
+                                                       '<%= upcoming_bookings[count].Rooms%>',
+                                                       '<%= upcoming_bookings[count].TotalNights%>',
+                                                       '<%= upcoming_bookings[count].TotalPrice%>',
+                                                       '<%= upcoming_bookings[count].BookingDate%>',
+                                                       'rowid_<%= count%>')
+                                                       ">
+                                                <span class="fas fa-trash btn-icon__inner"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <%
+                                    count++;
+                                });%>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <div class="alert alert-warning m-auto" role="alert">
+                                <h4 class="alert-heading">No Upcoming Stays !</h4>
+                                <p class="alert-text">Aww yeah, your account don't have any Reservations. Please Book a stay and it will appear here.</p>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
 
-
-                
-                <div class="tab-pane fade" id="allstays" role="tabpanel" aria-labelledby="pills-three-example-t1-tab">
+                <div class="tab-pane fade" id="allstays" role="tabpanel" aria-labelledby="pills-two-example-t1-tab">
                     <div class="row">
-                        <h1>All Stays</h1>
-                        <div class="container">
-                            <div class="table-responsive-md u-datatable">
-                                <table class="js-datatable table table-borderless u-datatable__striped u-datatable__content u-datatable__trigger mb-5"
-                                       data-dt-is-responsive="false"
-                                       data-dt-page-length="4"
-                                       data-dt-is-show-paging="false"
-                                       data-dt-is-show-info="false">
-                                    <thead>
-                                    <tr class="text-uppercase font-size-1">
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Order
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Client
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Amount
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Date
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="font-weight-medium">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                Status
-                                                <div class="ml-2">
-                                                    <span class="fas fa-angle-up u-datatable__thead-icon"></span>
-                                                    <span class="fas fa-angle-down u-datatable__thead-icon"></span>
-                                                </div>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="font-size-1">
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR001</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 May</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
+                        <h1>All stays</h1>
 
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR002</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$257.93</td>
-                                        <td class="align-middle text-secondary">12 May</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR003</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$441.99</td>
-                                        <td class="align-middle text-secondary">15 May</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR004</td>
-                                        <td>
-                                            <span>MyTravelApp</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$99.00</td>
-                                        <td class="align-middle text-secondary">01 Jun</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR005</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$14.89</td>
-                                        <td class="align-middle text-secondary">02 Jun</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR006</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 Jun</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR007</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$1,579.99</td>
-                                        <td class="align-middle text-secondary">15 Jun</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR008</td>
-                                        <td>
-                                            <span>GitHub</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$235.85</td>
-                                        <td class="align-middle text-secondary">16 Apr</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR009</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$12.31</td>
-                                        <td class="align-middle text-secondary">12 Apr</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0010</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$891.00</td>
-                                        <td class="align-middle text-secondary">29 Apr</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0011</td>
-                                        <td>
-                                            <span>Atlassian</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$321.11</td>
-                                        <td class="align-middle text-secondary">30 Apr</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0012</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$16.29</td>
-                                        <td class="align-middle text-secondary">02 Mar</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0013</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$4.00</td>
-                                        <td class="align-middle text-secondary">01 Mar</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0014</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$3,462.00</td>
-                                        <td class="align-middle text-secondary">23 Mar</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0015</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">27 Mar</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0016</td>
-                                        <td>
-                                            <span>Dropbox</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$196.73</td>
-                                        <td class="align-middle text-secondary">04 Feb</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0017</td>
-                                        <td>
-                                            <span>Google</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$235.99</td>
-                                        <td class="align-middle text-secondary">18 Feb</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0018</td>
-                                        <td>
-                                            <span>MyTravelApp</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$34.00</td>
-                                        <td class="align-middle text-secondary">21 Feb</td>
-                                        <td class="align-middle text-warning">Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0019</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$72.89</td>
-                                        <td class="align-middle text-secondary">28 Feb</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0020</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$9.00</td>
-                                        <td class="align-middle text-secondary">05 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0021</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$7,485.00</td>
-                                        <td class="align-middle text-secondary">15 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0022</td>
-                                        <td>
-                                            <span>Slack</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$76.00</td>
-                                        <td class="align-middle text-secondary">22 Jan</td>
-                                        <td class="align-middle text-danger">Rejected</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0023</td>
-                                        <td>
-                                            <span>Spotify</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$12.00</td>
-                                        <td class="align-middle text-secondary">18 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="align-middle text-secondary font-weight-normal">FR0024</td>
-                                        <td>
-                                            <span>Htmlstream</span>
-                                        </td>
-                                        <td class="align-middle text-primary">$87.43</td>
-                                        <td class="align-middle text-secondary">30 Jan</td>
-                                        <td class="align-middle text-success">Completed</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <% if(bookings.length > 0) { %>
+                            <!--displaying status message-->
+                            <div class="container d-block">
+                                <% if (typeof errorMsg != 'undefined' && errorMsg) { %>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <%- errorMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } else if(typeof successMsg != 'undefined' && successMsg) { %>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <%- successMsg %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                <% } %>
                             </div>
-                        </div>
+                            <table class="table table-light">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Rental Name</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckIn</th>
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>CheckOut</th>
 
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <nav id="datatablePaginationExample1" aria-label="Activity pagination"></nav>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Rooms</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Guests</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Total Nights</th>
+                                    <th scope="col"><span class="fas fa-user mr-2"></span>Total Price</th>
 
-                            <small id="datatableInfoExample1" class="text-secondary"></small>
-                        </div>
-                        <!-- End Pagination -->
+                                    <th scope="col"><span class="fas fa-calendar -bulk mr-2"></span>Booked On</th>
+                                    <th scope="col"><span class="fas fa-cogs mr-2"></span>Cancel</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                    var count = 0;
+                                    bookings.forEach(function(stay){ %>
+                                    <tr id="rowid_<%= count%>">
+                                        <th scope="row" class="align-middle">
+                                            <div class="d-flex align-items-center text-primary font-weight-medium">
+                                                <label><a href="/BookedPropertyDetails/<%= stay.PropertyID%>"><%= stay.PropertyName%></a> </label>
+                                            </div>
+                                        </th>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.CheckInDate%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.CheckOutDate%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.Rooms%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.Guests%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.TotalNights%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.TotalPrice%></small>
+                                        </td>
+                                        <td class="align-middle text-secondary">
+                                            <small class="d-block"><%= stay.BookingDate%></small>
+                                        </td>
+                                        <td class="align-middle">
+
+                                            <a class="btn btn-xs btn-icon btn-soft-secondary transition-3d-hover"
+                                               href="/delete/booking/<%= stay.BookingID %>" data-toggle="tooltip" data-placement="top" title="Cancel Booking"
+                                               id="btnDelete"
+                                               onclick="return GetDeleteConfirmation('<%= bookings[count].PropertyName%>',
+                                                       '<%= bookings[count].CheckInDate%>',
+                                                       '<%= bookings[count].CheckOutDate%>',
+                                                       '<%= bookings[count].Guests%>',
+                                                       '<%= bookings[count].Rooms%>',
+                                                       '<%= bookings[count].TotalNights%>',
+                                                       '<%= bookings[count].TotalPrice%>',
+                                                       '<%= bookings[count].BookingDate%>',
+                                                       'rowid_<%= count%>')
+                                                       ">
+                                                <span class="fas fa-trash btn-icon__inner"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <%
+                                    count++;
+                                });%>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <div class="alert alert-warning m-auto" role="alert">
+                                <h4 class="alert-heading">No Stays !</h4>
+                                <p class="alert-text">Aww yeah, your account dont have any Reservations. Please Book a stay and it will appear here.</p>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
+
+
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="pills-four-example-t1-tab">
                     <div class="row container flex justify-content-between ">
                         <div>

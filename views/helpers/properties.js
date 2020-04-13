@@ -1,5 +1,5 @@
 // All the methods related to property management
-
+var fs = require('fs');
 // Create Property
 // Create Property
 const createProperty = (req, res, Property) => {
@@ -50,19 +50,22 @@ const createProperty = (req, res, Property) => {
                 for(let i = 0 ; i < file.length; i++){
                     //imagesNames[i] = file[i].name;
                     let path = './public/images/'+propertyId+'/';
+                    console.log("in the loop");
                     if (!fs.existsSync(path)){
                         fs.mkdirSync(path);
+                        console.log("Path : "+path);
                     }
                     let ext ="."+file[i].name.split('.').pop();
                     file[i].mv(path + (i+1)+ext, function (err){
                         if(err){
                             res.send(err);
+                            console.log("Error : "+err);
                         }
-                    })
+                    });
                 }
                 console.log("images uploaded successfully");
             };
-
+            
             req.flash('successMsg', 'Property Added successfully!');
             if(req.session.role==="owner"){
                 res.redirect('/owner-dashboard');     
@@ -72,7 +75,8 @@ const createProperty = (req, res, Property) => {
             }
            
         })
-        .catch(() => {
+        .catch((errorMsg) => {
+            console.log(errorMsg);
             req.flash('errorMsg', 'Something went wrong while adding property!');
             if(req.session.role==="owner"){
                 res.redirect('/owner-dashboard');     

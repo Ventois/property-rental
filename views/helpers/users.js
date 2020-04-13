@@ -188,7 +188,14 @@ const updateUserProfile = (req, res, Users) => {
     var lastname = req.body.lastname;
     var phone = req.body.phone;
     var email = req.body.email;
-    var role = req.body.role === "owner" ? "owner" : "user";
+    var role;
+    if(req.session.role==='admin'){
+        role="admin";
+    }
+    else
+    {
+        role= req.body.role === "owner" ? "owner" : "user";
+    }
     var id = req.body.userid;
     Users.findOne({_id: id}).exec(function (err, user) {
         user.firstname = firstname;

@@ -49,24 +49,10 @@
 
         <!-- ========== MAIN CONTENT ========== -->
         <main id="content">
-            <!-- Breadcrumb -->
-            <div class="border-bottom mb-7">
-                <div class="container">
-                    <nav class="py-3" aria-label="breadcrumb">
-                        <ol class="breadcrumb breadcrumb-no-gutter mb-0 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="#">London Hotels</a></li>
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Park Avenue Baker Street London</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <!-- End Breadcrumb -->
-
+           
             <div class="container"  align="center">
                 
-                <div class="col-lg-4 col-xl-3"">
+                <div class="col-lg-4 col-xl-3">
                     <div class="mb-4"  style="width: 400px;" align="center">
                         <div><h2>Complete your Booking</h2></div>
                         <div class="border border-color-7 rounded mb-5">
@@ -115,7 +101,10 @@
                                 <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Total Price : <span align="right" style="color: black;">
                                     <%=BookingInfo.TotalPrice%></span></span>
                                 <br/><span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Notification EmailID : <span align="right" style="color: black;">
-                                    <input type="text" name="txtEmailID" id="txtEmailID" value="<%=BookingInfo.CustomerEmailID%>"/></span></span>
+                                    <input required type="text" name="txtEmailID" id="txtEmailID" value="<%=BookingInfo.CustomerEmailID%>"
+                                    data-msg="Please enter price per night."
+                                    data-error-class="u-has-error"
+                                    data-success-class="u-has-success" /></span></span>
                                 <br/>
                                 <br/>
                                 <!-- <div class="text-center">
