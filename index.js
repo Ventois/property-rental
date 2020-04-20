@@ -82,12 +82,19 @@ function getPropertyDetails(id, req, res) {
         if (property_details) {
             //Check if property available for the selected dates or already Booked.
             var isPropertyAvailable = true;
+            var isRoomsAvailable = true;
             Booking.find({ property_id: property_details._id }).exec(function (err, bookings) {
                 if (err) {
                     console.log('error boss : ' + err);
-                }
-               
+                }               
+
                 if (bookings && bookings.length > 0) {
+
+                    if(property_details.rooms < parseInt(req.session.UserPreference.Rooms))
+                        {
+                            isRoomsAvailable = false;
+                        }
+                        
                     var userCheckInDate = new Date(Date.parse(req.session.UserPreference.CheckInDate));
                     var userCheckOutDate = new Date(Date.parse(req.session.UserPreference.CheckOutDate));
                     for (let bookedProperty of bookings)// bookings.forEach(bookedProperty => 
@@ -107,6 +114,8 @@ function getPropertyDetails(id, req, res) {
                                 bookedProperty.checkoutDate <= userCheckOutDate)) {
                             isPropertyAvailable = false;
                         }
+
+                        
                     }
 
                 }
@@ -115,6 +124,7 @@ function getPropertyDetails(id, req, res) {
                     PropertyDetails: property_details,
                     UserPreference: req.session.UserPreference,
                     IsPropertyAvailable: isPropertyAvailable,
+                    IsRoomsAvailable : isRoomsAvailable,
                     DisabledDates: disabledDates
                 });
             });
@@ -578,11 +588,7 @@ myApp.post('/Confirmation', function (req, res) {
 // });
 
 myApp.post('/BookingConfirmation', function (req, res) {
-    if(!req.session.userLoggedIn || req.session.role !== "user") {
-            req.session.isBookingPending = true;
-            res.render("login");
-    };
-
+    
     var dates= req.body.checkin_checkout_dates.split(" - ");
     var checkinDate = new Date(Date.parse(dates[0].replace("[","")));
     var checkoutDate = new Date(Date.parse(dates[1].replace("]","")));
@@ -595,6 +601,18 @@ myApp.post('/BookingConfirmation', function (req, res) {
     GuestsAndRooms = GuestsAndRooms.split(" - ");
     var guests = GuestsAndRooms[0].trim();
     var rooms = GuestsAndRooms[1].trim();
+    var dispDate = '"'+dateFormat(new Date(Date.parse(checkinDate)),"dd mmm yyyy")+'","'+dateFormat(new Date(Date.parse(checkoutDate)),"dd mmm yyyy")+'"';
+    if (!req.session.userLoggedIn || req.session.role !== "user") {
+        req.session.UserPreference["Rooms"] = rooms;
+        req.session.UserPreference["Guests"] = guests;
+        req.session.UserPreference["CheckInDate"] = checkinDate;
+        req.session.UserPreference["CheckOutDate"] = checkoutDate;
+        req.session.UserPreference["DisplayDate"] = dispDate// req.body.checkin_checkout_dates//'["Jul 1 / 2020", "Aug 25 / 2020"]'//
+        req.session.isBookingPending = true;
+        res.render("login");
+    };
+
+    
     var bookingInfo = {
         PropertyID: req.body.property_id,
         //customer_id:  "501",//Later change to some session userid
@@ -618,16 +636,35 @@ myApp.post('/BookingConfirmation', function (req, res) {
 
             bookingInfo['PricePerNight'] = propertyInfo.price;
 
+            
             var checkindate = Date.parse(checkinDate);
             var checkoutdate = Date.parse(checkoutDate);
             var totalNights = Math.round((checkoutdate-checkindate)/(1000*60*60*24));
+            var totalPrice = totalNights * Number(propertyInfo.price) * Number(rooms);
             bookingInfo['TotalNights'] = totalNights;
-            bookingInfo['TotalPrice'] = totalNights * Number(propertyInfo.price) * Number(rooms);
+            bookingInfo['TotalPrice'] = totalPrice;
             bookingInfo['CustomerEmailID'] = req.session.email;
             bookingInfo['DisplayCheckInDate'] = dateFormat(new Date(checkinDate),"dd mmm yyyy");
             bookingInfo['DisplayCheckOutDate'] = dateFormat(new Date(checkoutDate),"dd mmm yyyy");
             bookingInfo['CustomerID'] = req.session.userid;
             bookingInfo['CustomerFirstName'] = req.session.userid;
+            bookingInfo['Province'] = propertyInfo.state;
+            var tax = 0;
+            var taxAmount = 0;
+            if(propertyInfo.state in provinceTax)
+            {
+                tax = provinceTax['propertyInfo.state']
+                bookingInfo['TaxPercent'] = tax;
+                taxAmount = totalPrice * (tax / 100);
+            }
+            else
+            {
+                tax = 0;
+                bookingInfo['TaxPercent'] = tax;
+            }
+            
+            bookingInfo['PayAmount'] =  totalPrice + taxAmount;
+            bookingInfo['TaxAmount'] = taxAmount;
             Users.findOne({_id: req.session.userid},function (err, user) {
             req.session.BookingInfo = bookingInfo;
             req.session.UserInfo = user;
@@ -785,6 +822,15 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
         res.redirect('/login');
     }
 });
+
+var provinceTax = {
+    "New Brunswick" : 15,
+    "Newfoundland and Labrador" : 15,
+    "Nova Scotia" : 15,
+    "Prince Edward Island" : 15,
+    "Ontario" : 13
+};
+
 
 //----------- Start the server -------------------
 
