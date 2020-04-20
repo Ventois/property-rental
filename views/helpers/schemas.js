@@ -36,6 +36,8 @@ const BOOKING_SCHEMA = {
     guests: Number,
     rooms: Number,
     totalPrice: Number,
+    taxAmount : Number,
+    subTotal : Number,
     bookingDate:Date,
     totalNights:Number,
     emailNotification : String
