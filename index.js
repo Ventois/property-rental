@@ -670,8 +670,8 @@ myApp.post('/BookingConfirmation', function (req, res) {
                 bookingInfo['TaxPercent'] = tax;
             }
             console.log(bookingInfo['TaxPercent']);
-            bookingInfo['PayAmount'] =  totalPrice;
-         //   bookingInfo['TaxAmount'] = taxAmount;
+            bookingInfo['PayAmount'] =  totalPrice + taxAmount;
+            bookingInfo['TaxAmount'] = taxAmount;
             Users.findOne({_id: req.session.userid},function (err, user) {
             req.session.BookingInfo = bookingInfo;
             req.session.UserInfo = user;
