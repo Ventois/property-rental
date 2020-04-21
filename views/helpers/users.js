@@ -216,9 +216,9 @@ const updateUserProfile = (req, res, Users) => {
         user.save()
             .then(() => {
                 req.flash('successMsg', 'User updated successfully!');
-                if(req.session.role=="user"){
+                if(req.session.role==="user"){
                     res.redirect('/user-dashboard');
-                }else if(req.session.role=="owner"){
+                }else if(req.session.role==="owner"){
                     res.redirect('/owner-dashboard');
                 }else{
                     res.redirect('/admin-dashboard');
@@ -226,9 +226,9 @@ const updateUserProfile = (req, res, Users) => {
             })
             .catch(() => {
                 req.flash('errorMsg', 'Something went wrong while editing user!');
-                if(req.session.role=="user"){
+                if(req.session.role==="user"){
                     res.redirect('/user-dashboard');
-                }else if(req.session.role=="owner"){
+                }else if(req.session.role==="owner"){
                     res.redirect('/owner-dashboard');
                 }else{
                     res.redirect('/admin-dashboard');

@@ -619,13 +619,17 @@ myApp.post('/BookingConfirmation', function (req, res) {
         CheckInDate: checkinDate,
         CheckOutDate: checkoutDate,
         Guests: guests,
-        Rooms: rooms
+        Rooms: rooms,
+        PayAmount: 0,
+        TaxAmount: 0,
     };
     console.log('BookingConfirmation request reached: ');
-
-
-
-
+    var provinceTax = {
+        "quebec" : 15,
+        "halifax" : 15,
+        "ontario" : 13,
+        "alberta" : 13,
+    };
     Property.find({_id: req.body.property_id},function (err, property) {
         // console.log("found properyid : "+property_details);
         if(property.length > 0)
@@ -651,9 +655,12 @@ myApp.post('/BookingConfirmation', function (req, res) {
             bookingInfo['Province'] = propertyInfo.state;
             var tax = 0;
             var taxAmount = 0;
-            if(propertyInfo.state in provinceTax)
+            if(propertyInfo.state.toLowerCase() in provinceTax)
             {
-                tax = provinceTax['propertyInfo.state']
+                console.log("provinceTax", provinceTax);
+                console.log("propertyInfo.state", propertyInfo.state);
+                console.log("provinceTax['propertyInfo.state']", provinceTax[propertyInfo.state])
+                tax = provinceTax[propertyInfo.state]
                 bookingInfo['TaxPercent'] = tax;
                 taxAmount = totalPrice * (tax / 100);
             }
@@ -662,9 +669,9 @@ myApp.post('/BookingConfirmation', function (req, res) {
                 tax = 0;
                 bookingInfo['TaxPercent'] = tax;
             }
-            
-            bookingInfo['PayAmount'] =  totalPrice + taxAmount;
-            bookingInfo['TaxAmount'] = taxAmount;
+            console.log(bookingInfo['TaxPercent']);
+            bookingInfo['PayAmount'] =  totalPrice;
+         //   bookingInfo['TaxAmount'] = taxAmount;
             Users.findOne({_id: req.session.userid},function (err, user) {
             req.session.BookingInfo = bookingInfo;
             req.session.UserInfo = user;
@@ -823,13 +830,7 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
     }
 });
 
-var provinceTax = {
-    "New Brunswick" : 15,
-    "Newfoundland and Labrador" : 15,
-    "Nova Scotia" : 15,
-    "Prince Edward Island" : 15,
-    "Ontario" : 13
-};
+
 
 
 //----------- Start the server -------------------
