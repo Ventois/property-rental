@@ -23,7 +23,7 @@
     "express-validator": "*",
     "fs-extra": "*",
     "googleapis": "^39.2.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mongoose": "*",
     "nodemailer": "^6.4.6",
     "req-flash": "0.0.3"
