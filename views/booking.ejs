@@ -1,417 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <%- include('_layouts/head') -%>
 </head>
-    <body>
-    <%- include('_layouts/header') -%>
+<body>
+<%- include('_layouts/header') -%>
 
-        <!-- ========== MAIN CONTENT ========== -->
-        <main id="content" class="bg-gray space-2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-xl-9">
-                        <div class="mb-5 shadow-soft bg-white rounded-sm">
-                            <div class="py-3 px-4 px-xl-12 border-bottom">
-                                <ul class="list-group flex-nowrap overflow-auto overflow-md-visble list-group-horizontal list-group-borderless flex-center-between pt-1">
-                                    <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
-                                        <div class="flex-content-center mb-3 width-40 height-40 bg-primary border-width-2 border border-primary text-white mx-auto rounded-circle">
-                                            1
-                                        </div>
-                                        <div class="text-primary">Customer information</div>
-                                    </li>
-                                    <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
-                                        <div class="flex-content-center mb-3 width-40 height-40 border  border-width-2 border-gray mx-auto rounded-circle">
-                                            2
-                                        </div>
-                                        <div class="text-gray-1">Payment information</div>
-                                    </li>
-                                    <li class="list-group-item text-center flex-shrink-0 flex-md-shrink-1">
-                                        <div class="flex-content-center mb-3 width-40 height-40 border  border-width-2 border-gray mx-auto rounded-circle">
-                                            3
-                                        </div>
-                                        <div class="text-gray-1">Booking is confirmed!</div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pt-4 pb-5 px-5">
-                                <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-4">
-                                    Your Contact Details :
-                                </h5>
-                                <!-- Contacts Form -->
-                                <form class="js-validate" action="/payment" method="POST">
-                                    <div class="row">
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    First Name
-                                                </label>
-                                                <input type="text" class="form-control" name="firstName" placeholder="First Name" aria-label="Ali" required
-                                                data-msg="Please enter your first name."
-                                                data-error-class="u-has-error"
-                                                data-success-class="u-has-success"
-                                                value="<%= UserInfo.firstname%>" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    Last name
-                                                </label>
-
-                                                <input type="text" class="form-control" name="lasstName" placeholder="Last Name" aria-label="TUFAN" required
-                                                data-msg="Please enter your last name."
-                                                data-error-class="u-has-error"
-                                                data-success-class="u-has-success" value="<%= UserInfo.lastname%>" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    Email
-                                                     <label><span style="font-size: 12.5px;color: slateblue;">[Note : Your Booking Details will be sent to this mailid]
-                                                    </span></label>
-                                                        
-                                                </label>
-
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email ID" aria-label="creativelayers088@gmail.com" required
-                                                data-msg="Please enter a valid email address."
-                                                data-error-class="u-has-error"
-                                                data-success-class="u-has-success" value="<%= UserInfo.email%>">
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    Phone
-                                                </label>
-
-                                                <input type="number" class="form-control" name="phone" placeholder="Mobile" aria-label="+90 (254) 458 96 32" required
-                                                data-msg="Please enter a valid phone number."
-                                                data-error-class="u-has-error"
-                                                data-success-class="u-has-success" value="<%= UserInfo.phone%>" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <div class="w-100"></div>
-
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    Country
-                                                </label>
-                                                <%- include('_layouts/countries') -%>
-                                               </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <!-- Input -->
-                                        <div class="col-sm-6 mb-4">
-                                            <div class="js-form-message">
-                                                <label class="form-label">
-                                                    City
-                                                </label>
-                                                <input type="text" class="form-control" name="city" placeholder="Enter city name" aria-label="Enter city name" required
-                                                       data-msg="Please enter a valid city name."
-                                                       data-error-class="u-has-error"
-                                                       data-success-class="u-has-success">
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <div class="w-100"></div>
-
-                                        <div class="col">
-                                            <!-- Input -->
-                                            <div class="js-form-message mb-6">
-                                                <label class="form-label">
-                                                    Special Requirements
-                                                </label>
-
-                                                <div class="input-group">
-                                                    <textarea class="form-control" rows="4" name="text" placeholder="" aria-label=""
-                                                    data-msg="Please enter a reason."
-                                                    data-error-class="u-has-error"
-                                                    data-success-class="u-has-success"></textarea>
-                                                </div>
-                                            </div>
-                                            <!-- End Input -->
-                                        </div>
-
-                                        <div class="w-100"></div>
-
-                                                <button type="submit" class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">Proceed to Payment</button>
-                                    </div>
-                                </form>
-                                <!-- End Contacts Form -->
-                            </div>
-                        </div>
+<!-- ========== MAIN CONTENT ========== -->
+<main id="content" class="bg-gray space-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-xl-9">
+                <div class="mb-5 shadow-soft bg-white rounded-sm">
+                    <div class="py-3 px-4 px-xl-12 border-bottom">
+                        <ul class="list-group flex-nowrap overflow-auto overflow-md-visble list-group-horizontal list-group-borderless flex-center-between pt-1">
+                            <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
+                                <div class="flex-content-center mb-3 width-40 height-40 bg-primary border-width-2 border border-primary text-white mx-auto rounded-circle">
+                                    1
+                                </div>
+                                <div class="text-primary">Customer information</div>
+                            </li>
+                            <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
+                                <div class="flex-content-center mb-3 width-40 height-40 border  border-width-2 border-gray mx-auto rounded-circle">
+                                    2
+                                </div>
+                                <div class="text-gray-1">Payment information</div>
+                            </li>
+                            <li class="list-group-item text-center flex-shrink-0 flex-md-shrink-1">
+                                <div class="flex-content-center mb-3 width-40 height-40 border  border-width-2 border-gray mx-auto rounded-circle">
+                                    3
+                                </div>
+                                <div class="text-gray-1">Booking is confirmed!</div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-lg-4 col-xl-3">
-                        <div class="shadow-soft bg-white rounded-sm">
-                            <div class="pt-5 pb-3 px-5 border-bottom">
-                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="d-block mb-3">
-                                    <img class="img-fluid rounded-xs" src="/images/<%= BookingInfo.PropertyID%>/1.jpg" alt="Image-Description">
-                                </a>
-                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="text-dark font-weight-bold pr-xl-1"><%= BookingInfo.PropertyName%></a>
-                                <div class="my-1 flex-horizontal-center text-gray-1">
-                                    <i class="icon flaticon-pin-1 mr-2 font-size-15"></i> <%= BookingInfo.PropertyAddress%>
-                                </div>
-                            </div>
-                            <!-- Basics Accordion -->
-                            <div id="basicsAccordion">
-                                <!-- Card -->
-                                <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
-                                    <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingOne">
-                                        <h5 class="mb-0">
-                                            <button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
-                                                data-toggle="collapse"
-                                                data-target="#basicsCollapseOne"
-                                                aria-expanded="true"
-                                                aria-controls="basicsCollapseOne">
-                                                Booking Detail
-
-                                                <span class="card-btn-arrow font-size-14 text-dark">
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </span>
-                                            </button>
-                                        </h5>
+                    <div class="pt-4 pb-5 px-5">
+                        <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-4">
+                            Your Contact Details :
+                        </h5>
+                        <!-- Contacts Form -->
+                        <form class="js-validate" action="/payment" method="POST">
+                            <div class="row">
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            First Name
+                                        </label>
+                                        <input type="text" class="form-control" name="firstName"
+                                               placeholder="First Name" aria-label="Ali" required
+                                               data-msg="Please enter your first name."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success"
+                                               value="<%= UserInfo.firstname %>" readonly>
                                     </div>
-                                    <div id="basicsCollapseOne" class="collapse show"
-                                        aria-labelledby="basicsHeadingOne"
-                                        data-parent="#basicsAccordion">
-                                        <div class="card-body px-4 pt-0">
-                                            <!-- Fact List -->
-                                            <ul class="list-unstyled font-size-1 mb-0 font-size-16">
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium"><%=BookingInfo.DisplayCheckInDate%> - <%=BookingInfo.DisplayCheckOutDate%><br>
-                                                    </span>
-                                                   
-                                                </li>
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Price/Night</span>
-                                                    <span class="text-secondary">$<%=BookingInfo.PricePerNight%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Stay</span>
-                                                    <span class="text-secondary"><%=BookingInfo.TotalNights%> Nights</span>
-                                                </li>
+                                </div>
+                                <!-- End Input -->
 
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Rooms</span>
-                                                    <span class="text-secondary"><%=BookingInfo.Rooms%></span>
-                                                </li>
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Last name
+                                        </label>
 
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Guests</span>
-                                                    <span class="text-secondary"><%=BookingInfo.Guests%></span>
-                                                </li>
-                                            </ul>
-                                            <!-- End Fact List -->
+                                        <input type="text" class="form-control" name="lasstName" placeholder="Last Name"
+                                               aria-label="TUFAN" required
+                                               data-msg="Please enter your last name."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success" value="<%= UserInfo.lastname %>"
+                                               readonly>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Email
+                                            <label><span style="font-size: 12.5px;color: slateblue;">[Note : Your Booking Details will be sent to this mailid]
+                                                    </span></label>
+
+                                        </label>
+
+                                        <input type="email" class="form-control" name="email" id="email"
+                                               placeholder="Email ID" aria-label="creativelayers088@gmail.com" required
+                                               data-msg="Please enter a valid email address."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success" value="<%= UserInfo.email %>">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Phone
+                                        </label>
+
+                                        <input type="number" class="form-control" name="phone" placeholder="Mobile"
+                                               aria-label="+90 (254) 458 96 32" required
+                                               data-msg="Please enter a valid phone number."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success" value="<%= UserInfo.phone %>"
+                                               readonly>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <div class="w-100"></div>
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            Country
+                                        </label>
+                                        <%- include('_layouts/countries') -%>
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <!-- Input -->
+                                <div class="col-sm-6 mb-4">
+                                    <div class="js-form-message">
+                                        <label class="form-label">
+                                            City
+                                        </label>
+                                        <input type="text" class="form-control" name="city"
+                                               placeholder="Enter city name" aria-label="Enter city name" required
+                                               data-msg="Please enter a valid city name."
+                                               data-error-class="u-has-error"
+                                               data-success-class="u-has-success">
+                                    </div>
+                                </div>
+                                <!-- End Input -->
+
+                                <div class="w-100"></div>
+
+                                <div class="col">
+                                    <!-- Input -->
+                                    <div class="js-form-message mb-6">
+                                        <label class="form-label">
+                                            Special Requirements
+                                        </label>
+
+                                        <div class="input-group">
+                                                    <textarea class="form-control" rows="4" name="text" placeholder=""
+                                                              aria-label=""
+                                                              data-msg="Please enter a reason."
+                                                              data-error-class="u-has-error"
+                                                              data-success-class="u-has-success"></textarea>
                                         </div>
                                     </div>
+                                    <!-- End Input -->
                                 </div>
-                                <!-- End Card -->
 
-                              
+                                <div class="w-100"></div>
 
-                                <!-- Card -->
-                                <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
-                                    <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingFour">
-                                        <h5 class="mb-0">
-                                            <button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
-                                                data-toggle="collapse"
-                                                data-target="#basicsCollapseFour"
-                                                aria-expanded="false"
-                                                aria-controls="basicsCollapseFour">
-                                                Payment
-
-                                                <span class="card-btn-arrow font-size-14 text-dark">
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </span>
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="basicsCollapseFour" class="collapse show"
-                                        aria-labelledby="basicsHeadingFour"
-                                        data-parent="#basicsAccordion">
-                                        <div class="card-body px-4 pt-0">
-                                            <!-- Fact List -->
-                                            <ul class="list-unstyled font-size-1 mb-0 font-size-16">
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Subtotal</span>
-                                                    <span class="text-secondary">$<%= BookingInfo.TotalPrice%></span>
-                                                </li>
-
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Extra Price</span>
-                                                    <span class="text-secondary">$0,00</span>
-                                                </li>
-
-                                                <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Tax</span>
-                                                    <span class="text-secondary">0 %</span>
-                                                </li>
-
-                                                <li class="d-flex justify-content-between py-2 font-size-17 font-weight-bold">
-                                                    <span class="font-weight-bold">Pay Amount</span>
-                                                    <span class="">$<%= BookingInfo.TotalPrice%></span>
-
-                                                    <input type="hidden" id="bookingInfo" name="bookingInfo" value="<%= BookingInfo%>">
-                                                </li>
-                                            </ul>
-
-                                            <!-- 
-                                            Format : UserID,PropertyID,PropertyImgPath,CheckInDate,CheckoutDate,Rooms,Guests,TotalNights,TotalPrice
-
-                                             -->
-                                            <!-- End Fact List, format : -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Card -->
+                                <button type="submit"
+                                        class="btn btn-primary w-50 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3 m-auto">
+                                    Proceed to Payment
+                                </button>
                             </div>
-                            <!-- End Basics Accordion -->
-                        </div>
+                        </form>
+                        <!-- End Contacts Form -->
                     </div>
                 </div>
             </div>
-        </main>
-        <!-- ========== END MAIN CONTENT ========== -->
+            <div class="col-lg-4 col-xl-3">
+                <div class="shadow-soft bg-white rounded-sm">
+                    <div class="pt-5 pb-3 px-5 border-bottom">
+                        <a href="LookPropertyDetails/<%= BookingInfo.PropertyID %>" class="d-block mb-3">
+                            <img class="img-fluid rounded-xs" src="/images/<%= BookingInfo.PropertyID %>/1.jpg"
+                                 alt="Image-Description">
+                        </a>
+                        <a href="LookPropertyDetails/<%= BookingInfo.PropertyID %>"
+                           class="text-dark font-weight-bold pr-xl-1"><%= BookingInfo.PropertyName %></a>
+                        <div class="my-1 flex-horizontal-center text-gray-1">
+                            <i class="icon flaticon-pin-1 mr-2 font-size-15"></i> <%= BookingInfo.PropertyAddress %>
+                        </div>
+                    </div>
+                    <!-- Basics Accordion -->
+                    <div id="basicsAccordion">
+                        <!-- Card -->
+                        <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+                            <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingOne">
+                                <h5 class="mb-0">
+                                    <button type="button"
+                                            class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
+                                            data-toggle="collapse"
+                                            data-target="#basicsCollapseOne"
+                                            aria-expanded="true"
+                                            aria-controls="basicsCollapseOne">
+                                        Booking Detail
 
-    <%- include('_layouts/footer') -%>
+                                        <span class="card-btn-arrow font-size-14 text-dark">
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </span>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="basicsCollapseOne" class="collapse show"
+                                 aria-labelledby="basicsHeadingOne"
+                                 data-parent="#basicsAccordion">
+                                <div class="card-body px-4 pt-0">
+                                    <!-- Fact List -->
+                                    <ul class="list-unstyled font-size-1 mb-0 font-size-16">
+                                        <li class="d-flex justify-content-between py-2">
+                                                    <span class="font-weight-medium"><%= BookingInfo.DisplayCheckInDate %> - <%= BookingInfo.DisplayCheckOutDate %><br>
+                                                    </span>
 
-        <!-- Go to Top -->
-        <a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed" data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
-            <span class="flaticon-arrow u-go-to-modern__inner"></span>
-        </a>
-        <!-- End Go to Top -->
+                                        </li>
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Price/Night</span>
+                                            <span class="text-secondary">$<%= BookingInfo.PricePerNight %></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Stay</span>
+                                            <span class="text-secondary"><%= BookingInfo.TotalNights %> Nights</span>
+                                        </li>
 
-        <!-- JS Global Compulsory -->
-        <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
-        <script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
-        <script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
-        <script src="assets/vendor/bootstrap/bootstrap.min.js"></script>
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Rooms</span>
+                                            <span class="text-secondary"><%= BookingInfo.Rooms %></span>
+                                        </li>
 
-        <!-- JS Implementing Plugins -->
-        <script src="assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>
-        <script src="assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-        <script src="assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-        <script src="assets/vendor/slick-carousel/slick/slick.js"></script>
-        <script src="assets/vendor/gmaps/gmaps.min.js"></script>
-        <script src="assets/vendor/fancybox/jquery.fancybox.min.js"></script>
-        <script src="assets/vendor/appear.js"></script>
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Guests</span>
+                                            <span class="text-secondary"><%= BookingInfo.Guests %></span>
+                                        </li>
+                                    </ul>
+                                    <!-- End Fact List -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Card -->
 
 
-        <!-- JS MyTravel -->
-        <script src="assets/js/hs.core.js"></script>
-        <script src="assets/js/components/hs.header.js"></script>
-        <script src="assets/js/components/hs.unfold.js"></script>
-        <script src="assets/js/components/hs.validation.js"></script>
-        <script src="assets/js/components/hs.show-animation.js"></script>
-        <script src="assets/js/components/hs.range-datepicker.js"></script>
-        <script src="assets/js/components/hs.selectpicker.js"></script>
-        <script src="assets/js/components/hs.go-to.js"></script>
-        <script src="assets/js/components/hs.slick-carousel.js"></script>
-        <script src="assets/js/components/hs.quantity-counter.js"></script>
-        <script src="assets/js/components/hs.g-map.js"></script>
-        <script src="assets/js/components/hs.fancybox.js"></script>
-        <script src="assets/js/components/hs.scroll-nav.js"></script>
-        <script src="assets/js/components/hs.sticky-block.js"></script>
-        <script src="assets/js/components/hs.focus-state.js"></script>
+                        <!-- Card -->
+                        <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+                            <div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingFour">
+                                <h5 class="mb-0">
+                                    <button type="button"
+                                            class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark"
+                                            data-toggle="collapse"
+                                            data-target="#basicsCollapseFour"
+                                            aria-expanded="false"
+                                            aria-controls="basicsCollapseFour">
+                                        Payment
 
-        <!-- JS Plugins Init. -->
-        <script>
-            $(window).on('load', function () {
-                // initialization of HSMegaMenu component
-                $('.js-mega-menu').HSMegaMenu({
-                    event: 'hover',
-                    pageContainer: $('.container'),
-                    breakpoint: 1199.98,
-                    hideTimeOut: 0
-                });
+                                        <span class="card-btn-arrow font-size-14 text-dark">
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </span>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="basicsCollapseFour" class="collapse show"
+                                 aria-labelledby="basicsHeadingFour"
+                                 data-parent="#basicsAccordion">
+                                <div class="card-body px-4 pt-0">
+                                    <!-- Fact List -->
+                                    <ul class="list-unstyled font-size-1 mb-0 font-size-16">
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Subtotal</span>
+                                            <span class="text-secondary">$<%= BookingInfo.TotalPrice %></span>
+                                        </li>
 
-                // Page preloader
-                setTimeout(function() {
-                  $('#jsPreloader').fadeOut(500)
-                }, 800);
-            });
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Extra Price</span>
+                                            <span class="text-secondary">$0.00</span>
+                                        </li>
 
-            $(document).on('ready', function () {
-                // initialization of header
-                $.HSCore.components.HSHeader.init($('#header'));
+                                        <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Province</span>
+                                            <span class="text-secondary"><%= BookingInfo.Province %> </span>
+                                        </li>
 
-                // initialization of google map
-                function initMap() {
-                    $.HSCore.components.HSGMap.init('.js-g-map');
+                                       <li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium">Tax (HST)</span>
+                                            <span class="text-secondary">$ <%= BookingInfo.TaxAmount %> (<%= BookingInfo.TaxPercent %>%)</span>
+                                        </li>
+
+                                        <li class="d-flex justify-content-between py-2 font-size-17 font-weight-bold">
+                                            <span class="font-weight-bold">Pay Amount</span>
+                                            <span class="">$<%= BookingInfo.PayAmount %></span>
+
+                                            <input type="hidden" id="bookingInfo" name="bookingInfo"
+                                                   value="<%= BookingInfo %>">
+                                        </li>
+                                    </ul>
+
+                                    <!--
+                                    Format : UserID,PropertyID,PropertyImgPath,CheckInDate,CheckoutDate,Rooms,Guests,TotalNights,TotalPrice
+
+                                     -->
+                                    <!-- End Fact List, format : -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Card -->
+                    </div>
+                    <!-- End Basics Accordion -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- ========== END MAIN CONTENT ========== -->
+
+<%- include('_layouts/footer') -%>
+
+<!-- Go to Top -->
+<a class="js-go-to u-go-to-modern" href="#" data-position='{"bottom": 15, "right": 15 }' data-type="fixed"
+   data-offset-top="400" data-compensation="#header" data-show-effect="slideInUp" data-hide-effect="slideOutDown">
+    <span class="flaticon-arrow u-go-to-modern__inner"></span>
+</a>
+<!-- End Go to Top -->
+
+<!-- JS Global Compulsory -->
+<script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+<script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+<script src="assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>
+<script src="assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
+<script src="assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="assets/vendor/slick-carousel/slick/slick.js"></script>
+<script src="assets/vendor/gmaps/gmaps.min.js"></script>
+<script src="assets/vendor/fancybox/jquery.fancybox.min.js"></script>
+<script src="assets/vendor/appear.js"></script>
+
+
+<!-- JS MyTravel -->
+<script src="assets/js/hs.core.js"></script>
+<script src="assets/js/components/hs.header.js"></script>
+<script src="assets/js/components/hs.unfold.js"></script>
+<script src="assets/js/components/hs.validation.js"></script>
+<script src="assets/js/components/hs.show-animation.js"></script>
+<script src="assets/js/components/hs.range-datepicker.js"></script>
+<script src="assets/js/components/hs.selectpicker.js"></script>
+<script src="assets/js/components/hs.go-to.js"></script>
+<script src="assets/js/components/hs.slick-carousel.js"></script>
+<script src="assets/js/components/hs.quantity-counter.js"></script>
+<script src="assets/js/components/hs.g-map.js"></script>
+<script src="assets/js/components/hs.fancybox.js"></script>
+<script src="assets/js/components/hs.scroll-nav.js"></script>
+<script src="assets/js/components/hs.sticky-block.js"></script>
+<script src="assets/js/components/hs.focus-state.js"></script>
+
+<!-- JS Plugins Init. -->
+<script>
+    $(window).on('load', function () {
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 1199.98,
+            hideTimeOut: 0
+        });
+
+        // Page preloader
+        setTimeout(function () {
+            $('#jsPreloader').fadeOut(500)
+        }, 800);
+    });
+
+    $(document).on('ready', function () {
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#header'));
+
+        // initialization of google map
+        function initMap() {
+            $.HSCore.components.HSGMap.init('.js-g-map');
+        }
+
+        // initialization of unfold component
+        $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate', {
+            rules: {
+                confirmPassword: {
+                    equalTo: '#signupPassword'
                 }
+            }
+        });
 
-                // initialization of unfold component
-                $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
 
-                // initialization of form validation
-                $.HSCore.components.HSValidation.init('.js-validate', {
-                    rules: {
-                        confirmPassword: {
-                            equalTo: '#signupPassword'
-                        }
-                    }
-                });
+        // initialization of forms
+        $.HSCore.components.HSFocusState.init();
 
-                // initialization of show animations
-                $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
 
-                // initialization of forms
-                $.HSCore.components.HSFocusState.init();
+        // initialization of popups
+        $.HSCore.components.HSFancyBox.init('.js-fancybox');
 
-                // initialization of show animations
-                $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+        // initialization of datepicker
+        $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
 
-                // initialization of popups
-                $.HSCore.components.HSFancyBox.init('.js-fancybox');
+        // initialization of select
+        $.HSCore.components.HSSelectPicker.init('.js-select');
 
-                // initialization of datepicker
-                $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+        // initialization of sticky blocks
+        $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
 
-                // initialization of select
-                $.HSCore.components.HSSelectPicker.init('.js-select');
+        // initialization of quantity counter
+        $.HSCore.components.HSQantityCounter.init('.js-quantity');
 
-                // initialization of sticky blocks
-                $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+        // initialization of slick carousel
+        $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
 
-                // initialization of quantity counter
-                $.HSCore.components.HSQantityCounter.init('.js-quantity');
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
 
-                // initialization of slick carousel
-                $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+        // initialization of go to
+        $.HSCore.components.HSGoTo.init('.js-go-to');
 
-                // initialization of form validation
-                $.HSCore.components.HSValidation.init('.js-validate');
+        // initialization of HSScrollNav component
+        $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
+            duration: 700
+        });
+    });
+</script>
 
-                // initialization of go to
-                $.HSCore.components.HSGoTo.init('.js-go-to');
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async
+        defer></script>
 
-                // initialization of HSScrollNav component
-                $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
-                    duration: 700
-                });
-            });
-        </script>
-
-        <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&callback=initMap" async defer></script>
-
-    </body>
+</body>
 </html>

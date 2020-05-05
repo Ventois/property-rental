@@ -3,7 +3,7 @@
     <head>
         <%- include('_layouts/head') -%>
         <%- include('_layouts/scripts') -%>
-        
+        <script src='/assets/js/Utilities.js'></script>
         <script language="javascript" type="text/javascript">
           
         function updateBookingInfo()
@@ -11,41 +11,60 @@
             var element = document.getElementById("spanGuestsAndRooms");
             var adultsCount = $('#txtGuestsCount').val();
             var roomsCount = $('#txtRoomsCount').val();
-            var msg = adultsCount+" Guests - "+roomsCount+" Rooms";
+            var msg ="";
+            if(roomsCount < 2)
+                msg = adultsCount+" Guests - "+roomsCount+" Room";
+                else
+                msg = adultsCount+" Guests - "+roomsCount+" Rooms";
+
            element.innerHTML = msg;
             $('#GuestsAndRooms').val(msg);
+            localStorage['rooms'] = roomsCount;
+            localStorage['guests'] = adultsCount;
             
         }
 
-        function getMaxDate()
-        {
-            var dtToday = new Date();
-                
-                var month = dtToday.getMonth() + 2;
-                var day = dtToday.getDate();
-                var year = dtToday.getFullYear();
-                if(month < 10)
-                    month = '0' + month.toString();
-                if(day < 10)
-                    day = '0' + day.toString();
-                
-                var maxDate = year + '-' + month + '-' + day;
-                console.log('max date :'+maxDate);
-                return maxDate;
-        }
        
             $(function(){
+               
+                var guestsAndRooms = "2 Guests - 1 Room";
+                if (localStorage['guests']) {
+                    console.log('storage guests : '+localStorage['guests']);
+                    $('#txtGuestsCount').val(localStorage['guests']);
+                }
+                else
+                {
+                    $('#txtGuestsCount').val('2');
+                }
+                if (localStorage['rooms']) {
+                    console.log('storage rooms : '+localStorage['rooms']);
+                    $('#txtRoomsCount').val(localStorage['rooms']);
+                }
+                else{
+                    $('#txtRoomsCount').val('1');
+                }
+
+                let roomsCount  = parseInt($('#txtRoomsCount').val());
+                if (roomsCount > 1)
+                    guestsAndRooms = $('#txtGuestsCount').val() + " Guests - " + $('#txtRoomsCount').val() + " Rooms";
+                else
+                    guestsAndRooms = $('#txtGuestsCount').val() + " Guests - " + $('#txtRoomsCount').val() + " Room";
+                console.log('span val: '+guestsAndRooms);
+                var element = document.getElementById("spanGuestsAndRooms");
+                element.innerHTML =guestsAndRooms;
+                //$('#spanGuestsAndRooms').val(guestsAndRooms);
+                $('#GuestsAndRooms').val(guestsAndRooms);
                 window.setTimeout(function () {
         // your stuff here
         //var picker = flatpickr('#checkin_checkout_dates');
         const myInput = document.getElementById("checkin_checkout_dates");
         myInput._flatpickr.config.minDate='today';
         myInput._flatpickr.config.dateFormat = 'd M yy';
-        var mxdate = getMaxDate();
+       
         //var mydate = mxdate.getDate()+'-May-'+mxdate.getFullYear();
-        myInput._flatpickr.config.maxDate= mydate ;
+        myInput._flatpickr.config.maxDate= getMaxBookingDate();
 console.log('input :'+myInput._flatpickr.config);
-       // myInput.config['minDate']='today';
+       // myInput.config['minDate']='today');
     }, 0);
                 var today =new Date();
                 
@@ -75,7 +94,7 @@ console.log('input :'+myInput._flatpickr.config);
                // var $j = jQuery.noConflict();
 //$j("#datepicker").datepicker();
              //   $("#txtDate").datepicker();
-                $('#txtGuestsCount').val('2');
+               // $('#txtGuestsCount').val('2');
                 console.log($('#txtGuestsCount').val());
                 
                 
@@ -88,6 +107,7 @@ console.log('input :'+myInput._flatpickr.config);
     //                 timePicker: true,
     //                 minDate=dtToday
     //   });
+    
             });
         </script>
     </head>
@@ -144,7 +164,7 @@ console.log('input :'+myInput._flatpickr.config);
                                                      name= "checkin_checkout_dates"
                                                      data-rp-type="range"                                                     
                                                         id =  "checkin_checkout_dates"
-                                                        data-rp-default-date='["15-Apr-2020", "18-Apr-2020"]'>
+                                                        data-rp-default-date='["24-Apr-2020", "26-Apr-2020"]'>
                                             </div>
                                           
                                              <!-- End Datepicker -->
@@ -225,117 +245,17 @@ console.log('input :'+myInput._flatpickr.config);
                  
             <!-- ========== END HERO ========== -->
            
-            <!-- Testimonials v2 -->
-            <div class="testimonial-block testimonial-v2 border-bottom border-color-8 mt-8">
-                <div class="container">
-                    <div class="pt-7 pb-8">
-                        <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5">
-                            <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Customer Reviews</h2>
-                        </div>
-                        <!-- Slick Carousel -->
-                        <div class="js-slick-carousel u-slick u-slick--gutters-3" data-infinite="    true" data-autoplay="true" data-speed="3000" data-fade="true"
-                        data-pagi-classes="text-center u-slick__pagination mb-0 mt-4"
-                            data-responsive='[{
-                            "breakpoint": 992,
-                               "settings": {
-                                 "slidesToShow": 1
-                               }
-                            }]'>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+         
+        
 
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img1.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used SPM website and telling you the truth their services are always reliable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Jessica Brown</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img2.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Augusta Silva</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img3.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Ali Tufan</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img1.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Jessica Brown</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img3.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Ali Tufan</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-
-                            <div class="js-slide">
-                                <!-- Testimonials -->
-                                <div class="d-flex justify-content-center mb-6">
-                                    <div class="position-relative">
-                                        <img class="img-fluid mx-auto" src="assets/img/137x137/img2.jpg" alt="Image-Descrition">
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-1 font-italic text-lh-inherit px-xl-20 mx-xl-15 px-xl-20 mx-xl-18">This is the 3rd time I’ve used Travelo website and telling you the truth their services are always realiable and it only takes few minutes to plan and finalize</p>
-                                    <h6 class="font-size-17 font-weight-bold text-gray-6 mb-0">Augusta Silva</h6>
-                                    <span class="text-blue-lighter-1 font-size-normal">client</span>
-                                </div>
-                                <!-- End Testimonials -->
-                            </div>
-                        </div>
-                        <!-- End Slick Carousel -->
-                    </div>
-                </div>
-            </div>
             <!-- End Testimonials v2 -->
         </main>
         <!-- ========== END MAIN CONTENT ========== -->

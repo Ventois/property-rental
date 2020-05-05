@@ -78,10 +78,10 @@
                     <div class="col-lg-4 col-xl-3">
                         <div class="shadow-soft bg-white rounded-sm">
                             <div class="pt-5 pb-3 px-5 border-bottom">
-                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="d-block mb-3">
+                                <a href="LookPropertyDetails/<%= BookingInfo.PropertyID%>" class="d-block mb-3">
                                     <img class="img-fluid rounded-xs" src="/images/<%= BookingInfo.PropertyID%>/1.jpg" alt="Image-Description">
                                 </a>
-                                <a href="BookedPropertyDetails/<%= BookingInfo.PropertyID%>" class="text-dark font-weight-bold pr-xl-1"><%= BookingInfo.PropertyName%></a>
+                                <a href="LookPropertyDetails/<%= BookingInfo.PropertyID%>" class="text-dark font-weight-bold pr-xl-1"><%= BookingInfo.PropertyName%></a>
                                 <div class="my-1 flex-horizontal-center text-gray-1">
                                     <i class="icon flaticon-pin-1 mr-2 font-size-15"></i> <%= BookingInfo.PropertyAddress%>
                                 </div>
@@ -178,13 +178,18 @@
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2">
-                                                    <span class="font-weight-medium">Tax</span>
-                                                    <span class="text-secondary">0 %</span>
+                                                    <span class="font-weight-medium">Province</span>
+                                                    <span class="text-secondary"><%= BookingInfo.Province%> </span>
+                                                </li>
+
+                                                <li class="d-flex justify-content-between py-2">
+                                                    <span class="font-weight-medium">Tax (HST)</span>
+                                                    <span class="text-secondary">$ <%= BookingInfo.TaxAmount%> (<%= BookingInfo.TaxPercent%>%)</span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between py-2 font-size-17 font-weight-bold">
-                                                    <span class="font-weight-bold">Payed Amount</span>
-                                                    <span class="">$<%= BookingInfo.TotalPrice%></span>
+                                                    <span class="font-weight-bold">Pay Amount</span>
+                                                    <span class="">$<%= BookingInfo.PayAmount%></span>
 
                                                     <input type="hidden" id="bookingInfo" name="bookingInfo" value="<%= BookingInfo%>">
                                                 </li>

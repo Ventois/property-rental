@@ -82,12 +82,19 @@ function getPropertyDetails(id, req, res) {
         if (property_details) {
             //Check if property available for the selected dates or already Booked.
             var isPropertyAvailable = true;
+            var isRoomsAvailable = true;
             Booking.find({ property_id: property_details._id }).exec(function (err, bookings) {
                 if (err) {
                     console.log('error boss : ' + err);
-                }
-               
+                }               
+
                 if (bookings && bookings.length > 0) {
+
+                    if(property_details.rooms < parseInt(req.session.UserPreference.Rooms))
+                        {
+                            isRoomsAvailable = false;
+                        }
+                        
                     var userCheckInDate = new Date(Date.parse(req.session.UserPreference.CheckInDate));
                     var userCheckOutDate = new Date(Date.parse(req.session.UserPreference.CheckOutDate));
                     for (let bookedProperty of bookings)// bookings.forEach(bookedProperty => 
@@ -107,6 +114,8 @@ function getPropertyDetails(id, req, res) {
                                 bookedProperty.checkoutDate <= userCheckOutDate)) {
                             isPropertyAvailable = false;
                         }
+
+                        
                     }
 
                 }
@@ -115,6 +124,7 @@ function getPropertyDetails(id, req, res) {
                     PropertyDetails: property_details,
                     UserPreference: req.session.UserPreference,
                     IsPropertyAvailable: isPropertyAvailable,
+                    IsRoomsAvailable : isRoomsAvailable,
                     DisabledDates: disabledDates
                 });
             });
@@ -535,6 +545,10 @@ myApp.post('/property-list', function (req, res) {
 
             },
                 //And expression here
+                //filtering the properties with exact number of rooms 
+                {
+                    rooms : {$eq:parseInt(rooms)}
+                }
             ]
         }
 
@@ -578,11 +592,7 @@ myApp.post('/Confirmation', function (req, res) {
 // });
 
 myApp.post('/BookingConfirmation', function (req, res) {
-    if(!req.session.userLoggedIn || req.session.role !== "user") {
-            req.session.isBookingPending = true;
-            res.render("login");
-    };
-
+    
     var dates= req.body.checkin_checkout_dates.split(" - ");
     var checkinDate = new Date(Date.parse(dates[0].replace("[","")));
     var checkoutDate = new Date(Date.parse(dates[1].replace("]","")));
@@ -595,19 +605,35 @@ myApp.post('/BookingConfirmation', function (req, res) {
     GuestsAndRooms = GuestsAndRooms.split(" - ");
     var guests = GuestsAndRooms[0].trim();
     var rooms = GuestsAndRooms[1].trim();
+    var dispDate = '"'+dateFormat(new Date(Date.parse(checkinDate)),"dd mmm yyyy")+'","'+dateFormat(new Date(Date.parse(checkoutDate)),"dd mmm yyyy")+'"';
+    if (!req.session.userLoggedIn || req.session.role !== "user") {
+        req.session.UserPreference["Rooms"] = rooms;
+        req.session.UserPreference["Guests"] = guests;
+        req.session.UserPreference["CheckInDate"] = checkinDate;
+        req.session.UserPreference["CheckOutDate"] = checkoutDate;
+        req.session.UserPreference["DisplayDate"] = dispDate// req.body.checkin_checkout_dates//'["Jul 1 / 2020", "Aug 25 / 2020"]'//
+        req.session.isBookingPending = true;
+        res.render("login");
+    };
+
+    
     var bookingInfo = {
         PropertyID: req.body.property_id,
         //customer_id:  "501",//Later change to some session userid
         CheckInDate: checkinDate,
         CheckOutDate: checkoutDate,
         Guests: guests,
-        Rooms: rooms
+        Rooms: rooms,
+        PayAmount: 0,
+        TaxAmount: 0,
     };
     console.log('BookingConfirmation request reached: ');
-
-
-
-
+    var provinceTax = {
+        "quebec" : 15,
+        "halifax" : 15,
+        "ontario" : 13,
+        "alberta" : 13,
+    };
     Property.find({_id: req.body.property_id},function (err, property) {
         // console.log("found properyid : "+property_details);
         if(property.length > 0)
@@ -618,16 +644,39 @@ myApp.post('/BookingConfirmation', function (req, res) {
 
             bookingInfo['PricePerNight'] = propertyInfo.price;
 
+            
             var checkindate = Date.parse(checkinDate);
             var checkoutdate = Date.parse(checkoutDate);
             var totalNights = Math.round((checkoutdate-checkindate)/(1000*60*60*24));
+            var totalPrice = totalNights * Number(propertyInfo.price) * Number(rooms);
             bookingInfo['TotalNights'] = totalNights;
-            bookingInfo['TotalPrice'] = totalNights * Number(propertyInfo.price) * Number(rooms);
+            bookingInfo['TotalPrice'] = totalPrice;
             bookingInfo['CustomerEmailID'] = req.session.email;
             bookingInfo['DisplayCheckInDate'] = dateFormat(new Date(checkinDate),"dd mmm yyyy");
             bookingInfo['DisplayCheckOutDate'] = dateFormat(new Date(checkoutDate),"dd mmm yyyy");
             bookingInfo['CustomerID'] = req.session.userid;
             bookingInfo['CustomerFirstName'] = req.session.userid;
+            bookingInfo['Province'] = propertyInfo.state;
+            var tax = 0;
+            var taxAmount = 0;
+            var provinceKey = propertyInfo.state.toLowerCase()
+            if(provinceKey in provinceTax)
+            {
+                console.log("provinceTax", provinceTax);
+                console.log("propertyInfo.state", provinceKey);
+                console.log("provinceTax['propertyInfo.state']", provinceTax[provinceKey])
+                tax = provinceTax[provinceKey]
+                bookingInfo['TaxPercent'] = tax;
+                taxAmount = totalPrice * (tax / 100);
+            }
+            else
+            {
+                tax = 0;
+                bookingInfo['TaxPercent'] = tax;
+            }
+            console.log(bookingInfo['TaxPercent']);
+            bookingInfo['PayAmount'] =  totalPrice + taxAmount;
+            bookingInfo['TaxAmount'] = taxAmount;
             Users.findOne({_id: req.session.userid},function (err, user) {
             req.session.BookingInfo = bookingInfo;
             req.session.UserInfo = user;
@@ -662,50 +711,66 @@ myApp.get('/user-dashboard', function (req, res) {
                 {
                     var totalDocsCount =  bookings.length;
                     var tempDocsCount =0;
-                    bookings.forEach(booking => {
-                        Property.findOne({_id: booking.property_id}).exec(function (err, property) {
-                            if(property)
-                            {
-                                tempDocsCount++;
-                                var stay = {
-                                    PropertyID : property._id,
-                                    PropertyAddress : property.address,
-                                    BookingID : booking._id,
-                                    PropertyName : property.rentalname,
-                                    CheckInDate : getFormattedDate(Date.parse(booking.checkinDate)),
-                                    CheckOutDate : getFormattedDate(Date.parse(booking.checkoutDate)),
-                                    Guests : booking.guests,
-                                    Rooms : booking.rooms,
-                                    TotalPrice : booking.totalPrice,
-                                    TotalNights : booking.totalNights,
-                                    BookingDate : getFormattedDate(Date.parse(booking.bookingDate)) + " "+getFormattedTime(Date.parse(booking.bookingDate))
-                                };
-                                staysList.push(stay);
-                                if(new Date(Date.parse(booking.checkinDate)) < today)
-                                {
-                                    completedStaysList.push(stay);
-                                }
-                                else if(new Date(Date.parse(booking.checkinDate)) > today)
-                                {
-                                    upcomingStaysList.push(stay);
-                                }
-                                if(tempDocsCount === totalDocsCount)
-                                {
-                                    res.render('user-dashboard', {
-                                        stays: staysList,
-                                        upcomingStays : upcomingStaysList,
-                                        completedStays : completedStaysList,
-                                        userInfo : userInfo,
-                                        successMsg: req.flash('successMsg'),
-                                        errorMsg: req.flash('errorMsg'),
-                                    });
-                                }
-                            }
-                            }
-                        )
-                    });
+                    
+                    Property.find({}).exec(function (err, properties) {
+                        if (properties != null && properties.length > 0) {
 
-                }
+                    for (let i = 0; i < bookings.length; i++) {
+                        let booking = bookings[i];
+                      
+                        
+                                var property = properties.find(prop => prop._id == booking.property_id);
+                                if (property) {
+                                    tempDocsCount++;
+                                    var stay = {
+                                        PropertyID: property._id,
+                                        PropertyAddress: property.address,
+                                        BookingID: booking._id,
+                                        PropertyName: property.rentalname,
+                                        CheckInDate: getFormattedDate(Date.parse(booking.checkinDate)),
+                                        CheckOutDate: getFormattedDate(Date.parse(booking.checkoutDate)),
+                                        Guests: booking.guests,
+                                        Rooms: booking.rooms,
+                                        TotalPrice: booking.totalPrice,
+                                        TotalNights: booking.totalNights,
+                                        BookingDate: getFormattedDate(Date.parse(booking.bookingDate)) + " " + getFormattedTime(Date.parse(booking.bookingDate))
+                                    };
+                                    staysList.push(stay);
+                                    if (new Date(Date.parse(booking.checkinDate)) < today) {
+                                        completedStaysList.push(stay);
+                                    }
+                                    else if (new Date(Date.parse(booking.checkinDate)) > today) {
+                                        upcomingStaysList.push(stay);
+                                    }
+                                    
+                                    }
+                                //if (tempDocsCount === totalDocsCount) {
+                                    
+                            //}
+                        }
+
+                        res.render('user-dashboard', {
+                            stays: staysList,
+                            upcomingStays: upcomingStaysList,
+                            completedStays: completedStaysList,
+                            userInfo: userInfo,
+                            successMsg: req.flash('successMsg'),
+                            errorMsg: req.flash('errorMsg'),
+                        });
+                    }
+                    else {
+                        res.render('user-dashboard', {
+                            stays: {},
+                            upcomingStays: {},
+                            completedStays: {},
+                            userInfo: userInfo,
+                            successMsg: req.flash('successMsg'),
+                            errorMsg: req.flash('errorMsg'),
+                        });
+                    }
+
+                        });
+                    }
                 else
                 {
                     res.render('user-dashboard', {
@@ -721,10 +786,12 @@ myApp.get('/user-dashboard', function (req, res) {
         );
 
 
-    } else {
+        } else {
         res.redirect('/login');
     }
 });
+
+
 function getFormattedDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -785,6 +852,9 @@ myApp.get('/edit-user-profile/:id', function (req, res) {
         res.redirect('/login');
     }
 });
+
+
+
 
 //----------- Start the server -------------------
 

@@ -21,9 +21,11 @@ const bookProperty = (req, res, Booking) => {
         checkoutDate: req.session.BookingInfo.CheckOutDate,
         guests: req.session.BookingInfo.Guests,
         rooms: req.session.BookingInfo.Rooms,
-        totalPrice:req.session.BookingInfo.TotalPrice,
+        totalPrice:req.session.BookingInfo.PayAmount,
         totalNights : req.session.BookingInfo.TotalNights,        
-        bookingDate : new Date()
+        bookingDate : new Date(),
+        subTotal : req.session.BookingInfo.TotalPrice,
+        taxAmount : req.session.BookingInfo.TaxAmount,
     });
     
     booking.save()
@@ -74,10 +76,15 @@ const bookProperty = (req, res, Booking) => {
                       pass: 'spmteam@123'
                     }
                   });
-                 
+                  
+                  var recipientsList = [req.session.BookingInfo.ReservationEmailID];
+                  
+                  if(req.session.BookingInfo.ReservationEmailID.trim() != req.session.email.trim())
+                        recipientsList.push(req.session.email);
+
                   var mailOptions = {
                     from: 'team.spm.2020@gmail.com',
-                    to: req.session.BookingInfo.ReservationEmailID,
+                    to: recipientsList,
                     subject: 'Your Reservation for '+ req.session.BookingInfo.PropertyName+' from ['+
                     dateFormat(new Date(Date.parse(booking.checkinDate)),"dd mmm yyyy")+' to '+
                     dateFormat(new Date(Date.parse(booking.checkoutDate)),"dd mmm yyyy")+'] Confirmed',
